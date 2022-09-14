@@ -1,0 +1,1899 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WorkBook xmlVersion="20211223" releaseVersion="11.0.0">
+<TableDataMap>
+<TableData name="transaction_details" class="com.fr.data.impl.DBTableData">
+<Parameters>
+<Parameter>
+<Attributes name="transaction_id"/>
+<O>
+<![CDATA[]]></O>
+</Parameter>
+</Parameters>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[cms_dev]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[SELECT 
+	t.id,
+	t.transaction_number,
+	r.name as requestor,
+	l.name as location,
+	s.name as station,
+	sh.name as shift,
+	t.updated_by,
+	th2.id as transaction_history_id,
+	th2.state as current_process,
+	th2.wf_state_type_state_id as current_process_id,
+	d.name as department,
+	si.name as site,
+	wst.type_key as transaction_type,
+	t.updated_at,
+	t.created_at,
+	t.transaction_type_id,
+	t.site_id,
+	t.department_id
+
+FROM [dbo]A.[transactions]A t
+
+left outer join locations l
+on l.id = t.location_id
+
+left outer join requestors r
+on r.id = t.requested_by
+
+left outer join stations s
+on s.id = t.station_id
+
+left outer join shifts sh
+on sh.id = t.shift_id
+
+left outer join departments d
+on d.id = t.department_id
+
+left outer join sites si
+on si.id = t.site_id
+
+left outer join workflow_state_type wst
+on wst.id = t.transaction_type_id
+
+CROSS APPLY
+(
+SELECT top 1
+	th.*,
+	wst_s.type_key as state
+	
+FROM [dbo]A.[transaction_history]A th
+
+left outer join workflow_state_type wst_s
+on wst_s.id = th.wf_state_type_state_id
+where th.transaction_id = t.id
+order by th.id desc
+) th2
+
+where t.id = '${transaction_id}']]></Query>
+<PageQuery>
+<![CDATA[]]></PageQuery>
+</TableData>
+<TableData name="transaction_items" class="com.fr.data.impl.DBTableData">
+<Parameters>
+<Parameter>
+<Attributes name="t_id"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=VALUE("transaction_details","id")]]></Attributes>
+</O>
+</Parameter>
+</Parameters>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[cms_dev]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[SELECT 
+		ti.*,
+		i.description,
+		i.unit_id 
+FROM [dbo]A.[transaction_items]A ti
+
+left outer join items i
+on i.id = ti.item_id
+where transaction_id = '${t_id}']]></Query>
+<PageQuery>
+<![CDATA[]]></PageQuery>
+</TableData>
+<TableData name="items" class="com.fr.data.impl.DBTableData">
+<Parameters>
+<Parameter>
+<Attributes name="department_id"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=value("transaction_details","department_id")]]></Attributes>
+</O>
+</Parameter>
+<Parameter>
+<Attributes name="site_id"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=value("transaction_details","site_id")]]></Attributes>
+</O>
+</Parameter>
+</Parameters>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[cms_dev]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[SELECT * FROM [dbo]A.[items]A
+where site_id = '${site_id}'
+and department_id = '${department_id}']]></Query>
+<PageQuery>
+<![CDATA[]]></PageQuery>
+</TableData>
+<TableData name="history" class="com.fr.data.impl.DBTableData">
+<Parameters>
+<Parameter>
+<Attributes name="t_id"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=VALUE("transaction_details","id")]]></Attributes>
+</O>
+</Parameter>
+</Parameters>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[cms_dev]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[SELECT
+	th.*,
+	wst_s.type_key as state,
+	wst_o.type_key as outcome,
+	wst_q.type_key as qualifier
+	
+FROM [dbo]A.[transaction_history]A th
+
+left outer join workflow_state_type wst_s
+on wst_s.id = th.wf_state_type_state_id
+
+left outer join workflow_state_type wst_o
+on wst_o.id = th.wf_state_type_outcome_id
+
+left outer join workflow_state_type wst_q
+on wst_q.id = th.wf_state_type_outcome_id
+
+where th.transaction_id = '${t_id}'
+and th.wf_state_type_outcome_id is not null
+order by th.id desc]]></Query>
+<PageQuery>
+<![CDATA[]]></PageQuery>
+</TableData>
+<TableData name="state" class="com.fr.data.impl.DBTableData">
+<Parameters/>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[cms_dev]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[SELECT * FROM [dbo]A.[workflow_state_type]A]]></Query>
+<PageQuery>
+<![CDATA[]]></PageQuery>
+</TableData>
+<TableData name="hierarchy_main" class="com.fr.data.impl.DBTableData">
+<Parameters>
+<Parameter>
+<Attributes name="state_type_parent_id"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=VALUE("transaction_details","current_process_id")]]></Attributes>
+</O>
+</Parameter>
+</Parameters>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[cms_dev]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[SELECT 
+	wsh.id, 
+	wsh.state_type_child_id,
+	wst.type_key
+
+FROM [dbo]A.[workflow_state_hierarchy]A wsh
+
+inner join dbo.workflow_state_type wst
+on wsh.state_type_child_id = wst.id
+
+where state_type_parent_id = '${state_type_parent_id}']]></Query>
+<PageQuery>
+<![CDATA[]]></PageQuery>
+</TableData>
+<TableData name="option_main" class="com.fr.data.impl.DBTableData">
+<Parameters>
+<Parameter>
+<Attributes name="context_state_id"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=VALUE("transaction_details","transaction_type_id")]]></Attributes>
+</O>
+</Parameter>
+<Parameter>
+<Attributes name="outcome_id"/>
+<O>
+<![CDATA[]]></O>
+</Parameter>
+</Parameters>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[cms_dev]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[SELECT 
+		wso.id,
+		wso.state_context_id,
+		wstct.type_key as context_state,
+		wsc.state_type_id as context_state_id,
+		wsc.state_hierarchy_id,
+		wstp.type_key as parent_state,
+		wsh.state_type_parent_id,
+		wstc.type_key as child_state,
+		wsh.state_type_child_id,
+		wsc.child_disabled,
+		wst.type_key as next_state_type_name,
+		wso.state_type_id as next_state_type_id
+
+  FROM [cms_dev]A.[dbo]A.[workflow_state_option]A wso
+
+  left outer join [cms_dev]A.[dbo]A.[workflow_state_context]A wsc
+  on wsc.id = wso.state_context_id
+
+  left outer join [cms_dev]A.[dbo]A.[workflow_state_hierarchy]A wsh
+  on wsh.id = wsc.state_hierarchy_id
+
+  left outer join [cms_dev]A.[dbo]A.[workflow_state_type]A wst
+  on wst.id = wso.state_type_id
+
+  left outer join [cms_dev]A.[dbo]A.[workflow_state_type]A wstp
+  on wstp.id = wsh.state_type_parent_id
+
+  left outer join [cms_dev]A.[dbo]A.[workflow_state_type]A wstc
+  on wstc.id = wsh.state_type_child_id
+
+  left outer join [cms_dev]A.[dbo]A.[workflow_state_type]A wstct
+  on wstct.id = wsc.state_type_id
+
+  where wsc.state_type_id = '${context_state_id}'
+  and wsc.state_hierarchy_id = '${outcome_id}']]></Query>
+<PageQuery>
+<![CDATA[]]></PageQuery>
+</TableData>
+<TableData name="role" class="com.fr.data.impl.DBTableData">
+<Parameters>
+<Parameter>
+<Attributes name="user_role"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=MAPARRAY(GETUSERJOBTITLES(),"'"+item+"'")]]></Attributes>
+</O>
+</Parameter>
+</Parameters>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[cms_dev]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[SELECT * FROM [dbo]A.[workflow_state_role]A
+where role IN (''+${user_role}+'')]]></Query>
+<PageQuery>
+<![CDATA[]]></PageQuery>
+</TableData>
+</TableDataMap>
+<ReportWebAttr>
+<Title>
+<![CDATA[CMS - Transaction Details]]></Title>
+<ServerPrinter/>
+<WebWriteContent>
+<Listener event="afterload">
+<JavaScript class="com.fr.js.JavaScriptImpl">
+<Parameters/>
+<Content>
+<![CDATA[$('.ui-state-disabled').css({'opacity':'1'});
+$('.fst-edt').css('color','black');]]></Content>
+</JavaScript>
+</Listener>
+<ToolBars/>
+<EditRowColor setColor="false"/>
+<WebWrite SheetPosition="3"/>
+<RptLocation isShowAtLeft="false"/>
+<UnloadCheck check="false"/>
+<ShowWidgets/>
+<OtherAttr autoStash="false"/>
+</WebWriteContent>
+</ReportWebAttr>
+<ElementCaseMobileAttr>
+<ElementCaseMobileAttrProvider horizontal="1" vertical="1" zoom="true" refresh="false" isUseHTML="false" isMobileCanvasSize="false" appearRefresh="false" allowFullScreen="false" allowDoubleClickOrZoom="true" functionalWhenUnactivated="false"/>
+</ElementCaseMobileAttr>
+<Report class="com.fr.report.worksheet.WorkSheet" name="sheet1">
+<ReportPageAttr>
+<HR/>
+<FR/>
+<HC/>
+<FC/>
+</ReportPageAttr>
+<ColumnPrivilegeControl/>
+<RowPrivilegeControl/>
+<RowHeight defaultValue="723900">
+<![CDATA[723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900]]></RowHeight>
+<ColumnWidth defaultValue="2743200">
+<![CDATA[2667000,3429000,2247900,5410200,3276600,3429000,5334000,4838700,952500,3429000,3695700,2743200]]></ColumnWidth>
+<CellElementList>
+<C c="0" r="0" s="0">
+<PrivilegeControl/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="0" r="1" cs="4" s="1">
+<O>
+<![CDATA[TRANSACTION ITEMS:]]></O>
+<PrivilegeControl/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="4" r="1" s="0">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="5" r="1" s="0">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="6" r="1" s="0">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="7" r="1" s="0">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="2" s="2">
+<O>
+<![CDATA[ID]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="2" s="2">
+<O>
+<![CDATA[Part number]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="2" r="2" cs="2" s="2">
+<O>
+<![CDATA[Description]]></O>
+<PrivilegeControl/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="4" r="2" s="2">
+<O>
+<![CDATA[Quantity]]></O>
+<PrivilegeControl/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="5" r="2" s="2">
+<O>
+<![CDATA[UoM]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="6" r="2" cs="2" s="2">
+<O>
+<![CDATA[Remarks]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="3" s="3">
+<O t="DSColumn">
+<Attributes dsName="transaction_items" columnName="id"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper">
+<Attr divideMode="1"/>
+</RG>
+<Parameters/>
+<cellSortAttr/>
+</O>
+<PrivilegeControl/>
+<Expand dir="0"/>
+</C>
+<C c="1" r="3" s="4">
+<O t="DSColumn">
+<Attributes dsName="transaction_items" columnName="item_id"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper">
+<Attr divideMode="1"/>
+</RG>
+<Parameters/>
+<cellSortAttr/>
+</O>
+<PrivilegeControl/>
+<Present class="com.fr.base.present.DictPresent">
+<Dictionary class="com.fr.data.impl.DatabaseDictionary">
+<FormulaDictAttr kiName="id" viName="part_number"/>
+<DBDictAttr tableName="items" schemaName="" ki="-1" vi="-1" kiName="id" viName="part_number"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[cms_dev]]></DatabaseName>
+</Connection>
+</Dictionary>
+</Present>
+<Expand dir="0">
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="2" r="3" cs="2" s="5">
+<O t="DSColumn">
+<Attributes dsName="transaction_items" columnName="description"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+<cellSortAttr/>
+</O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<HighlightList>
+<Highlight class="com.fr.report.cell.cellattr.highlight.DefaultHighlight">
+<Name>
+<![CDATA[Conditional Formatting1]]></Name>
+<Condition class="com.fr.data.condition.ListCondition"/>
+</Highlight>
+</HighlightList>
+<CellInsertPolicy/>
+<Expand dir="0"/>
+</C>
+<C c="4" r="3" s="3">
+<O t="DSColumn">
+<Attributes dsName="transaction_items" columnName="quantity"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper">
+<Attr divideMode="1"/>
+</RG>
+<Parameters/>
+<cellSortAttr/>
+</O>
+<PrivilegeControl/>
+<Expand dir="0">
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="5" r="3" s="3">
+<O t="DSColumn">
+<Attributes dsName="transaction_items" columnName="unit_id"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+<cellSortAttr/>
+</O>
+<PrivilegeControl/>
+<Present class="com.fr.base.present.DictPresent">
+<Dictionary class="com.fr.data.impl.DatabaseDictionary">
+<FormulaDictAttr kiName="id" viName="name"/>
+<DBDictAttr tableName="units" schemaName="" ki="-1" vi="-1" kiName="id" viName="name"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[cms_dev]]></DatabaseName>
+</Connection>
+</Dictionary>
+</Present>
+<Expand dir="0"/>
+</C>
+<C c="6" r="3" cs="2" s="3">
+<O t="DSColumn">
+<Attributes dsName="transaction_items" columnName="remarks"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper">
+<Attr divideMode="1"/>
+</RG>
+<Parameters/>
+<cellSortAttr/>
+</O>
+<PrivilegeControl/>
+<Expand dir="0"/>
+</C>
+</CellElementList>
+<ReportAttrSet>
+<ReportSettings headerHeight="0" footerHeight="0">
+<PaperSetting/>
+<FollowingTheme background="false"/>
+<Background name="ColorBackground">
+<color>
+<FineColor color="-1" hor="-1" ver="-1"/>
+</color>
+</Background>
+</ReportSettings>
+<Header reportPageType="0">
+<Background name="NullBackground"/>
+<LeftList/>
+<CenterList/>
+<RightList/>
+</Header>
+<Footer reportPageType="0">
+<Background name="NullBackground"/>
+<LeftList/>
+<CenterList/>
+<RightList/>
+</Footer>
+</ReportAttrSet>
+<ReportWriteAttr>
+<SubmitVisitor class="com.fr.report.write.BuiltInSQLSubmiter">
+<Name>
+<![CDATA[Built-in SQL1]]></Name>
+<Attributes dsName="cms_dev"/>
+<DMLConfig class="com.fr.write.config.IntelliDMLConfig">
+<Table schema="" name="transaction_items"/>
+<ColumnConfig name="id" isKey="true" skipUnmodified="false">
+<ColumnRow column="0" row="3"/>
+</ColumnConfig>
+<ColumnConfig name="transaction_id" isKey="false" skipUnmodified="false">
+<Parameter>
+<Attributes name="t_id"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=A1]]></Attributes>
+</O>
+</Parameter>
+</ColumnConfig>
+<ColumnConfig name="item_id" isKey="false" skipUnmodified="false">
+<ColumnRow column="1" row="3"/>
+</ColumnConfig>
+<ColumnConfig name="quantity" isKey="false" skipUnmodified="false">
+<ColumnRow column="7" row="3"/>
+</ColumnConfig>
+<ColumnConfig name="remarks" isKey="false" skipUnmodified="false">
+<ColumnRow column="7" row="3"/>
+</ColumnConfig>
+<ColumnConfig name="updated_at" isKey="false" skipUnmodified="false">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=NOW()]]></Attributes>
+</O>
+</ColumnConfig>
+<Condition class="com.fr.data.condition.ListCondition"/>
+</DMLConfig>
+</SubmitVisitor>
+</ReportWriteAttr>
+<PrivilegeControl/>
+</Report>
+<ReportParameterAttr>
+<Attributes showWindow="true" delayPlaying="false" windowPosition="1" align="1" useParamsTemplate="true" currentIndex="41"/>
+<PWTitle>
+<![CDATA[Parameter]]></PWTitle>
+<ParameterUI class="com.fr.form.main.parameter.FormParameterUI">
+<Parameters/>
+<Layout class="com.fr.form.ui.container.WParameterLayout">
+<WidgetName name="para"/>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<FollowingTheme borderStyle="false"/>
+<Margin top="0" left="0" bottom="0" right="0"/>
+<Border>
+<border style="0" borderRadius="0" type="0" borderStyle="0">
+<color>
+<FineColor color="-723724" hor="-1" ver="-1"/>
+</color>
+</border>
+<WidgetTitle>
+<O>
+<![CDATA[New Title]]></O>
+<FRFont name="Arial" style="0" size="72"/>
+<Position pos="0"/>
+</WidgetTitle>
+<Alpha alpha="1.0"/>
+</Border>
+<Background name="ColorBackground">
+<color>
+<FineColor color="-526086" hor="-1" ver="-1"/>
+</color>
+</Background>
+<LCAttr vgap="0" hgap="0" compInterval="0"/>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.RadioGroup">
+<WidgetName name="process_id"/>
+<WidgetID widgetID="222993ca-4b62-4664-9512-0c023bb13edf"/>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<EMSG>
+<![CDATA[Next process is required!]]></EMSG>
+<Dictionary class="com.fr.data.impl.TableDataDictionary">
+<FormulaDictAttr kiName="next_state_type_id" viName="next_state_type_name"/>
+<TableDataDictAttr>
+<TableData class="com.fr.data.impl.NameTableData">
+<Name>
+<![CDATA[option_main]]></Name>
+</TableData>
+</TableDataDictAttr>
+</Dictionary>
+<widgetValue>
+<databinding>
+<![CDATA[{Name:option_main,Key:next_state_type_id}]]></databinding>
+</widgetValue>
+<MaxRowsMobileAttr maxShowRows="5"/>
+</InnerWidget>
+<BoundsAttr x="897" y="43" width="367" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.RadioGroup">
+<WidgetName name="outcome_id"/>
+<WidgetID widgetID="974f0174-4c16-46c8-9f3b-aae9d37292ab"/>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<EMSG>
+<![CDATA[Decision is required!]]></EMSG>
+<fontSize>
+<![CDATA[9]]></fontSize>
+<Dictionary class="com.fr.data.impl.TableDataDictionary">
+<FormulaDictAttr kiName="id" viName="type_key"/>
+<TableDataDictAttr>
+<TableData class="com.fr.data.impl.NameTableData">
+<Name>
+<![CDATA[hierarchy_main]]></Name>
+</TableData>
+</TableDataDictAttr>
+</Dictionary>
+<widgetValue>
+<databinding>
+<![CDATA[{Name:hierarchy_main,Key:id}]]></databinding>
+</widgetValue>
+<MaxRowsMobileAttr maxShowRows="5"/>
+</InnerWidget>
+<BoundsAttr x="897" y="22" width="367" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.Label">
+<WidgetName name="history_remarks_lb"/>
+<LabelName name="Updated by:"/>
+<WidgetID widgetID="e86ae53d-4e8b-475f-abd3-7e5085db7808"/>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<widgetValue>
+<O>
+<![CDATA[Remarks:]]></O>
+</widgetValue>
+<LabelAttr verticalcenter="true" textalign="4" autoline="true"/>
+<FRFont name="SimSun" style="0" size="72"/>
+<border style="0">
+<color>
+<FineColor color="-723724" hor="-1" ver="-1"/>
+</color>
+</border>
+</InnerWidget>
+<BoundsAttr x="809" y="64" width="88" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.Label">
+<WidgetName name="process_id_lb"/>
+<LabelName name="Created at:"/>
+<WidgetID widgetID="e86ae53d-4e8b-475f-abd3-7e5085db7808"/>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<widgetValue>
+<O>
+<![CDATA[Next Process:]]></O>
+</widgetValue>
+<LabelAttr verticalcenter="true" textalign="4" autoline="true"/>
+<FRFont name="SimSun" style="0" size="72"/>
+<border style="0">
+<color>
+<FineColor color="-723724" hor="-1" ver="-1"/>
+</color>
+</border>
+</InnerWidget>
+<BoundsAttr x="809" y="43" width="88" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.Label">
+<WidgetName name="outcome_id_lb"/>
+<LabelName name="Updated by:"/>
+<WidgetID widgetID="e86ae53d-4e8b-475f-abd3-7e5085db7808"/>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<widgetValue>
+<O>
+<![CDATA[Decision:]]></O>
+</widgetValue>
+<LabelAttr verticalcenter="true" textalign="4" autoline="true"/>
+<FRFont name="SimSun" style="0" size="72"/>
+<border style="0">
+<color>
+<FineColor color="-723724" hor="-1" ver="-1"/>
+</color>
+</border>
+</InnerWidget>
+<BoundsAttr x="809" y="22" width="88" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.Label">
+<WidgetName name="label_notif"/>
+<LabelName name="Initialization Functions"/>
+<WidgetID widgetID="f32066b0-40ec-4ea0-b5d6-6866aa47397b"/>
+<WidgetAttr invisible="true" aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<widgetValue>
+<O>
+<![CDATA[]]></O>
+</widgetValue>
+<LabelAttr verticalcenter="true" textalign="0" autoline="true"/>
+<FRFont name="SimSun" style="0" size="80">
+<foreground>
+<FineColor color="-1424335" hor="-1" ver="-1"/>
+</foreground>
+</FRFont>
+<border style="0">
+<color>
+<FineColor color="-723724" hor="-1" ver="-1"/>
+</color>
+</border>
+</InnerWidget>
+<BoundsAttr x="344" y="105" width="441" height="42"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.Label">
+<Listener event="afterinit" name="restriction">
+<JavaScript class="com.fr.js.JavaScriptImpl">
+<Parameters>
+<Parameter>
+<Attributes name="role_states"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=value("role","state_type_id")]]></Attributes>
+</O>
+</Parameter>
+<Parameter>
+<Attributes name="path"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=$cmspath]]></Attributes>
+</O>
+</Parameter>
+<Parameter>
+<Attributes name="transaction_id"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=VALUE("transaction_details","id")]]></Attributes>
+</O>
+</Parameter>
+</Parameters>
+<Content>
+<![CDATA[$(".reportPane").css("display", "none");
+//var pane = document.getElementsByClassName("reportPane");
+//pane[0]A.style.display = "none";
+var c_process_id = this.options.form.getWidgetByName("current_process_id").getValue();
+var close = function() {
+	window.close();
+	//alert('closed');
+}
+//if (c_process_id == "5" || c_process_id == "9" || c_process_id == "10") {
+//	report = '/transaction_items.cpt';
+//	window.open("${servletURL}?viewlet=" + path + report + "&transaction_id=" + transaction_id + "&op=write", "_self");
+//}
+if (!role_states) {
+	FR.Msg.alert("WARNING", "ACCESS FORBIDDEN.", close);
+}
+var states = role_states.toString().split(",")
+if (states.indexOf(c_process_id) !== -1) {
+
+	if (c_process_id == "5" || c_process_id == "9" || c_process_id == "10") {
+		report = '/transaction_items.cpt';
+		window.open("${servletURL}?viewlet=" + path + report + "&transaction_id=" + transaction_id + "&op=write", "_self");
+	}
+
+	console.log('Authorized...');
+	$(".reportPane").css("display", "");
+	//pane[0]A.style.display = "";
+} else {
+	//$(".reportPane").css("display", "none");
+	FR.Msg.alert("WARNING", "ACCESS FORBIDDEN.", close);
+}]]></Content>
+</JavaScript>
+</Listener>
+<Listener event="afterinit" name="for_scan">
+<JavaScript class="com.fr.js.JavaScriptImpl">
+<Parameters>
+<Parameter>
+<Attributes name="scan_process"/>
+<O>
+<![CDATA[8]]></O>
+</Parameter>
+</Parameters>
+<Content>
+<![CDATA[var c_process_id = this.options.form.getWidgetByName("current_process_id").getValue();
+
+var outcome_lb = this.options.form.getWidgetByName("outcome_id_lb");
+var next_lb = this.options.form.getWidgetByName("process_id_lb");
+var remarks_lb = this.options.form.getWidgetByName("history_remarks_lb");
+var outcome = this.options.form.getWidgetByName("outcome_id");
+var next = this.options.form.getWidgetByName("process_id");
+var remarks = this.options.form.getWidgetByName("history_remarks");
+var submit = this.options.form.getWidgetByName("submit_btn");
+var label = this.options.form.getWidgetByName("label_notif");
+var qr = this.options.form.getWidgetByName("view_qr_btn");
+
+if(c_process_id == scan_process){
+	outcome_lb.setVisible(false);
+	next_lb.setVisible(false);
+	remarks_lb.setVisible(false);
+	outcome.setVisible(false);
+	next.setVisible(false);
+	remarks.setVisible(false);
+	submit.setVisible(false);
+	//qr.setVisible(true);
+	label.setValue("***Please use the mobile app and scan QR Code***");
+	label.setVisible(true);
+	//FR.Msg.alert("WARNING", "Please use the mobile app to confirm the transaction.");
+}
+]]></Content>
+</JavaScript>
+</Listener>
+<Listener event="afterinit" name="closed">
+<JavaScript class="com.fr.js.JavaScriptImpl">
+<Parameters>
+<Parameter>
+<Attributes name="hierarchy"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=VALUE("hierarchy_main","id")]]></Attributes>
+</O>
+</Parameter>
+</Parameters>
+<Content>
+<![CDATA[var outcome_lb = this.options.form.getWidgetByName("outcome_id_lb");
+var next_lb = this.options.form.getWidgetByName("process_id_lb");
+var remarks_lb = this.options.form.getWidgetByName("history_remarks_lb");
+var outcome = this.options.form.getWidgetByName("outcome_id");
+var next = this.options.form.getWidgetByName("process_id");
+var remarks = this.options.form.getWidgetByName("history_remarks");
+var submit = this.options.form.getWidgetByName("submit_btn");
+
+if (hierarchy == "" || hierarchy == "") {
+	outcome_lb.setVisible(false);
+	next_lb.setVisible(false);
+	remarks_lb.setVisible(false);
+	
+	outcome.setVisible(false);	
+	next.setVisible(false);
+	remarks.setVisible(false);
+	submit.setVisible(false);
+}]]></Content>
+</JavaScript>
+</Listener>
+<WidgetName name="label1"/>
+<WidgetID widgetID="f90042a2-3f00-4be3-b9b8-5885b35512d5"/>
+<WidgetAttr invisible="true" aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<widgetValue>
+<O>
+<![CDATA[Initialization Functions]]></O>
+</widgetValue>
+<LabelAttr verticalcenter="true" textalign="0" noWrap="true" autoline="true"/>
+<FRFont name="SimSun" style="0" size="72"/>
+<border style="0">
+<color>
+<FineColor color="-723724" hor="-1" ver="-1"/>
+</color>
+</border>
+</InnerWidget>
+<BoundsAttr x="18" y="105" width="166" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.FreeButton">
+<Listener event="click" name="Click1">
+<JavaScript class="com.fr.js.JavaScriptImpl">
+<Parameters>
+<Parameter>
+<Attributes name="transaction_num"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=VALUE("transaction_details","transaction_number")]]></Attributes>
+</O>
+</Parameter>
+</Parameters>
+<Content>
+<![CDATA[window.open("${servletURL}?viewlet=phase2/transaction_items.cpt&transaction_number="+ transaction_num+"&op=write");
+
+//window.form = this.options.form;
+//var $iframe = $("<iframe id='inp' name='inp' width='100%' height='100%' scrolling='no' frameborder='0'>");
+//$iframe.attr("src", "${servletURL}?viewlet=phase2/transaction_items.cpt&transaction_number="+ transaction_num+"&op=write"); 
+//var o = {
+//title : "CMS - Transaction Item Edit",
+//width : 1080,
+//height: 600
+//}; 
+//FR.showDialog(o.title, o.width, o.height, $iframe,o); ]]></Content>
+</JavaScript>
+</Listener>
+<WidgetName name="button0"/>
+<WidgetID widgetID="9eab68dd-fadf-4974-84f6-0746da8c9e24"/>
+<WidgetAttr invisible="true" aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<Text>
+<![CDATA[Edit Items]]></Text>
+<Hotkeys>
+<![CDATA[]]></Hotkeys>
+<IconName>
+<![CDATA[edit]]></IconName>
+</InnerWidget>
+<BoundsAttr x="18" y="126" width="123" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.FreeButton">
+<Listener event="click" name="Click1">
+<JavaScript class="com.fr.js.Commit2DBJavaScript">
+<Parameters/>
+<Attributes dsName="cms_dev" name="Submit2"/>
+<DMLConfig class="com.fr.write.config.UpdateConfig">
+<Table schema="" name="transaction_history"/>
+<ColumnConfig name="id" isKey="true" skipUnmodified="false">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=VALUE("transaction_details","transaction_history_id")]]></Attributes>
+</O>
+</ColumnConfig>
+<ColumnConfig name="transaction_id" isKey="false" skipUnmodified="false">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=VALUE("transaction_details","id")]]></Attributes>
+</O>
+</ColumnConfig>
+<ColumnConfig name="remarks" isKey="false" skipUnmodified="false">
+<O t="XMLable" class="com.fr.stable.js.WidgetName">
+<WidetName name="history_remarks"/>
+</O>
+</ColumnConfig>
+<ColumnConfig name="wf_state_type_outcome_id" isKey="false" skipUnmodified="false">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=VALUE("hierarchy_main","state_type_child_id","id",$outcome_id)]]></Attributes>
+</O>
+</ColumnConfig>
+<ColumnConfig name="agent" isKey="false" skipUnmodified="false">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=GetRealName($fine_username)]]></Attributes>
+</O>
+</ColumnConfig>
+<ColumnConfig name="updated_at" isKey="false" skipUnmodified="false">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=NOW()]]></Attributes>
+</O>
+</ColumnConfig>
+<NameSubmitJob name="Submit Event1">
+<SubmitJob class="com.fr.write.DMLConfigJob">
+<Attributes dsName="cms_dev"/>
+<DMLConfig class="com.fr.write.config.InsertConfig">
+<Table schema="" name="transaction_history"/>
+<ColumnConfig name="transaction_id" isKey="false" skipUnmodified="false">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=VALUE("transaction_details","id")]]></Attributes>
+</O>
+</ColumnConfig>
+<ColumnConfig name="wf_state_type_state_id" isKey="false" skipUnmodified="false">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=$process_id]]></Attributes>
+</O>
+</ColumnConfig>
+<ColumnConfig name="updated_at" isKey="false" skipUnmodified="false">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=NOW()]]></Attributes>
+</O>
+</ColumnConfig>
+<Condition class="com.fr.data.condition.ListCondition"/>
+</DMLConfig>
+</SubmitJob>
+</NameSubmitJob>
+<NameSubmitJob name="Submit Event2">
+<SubmitJob class="com.fr.write.DMLConfigJob">
+<Attributes dsName="cms_dev"/>
+<DMLConfig class="com.fr.write.config.UpdateConfig">
+<Table schema="" name="transactions"/>
+<ColumnConfig name="id" isKey="false" skipUnmodified="false">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=VALUE("transaction_details","id")]]></Attributes>
+</O>
+</ColumnConfig>
+<ColumnConfig name="updated_by" isKey="false" skipUnmodified="false">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=GetRealName($fine_username)]]></Attributes>
+</O>
+</ColumnConfig>
+<ColumnConfig name="updated_at" isKey="false" skipUnmodified="false">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=NOW()]]></Attributes>
+</O>
+</ColumnConfig>
+<Condition class="com.fr.data.condition.ListCondition"/>
+</DMLConfig>
+</SubmitJob>
+</NameSubmitJob>
+<Condition class="com.fr.data.condition.ListCondition"/>
+</DMLConfig>
+<JavaScript class="com.fr.js.JavaScriptImpl">
+<Parameters/>
+<Content>
+<![CDATA[if (fr_submitinfo.success) {
+	FR.Msg.alert('Success','Transaction updated. Closing window.',function(){window.close()});
+	//alert('Closed');
+	//window.close();
+} else {
+	FR.Msg.alert('Saving Failed', fr_submitinfo.failinfo);
+}]]></Content>
+</JavaScript>
+<JavaScriptResourceInfo/>
+</JavaScript>
+</Listener>
+<WidgetName name="transact_btn"/>
+<LabelName name="Initialization Functions"/>
+<WidgetID widgetID="53f26903-87f8-439f-bce3-520959ee0433"/>
+<WidgetAttr invisible="true" aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<Text>
+<![CDATA[transact]]></Text>
+<Hotkeys>
+<![CDATA[]]></Hotkeys>
+</InnerWidget>
+<BoundsAttr x="184" y="105" width="160" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.FreeButton">
+<Listener event="click" name="Click1">
+<JavaScript class="com.fr.js.JavaScriptImpl">
+<Parameters/>
+<Content>
+<![CDATA[_g().parameterCommit();
+var submit = this.options.form.getWidgetByName("transact_btn");
+//var submit = contentPane.getWidgetByName("transact_btn");
+
+var outcome = this.options.form.getWidgetByName("outcome_id").getValue();
+var next = this.options.form.getWidgetByName("process_id").getValue();
+var remarks = this.options.form.getWidgetByName("history_remarks").getValue();
+
+//alert(outcome);
+//alert(next);
+//alert(remarks);
+
+var err = 0;
+
+var err_msg = "";
+
+if(outcome == null || outcome == "" ){
+	err = 1;
+	err_msg += "Decision is required."
+}
+
+if(next == null || next == "" ){
+	err = 1;
+	err_msg += "\r\nNext process is required."
+}
+
+if(err){
+	FR.Msg.alert("Warning",err_msg);
+}
+else{
+//	$("tr[tridx=0]A #A1-0-0").text(next);
+//	$("tr[tridx=0]A #B1-0-0").text(outcome);
+//	$("tr[tridx=0]A #C1-0-0").text(remarks);
+	FR.Msg.confirm("Warning", "Are you sure?",function(value)
+{ if(value){ 
+	//_g().parameterCommit();
+	submit.fireEvent("click");
+	} })
+}
+]]></Content>
+</JavaScript>
+</Listener>
+<WidgetName name="submit_btn"/>
+<WidgetID widgetID="5b03e9a4-9b81-471b-80fd-826dbbd9b871"/>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<Text>
+<![CDATA[Submit]]></Text>
+<Hotkeys>
+<![CDATA[]]></Hotkeys>
+<IconName>
+<![CDATA[submit]]></IconName>
+</InnerWidget>
+<BoundsAttr x="897" y="95" width="160" height="41"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.TextEditor">
+<WidgetName name="history_remarks"/>
+<WidgetID widgetID="15d930c8-0ef1-49a7-9fbe-5bb49035ccfe"/>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<TextAttr/>
+<Reg class="com.fr.form.ui.reg.NoneReg"/>
+<widgetValue>
+<O>
+<![CDATA[]]></O>
+</widgetValue>
+<MobileScanCodeAttr scanCode="true" textInputMode="0" isSupportManual="true" isSupportScan="true" isSupportNFC="false"/>
+</InnerWidget>
+<BoundsAttr x="897" y="64" width="160" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.TextEditor">
+<WidgetName name="current_process_id"/>
+<WidgetID widgetID="780d5dd9-aff2-48ba-b2e9-84b4f294e87d"/>
+<WidgetAttr invisible="true" aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<TextAttr/>
+<Reg class="com.fr.form.ui.reg.NoneReg"/>
+<widgetValue>
+<databinding>
+<![CDATA[{Name:transaction_details,Key:current_process_id}]]></databinding>
+</widgetValue>
+<MobileScanCodeAttr scanCode="true" textInputMode="0" isSupportManual="true" isSupportScan="true" isSupportNFC="false"/>
+</InnerWidget>
+<BoundsAttr x="98" y="0" width="80" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.FreeButton">
+<Listener event="click" name="Click1">
+<JavaScript class="com.fr.js.JavaScriptImpl">
+<Parameters>
+<Parameter>
+<Attributes name="transaction_id"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=VALUE("transaction_details","id")]]></Attributes>
+</O>
+</Parameter>
+<Parameter>
+<Attributes name="path"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=$cmspath]]></Attributes>
+</O>
+</Parameter>
+</Parameters>
+<Content>
+<![CDATA[//alert('Test')
+
+window.form = this.options.form;
+var $iframe = $("<iframe id='inp' name='inp' width='100%' height='100%' scrolling='no' frameborder='0'>");
+$iframe.attr("src", "${servletURL}?viewlet="+path+"/transaction_history.cpt&transaction_id="+ transaction_id+"&op=view"); 
+var o = {
+title : "CMS - Transaction History",
+width : 950,
+height: 500
+}; 
+FR.showDialog(o.title, o.width, o.height, $iframe,o); ]]></Content>
+</JavaScript>
+</Listener>
+<WidgetName name="view_history"/>
+<WidgetID widgetID="917ec091-17ba-439e-a4a9-a9b26af9e59e"/>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<Text>
+<![CDATA[Transaction History]]></Text>
+<Hotkeys>
+<![CDATA[]]></Hotkeys>
+<IconName>
+<![CDATA[preview]]></IconName>
+</InnerWidget>
+<BoundsAttr x="141" y="126" width="156" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.Label">
+<WidgetName name="label0_c_c_c_c"/>
+<LabelName name="Created at:"/>
+<WidgetID widgetID="e86ae53d-4e8b-475f-abd3-7e5085db7808"/>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<widgetValue>
+<O>
+<![CDATA[Current Process:]]></O>
+</widgetValue>
+<LabelAttr verticalcenter="true" textalign="4" autoline="true"/>
+<FRFont name="SimSun" style="0" size="72"/>
+<border style="0">
+<color>
+<FineColor color="-723724" hor="-1" ver="-1"/>
+</color>
+</border>
+</InnerWidget>
+<BoundsAttr x="549" y="22" width="104" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.TextEditor">
+<WidgetName name="current_state"/>
+<LabelName name="Status"/>
+<WidgetID widgetID="64ab8939-dc33-4cc3-b325-4a2d11e031b7"/>
+<WidgetAttr disabled="true" aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<TextAttr/>
+<Reg class="com.fr.form.ui.reg.NoneReg"/>
+<widgetValue>
+<databinding>
+<![CDATA[{Name:transaction_details,Key:current_process}]]></databinding>
+</widgetValue>
+<MobileScanCodeAttr scanCode="true" textInputMode="0" isSupportManual="true" isSupportScan="true" isSupportNFC="false"/>
+</InnerWidget>
+<BoundsAttr x="653" y="22" width="156" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.TextEditor">
+<WidgetName name="t_id"/>
+<WidgetAttr invisible="true" aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<TextAttr/>
+<Reg class="com.fr.form.ui.reg.NoneReg"/>
+<widgetValue>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=VALUE("transaction_details","id")]]></Attributes>
+</O>
+</widgetValue>
+<MobileScanCodeAttr scanCode="true" textInputMode="0" isSupportManual="true" isSupportScan="true" isSupportNFC="false"/>
+</InnerWidget>
+<BoundsAttr x="18" y="0" width="80" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.Label">
+<WidgetName name="label0_c_c_c_c_c_c_c_c_c_c_c_c"/>
+<WidgetID widgetID="e86ae53d-4e8b-475f-abd3-7e5085db7808"/>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<widgetValue>
+<O>
+<![CDATA[Updated by:]]></O>
+</widgetValue>
+<LabelAttr verticalcenter="true" textalign="4" noWrap="true" autoline="true"/>
+<FRFont name="SimSun" style="0" size="72"/>
+<border style="0">
+<color>
+<FineColor color="-723724" hor="-1" ver="-1"/>
+</color>
+</border>
+</InnerWidget>
+<BoundsAttr x="549" y="63" width="104" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.Label">
+<WidgetName name="label0_c_c_c_c_c_c_c_c_c_c_c"/>
+<LabelName name="Shift:"/>
+<WidgetID widgetID="e86ae53d-4e8b-475f-abd3-7e5085db7808"/>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<widgetValue>
+<O>
+<![CDATA[Updated at:]]></O>
+</widgetValue>
+<LabelAttr verticalcenter="true" textalign="4" autoline="true"/>
+<FRFont name="SimSun" style="0" size="72"/>
+<border style="0">
+<color>
+<FineColor color="-723724" hor="-1" ver="-1"/>
+</color>
+</border>
+</InnerWidget>
+<BoundsAttr x="549" y="84" width="104" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.TextEditor">
+<WidgetName name="textEditor0_c_c_c_c_c_c_c_c_c_c_c_c"/>
+<LabelName name="Updated by:"/>
+<WidgetID widgetID="73fbb384-42f1-41f5-8ab1-bb36236973f3"/>
+<WidgetAttr disabled="true" aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<TextAttr/>
+<Reg class="com.fr.form.ui.reg.NoneReg"/>
+<widgetValue>
+<databinding>
+<![CDATA[{Name:transaction_details,Key:updated_by}]]></databinding>
+</widgetValue>
+<MobileScanCodeAttr scanCode="true" textInputMode="0" isSupportManual="true" isSupportScan="true" isSupportNFC="false"/>
+</InnerWidget>
+<BoundsAttr x="653" y="63" width="156" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.TextEditor">
+<WidgetName name="textEditor0_c_c_c_c_c_c_c_c_c_c_c"/>
+<LabelName name="Updated at:"/>
+<WidgetID widgetID="73fbb384-42f1-41f5-8ab1-bb36236973f3"/>
+<WidgetAttr disabled="true" aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<TextAttr/>
+<Reg class="com.fr.form.ui.reg.NoneReg"/>
+<widgetValue>
+<databinding>
+<![CDATA[{Name:transaction_details,Key:updated_at}]]></databinding>
+</widgetValue>
+<MobileScanCodeAttr scanCode="true" textInputMode="0" isSupportManual="true" isSupportScan="true" isSupportNFC="false"/>
+</InnerWidget>
+<BoundsAttr x="653" y="84" width="156" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.Label">
+<WidgetName name="label0_c_c_c_c_c_c_c_c_c"/>
+<LabelName name="Shift:"/>
+<WidgetID widgetID="e86ae53d-4e8b-475f-abd3-7e5085db7808"/>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<widgetValue>
+<O>
+<![CDATA[Site:]]></O>
+</widgetValue>
+<LabelAttr verticalcenter="true" textalign="4" autoline="true"/>
+<FRFont name="SimSun" style="0" size="72"/>
+<border style="0">
+<color>
+<FineColor color="-723724" hor="-1" ver="-1"/>
+</color>
+</border>
+</InnerWidget>
+<BoundsAttr x="301" y="21" width="88" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.Label">
+<WidgetName name="label0_c_c_c_c_c_c_c_c"/>
+<LabelName name="Location:"/>
+<WidgetID widgetID="e86ae53d-4e8b-475f-abd3-7e5085db7808"/>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<widgetValue>
+<O>
+<![CDATA[Department:]]></O>
+</widgetValue>
+<LabelAttr verticalcenter="true" textalign="4" autoline="true"/>
+<FRFont name="SimSun" style="0" size="72"/>
+<border style="0">
+<color>
+<FineColor color="-723724" hor="-1" ver="-1"/>
+</color>
+</border>
+</InnerWidget>
+<BoundsAttr x="301" y="42" width="88" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.Label">
+<WidgetName name="label0_c_c_c_c_c_c_c"/>
+<LabelName name="Station:"/>
+<WidgetID widgetID="e86ae53d-4e8b-475f-abd3-7e5085db7808"/>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<widgetValue>
+<O>
+<![CDATA[Location:]]></O>
+</widgetValue>
+<LabelAttr verticalcenter="true" textalign="4" autoline="true"/>
+<FRFont name="SimSun" style="0" size="72"/>
+<border style="0">
+<color>
+<FineColor color="-723724" hor="-1" ver="-1"/>
+</color>
+</border>
+</InnerWidget>
+<BoundsAttr x="301" y="63" width="88" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.Label">
+<WidgetName name="label0_c_c_c_c_c_c"/>
+<LabelName name="Updated at:"/>
+<WidgetID widgetID="e86ae53d-4e8b-475f-abd3-7e5085db7808"/>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<widgetValue>
+<O>
+<![CDATA[Station:]]></O>
+</widgetValue>
+<LabelAttr verticalcenter="true" textalign="4" autoline="true"/>
+<FRFont name="SimSun" style="0" size="72"/>
+<border style="0">
+<color>
+<FineColor color="-723724" hor="-1" ver="-1"/>
+</color>
+</border>
+</InnerWidget>
+<BoundsAttr x="301" y="84" width="88" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.Label">
+<WidgetName name="label0_c_c_c_c_c"/>
+<LabelName name="Updated by:"/>
+<WidgetID widgetID="e86ae53d-4e8b-475f-abd3-7e5085db7808"/>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<widgetValue>
+<O>
+<![CDATA[Shift:]]></O>
+</widgetValue>
+<LabelAttr verticalcenter="true" textalign="4" autoline="true"/>
+<FRFont name="SimSun" style="0" size="72"/>
+<border style="0">
+<color>
+<FineColor color="-723724" hor="-1" ver="-1"/>
+</color>
+</border>
+</InnerWidget>
+<BoundsAttr x="18" y="84" width="123" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.TextEditor">
+<WidgetName name="textEditor0_c_c_c_c_c_c_c_c_c"/>
+<LabelName name="Site:"/>
+<WidgetID widgetID="73fbb384-42f1-41f5-8ab1-bb36236973f3"/>
+<WidgetAttr disabled="true" aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<TextAttr/>
+<Reg class="com.fr.form.ui.reg.NoneReg"/>
+<widgetValue>
+<databinding>
+<![CDATA[{Name:transaction_details,Key:site}]]></databinding>
+</widgetValue>
+<MobileScanCodeAttr scanCode="true" textInputMode="0" isSupportManual="true" isSupportScan="true" isSupportNFC="false"/>
+</InnerWidget>
+<BoundsAttr x="389" y="21" width="160" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.TextEditor">
+<WidgetName name="textEditor0_c_c_c_c_c_c_c_c"/>
+<LabelName name="Department:"/>
+<WidgetID widgetID="73fbb384-42f1-41f5-8ab1-bb36236973f3"/>
+<WidgetAttr disabled="true" aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<TextAttr/>
+<Reg class="com.fr.form.ui.reg.NoneReg"/>
+<widgetValue>
+<databinding>
+<![CDATA[{Name:transaction_details,Key:department}]]></databinding>
+</widgetValue>
+<MobileScanCodeAttr scanCode="true" textInputMode="0" isSupportManual="true" isSupportScan="true" isSupportNFC="false"/>
+</InnerWidget>
+<BoundsAttr x="389" y="42" width="160" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.TextEditor">
+<WidgetName name="textEditor0_c_c_c_c_c_c_c"/>
+<LabelName name="Location:"/>
+<WidgetID widgetID="73fbb384-42f1-41f5-8ab1-bb36236973f3"/>
+<WidgetAttr disabled="true" aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<TextAttr/>
+<Reg class="com.fr.form.ui.reg.NoneReg"/>
+<widgetValue>
+<databinding>
+<![CDATA[{Name:transaction_details,Key:location}]]></databinding>
+</widgetValue>
+<MobileScanCodeAttr scanCode="true" textInputMode="0" isSupportManual="true" isSupportScan="true" isSupportNFC="false"/>
+</InnerWidget>
+<BoundsAttr x="389" y="63" width="160" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.TextEditor">
+<WidgetName name="textEditor0_c_c_c_c_c_c"/>
+<LabelName name="Station:"/>
+<WidgetID widgetID="73fbb384-42f1-41f5-8ab1-bb36236973f3"/>
+<WidgetAttr disabled="true" aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<TextAttr/>
+<Reg class="com.fr.form.ui.reg.NoneReg"/>
+<widgetValue>
+<databinding>
+<![CDATA[{Name:transaction_details,Key:station}]]></databinding>
+</widgetValue>
+<MobileScanCodeAttr scanCode="true" textInputMode="0" isSupportManual="true" isSupportScan="true" isSupportNFC="false"/>
+</InnerWidget>
+<BoundsAttr x="389" y="84" width="160" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.TextEditor">
+<WidgetName name="textEditor0_c_c_c_c_c"/>
+<LabelName name="Shift:"/>
+<WidgetID widgetID="73fbb384-42f1-41f5-8ab1-bb36236973f3"/>
+<WidgetAttr disabled="true" aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<TextAttr/>
+<Reg class="com.fr.form.ui.reg.NoneReg"/>
+<widgetValue>
+<databinding>
+<![CDATA[{Name:transaction_details,Key:shift}]]></databinding>
+</widgetValue>
+<MobileScanCodeAttr scanCode="true" textInputMode="0" isSupportManual="true" isSupportScan="true" isSupportNFC="false"/>
+</InnerWidget>
+<BoundsAttr x="141" y="84" width="160" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.TextEditor">
+<WidgetName name="textEditor0_c_c_c"/>
+<LabelName name="Created at:"/>
+<WidgetID widgetID="73fbb384-42f1-41f5-8ab1-bb36236973f3"/>
+<WidgetAttr disabled="true" aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<TextAttr/>
+<Reg class="com.fr.form.ui.reg.NoneReg"/>
+<widgetValue>
+<databinding>
+<![CDATA[{Name:transaction_details,Key:created_at}]]></databinding>
+</widgetValue>
+<MobileScanCodeAttr scanCode="true" textInputMode="0" isSupportManual="true" isSupportScan="true" isSupportNFC="false"/>
+</InnerWidget>
+<BoundsAttr x="653" y="42" width="156" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.TextEditor">
+<WidgetName name="textEditor0_c_c"/>
+<LabelName name="Requested by:"/>
+<WidgetID widgetID="73fbb384-42f1-41f5-8ab1-bb36236973f3"/>
+<WidgetAttr disabled="true" aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<TextAttr/>
+<Reg class="com.fr.form.ui.reg.NoneReg"/>
+<widgetValue>
+<databinding>
+<![CDATA[{Name:transaction_details,Key:requestor}]]></databinding>
+</widgetValue>
+<MobileScanCodeAttr scanCode="true" textInputMode="0" isSupportManual="true" isSupportScan="true" isSupportNFC="false"/>
+</InnerWidget>
+<BoundsAttr x="141" y="63" width="160" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.TextEditor">
+<WidgetName name="textEditor0_c"/>
+<LabelName name="Type"/>
+<WidgetID widgetID="73fbb384-42f1-41f5-8ab1-bb36236973f3"/>
+<WidgetAttr disabled="true" aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<TextAttr/>
+<Reg class="com.fr.form.ui.reg.NoneReg"/>
+<widgetValue>
+<databinding>
+<![CDATA[{Name:transaction_details,Key:transaction_type}]]></databinding>
+</widgetValue>
+<MobileScanCodeAttr scanCode="true" textInputMode="0" isSupportManual="true" isSupportScan="true" isSupportNFC="false"/>
+</InnerWidget>
+<BoundsAttr x="141" y="42" width="160" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.TextEditor">
+<WidgetName name="transaction_number"/>
+<LabelName name="Transaction no.:"/>
+<WidgetID widgetID="73fbb384-42f1-41f5-8ab1-bb36236973f3"/>
+<WidgetAttr disabled="true" aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<TextAttr/>
+<Reg class="com.fr.form.ui.reg.NoneReg"/>
+<widgetValue>
+<databinding>
+<![CDATA[{Name:transaction_details,Key:transaction_number}]]></databinding>
+</widgetValue>
+<MobileScanCodeAttr scanCode="true" textInputMode="0" isSupportManual="true" isSupportScan="true" isSupportNFC="false"/>
+</InnerWidget>
+<BoundsAttr x="141" y="21" width="160" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.Label">
+<WidgetName name="label0_c_c_c"/>
+<WidgetID widgetID="e86ae53d-4e8b-475f-abd3-7e5085db7808"/>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<widgetValue>
+<O>
+<![CDATA[Created at:]]></O>
+</widgetValue>
+<LabelAttr verticalcenter="true" textalign="4" autoline="true"/>
+<FRFont name="SimSun" style="0" size="72"/>
+<border style="0">
+<color>
+<FineColor color="-723724" hor="-1" ver="-1"/>
+</color>
+</border>
+</InnerWidget>
+<BoundsAttr x="549" y="42" width="104" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.Label">
+<WidgetName name="label0_c_c"/>
+<WidgetID widgetID="e86ae53d-4e8b-475f-abd3-7e5085db7808"/>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<widgetValue>
+<O>
+<![CDATA[Requested by:]]></O>
+</widgetValue>
+<LabelAttr verticalcenter="true" textalign="4" autoline="true"/>
+<FRFont name="SimSun" style="0" size="72"/>
+<border style="0">
+<color>
+<FineColor color="-723724" hor="-1" ver="-1"/>
+</color>
+</border>
+</InnerWidget>
+<BoundsAttr x="18" y="63" width="123" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.Label">
+<WidgetName name="label0_c"/>
+<WidgetID widgetID="e86ae53d-4e8b-475f-abd3-7e5085db7808"/>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<widgetValue>
+<O>
+<![CDATA[Type:]]></O>
+</widgetValue>
+<LabelAttr verticalcenter="true" textalign="4" autoline="true"/>
+<FRFont name="SimSun" style="0" size="72"/>
+<border style="0">
+<color>
+<FineColor color="-723724" hor="-1" ver="-1"/>
+</color>
+</border>
+</InnerWidget>
+<BoundsAttr x="18" y="42" width="123" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.Label">
+<WidgetName name="label0"/>
+<WidgetID widgetID="e86ae53d-4e8b-475f-abd3-7e5085db7808"/>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<widgetValue>
+<O>
+<![CDATA[Transaction no.:]]></O>
+</widgetValue>
+<LabelAttr verticalcenter="true" textalign="4" autoline="true"/>
+<FRFont name="SimSun" style="0" size="72"/>
+<border style="0">
+<color>
+<FineColor color="-723724" hor="-1" ver="-1"/>
+</color>
+</border>
+</InnerWidget>
+<BoundsAttr x="18" y="21" width="123" height="21"/>
+</Widget>
+<ShowBookmarks showBookmarks="false"/>
+<Sorted sorted="true"/>
+<MobileWidgetList>
+<Widget widgetName="t_id"/>
+<Widget widgetName="current_process_id"/>
+<Widget widgetName="transaction_number"/>
+<Widget widgetName="textEditor0_c_c_c_c_c"/>
+<Widget widgetName="textEditor0_c_c_c_c_c_c_c_c_c"/>
+<Widget widgetName="textEditor0_c"/>
+<Widget widgetName="textEditor0_c_c_c"/>
+<Widget widgetName="textEditor0_c_c_c_c_c_c_c_c"/>
+<Widget widgetName="textEditor0_c_c"/>
+<Widget widgetName="textEditor0_c_c_c_c_c_c_c_c_c_c_c_c"/>
+<Widget widgetName="textEditor0_c_c_c_c_c_c_c"/>
+<Widget widgetName="current_state"/>
+<Widget widgetName="textEditor0_c_c_c_c_c_c_c_c_c_c_c"/>
+<Widget widgetName="textEditor0_c_c_c_c_c_c"/>
+<Widget widgetName="button0"/>
+<Widget widgetName="view_history"/>
+<Widget widgetName="outcome_id"/>
+<Widget widgetName="history_remarks"/>
+<Widget widgetName="submit_btn"/>
+<Widget widgetName="transact_btn"/>
+<Widget widgetName="process_id"/>
+</MobileWidgetList>
+<FrozenWidgets/>
+<MobileBookMarkStyle class="com.fr.form.ui.mobile.impl.DefaultMobileBookMarkStyle"/>
+<Display display="true"/>
+<DelayDisplayContent delay="false"/>
+<UseParamsTemplate use="true"/>
+<paramFireStopEdit fireEvent="false"/>
+<Position position="1"/>
+<Design_Width design_width="1280"/>
+<NameTagModified>
+<TagModified tag="textEditor0_c_c_c" modified="true"/>
+<TagModified tag="textEditor0_c_c_c_c_c_c_c_c_c" modified="true"/>
+<TagModified tag="textEditor0_c_c_c_c_c_c_c_c_c_c_c" modified="true"/>
+<TagModified tag="current_state" modified="true"/>
+<TagModified tag="textEditor0_c_c" modified="true"/>
+<TagModified tag="t_id" modified="true"/>
+<TagModified tag="textEditor0_c" modified="true"/>
+<TagModified tag="textEditor0_c_c_c_c_c_c_c_c_c_c_c_c" modified="true"/>
+<TagModified tag="transaction_number" modified="true"/>
+<TagModified tag="textEditor0_c_c_c_c_c" modified="true"/>
+<TagModified tag="textEditor0_c_c_c_c_c_c_c_c" modified="true"/>
+<TagModified tag="textEditor0_c_c_c_c_c_c_c" modified="true"/>
+<TagModified tag="textEditor0_c_c_c_c_c_c" modified="true"/>
+</NameTagModified>
+<WidgetNameTagMap>
+<NameTag name="textEditor0_c_c_c" tag="Created at:"/>
+<NameTag name="textEditor0_c_c_c_c_c_c_c_c_c" tag="Site:"/>
+<NameTag name="textEditor0_c_c_c_c_c_c_c_c_c_c_c" tag="Updated at:"/>
+<NameTag name="current_state" tag="Status"/>
+<NameTag name="textEditor0_c_c" tag="Requested by:"/>
+<NameTag name="t_id" tag="t_id:"/>
+<NameTag name="textEditor0_c" tag="Type"/>
+<NameTag name="textEditor0_c_c_c_c_c_c_c_c_c_c_c_c" tag="Updated by:"/>
+<NameTag name="transaction_number" tag="Transaction no.:"/>
+<NameTag name="textEditor0_c_c_c_c_c" tag="Shift:"/>
+<NameTag name="textEditor0_c_c_c_c_c_c_c_c" tag="Department:"/>
+<NameTag name="textEditor0_c_c_c_c_c_c_c" tag="Location:"/>
+<NameTag name="textEditor0_c_c_c_c_c_c" tag="Station:"/>
+</WidgetNameTagMap>
+<ParamAttr class="com.fr.report.mobile.DefaultMobileParamStyle"/>
+<ParamStyle class="com.fr.form.ui.mobile.impl.DefaultMobileParameterStyle"/>
+</Layout>
+<DesignAttr width="1280" height="160"/>
+</ParameterUI>
+</ReportParameterAttr>
+<StyleList>
+<Style style_name="Default" full="true" border_source="-1" imageLayout="1">
+<FRFont name="simhei" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border/>
+</Style>
+<Style horizontal_alignment="2" textStyle="1" imageLayout="1">
+<FRFont name="simhei" style="0" size="96"/>
+<Background name="NullBackground"/>
+<Border/>
+</Style>
+<Style imageLayout="1">
+<FRFont name="simhei" style="0" size="96"/>
+<Background name="ColorBackground">
+<color>
+<FineColor color="-14701083" hor="-1" ver="-1"/>
+</color>
+</Background>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style imageLayout="1">
+<FRFont name="simhei" style="0" size="96"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style horizontal_alignment="4" imageLayout="1">
+<FRFont name="simhei" style="0" size="96"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style textStyle="1" imageLayout="1">
+<FRFont name="simhei" style="0" size="96"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+</StyleList>
+<DesignerVersion DesignerVersion="LAA"/>
+<PreviewType PreviewType="0"/>
+<TemplateThemeAttrMark class="com.fr.base.iofile.attr.TemplateThemeAttrMark">
+<TemplateThemeAttrMark name="Classic Light Gray" dark="false"/>
+</TemplateThemeAttrMark>
+<StrategyConfigsAttr class="com.fr.esd.core.strategy.persistence.StrategyConfigsAttr">
+<StrategyConfigs>
+<StrategyConfig dsName="item" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
+<StrategyConfig dsName="transaction_items" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
+<StrategyConfig dsName="role" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
+<StrategyConfig dsName="hierarchy_main" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
+<StrategyConfig dsName="history" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
+<StrategyConfig dsName="state" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
+<StrategyConfig dsName="option_main" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
+<StrategyConfig dsName="items" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
+<StrategyConfig dsName="transaction_details" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
+</StrategyConfigs>
+</StrategyConfigsAttr>
+<TemplateCloudInfoAttrMark class="com.fr.plugin.cloud.analytics.attr.TemplateInfoAttrMark" pluginID="com.fr.plugin.cloud.analytics.v11" plugin-version="3.7.0.20220804">
+<TemplateCloudInfoAttrMark createTime="1657851758920"/>
+</TemplateCloudInfoAttrMark>
+<TemplateIdAttMark class="com.fr.base.iofile.attr.TemplateIdAttrMark">
+<TemplateIdAttMark TemplateId="a6f21132-e40f-4f67-83a6-38b72d07b670"/>
+</TemplateIdAttMark>
+</WorkBook>

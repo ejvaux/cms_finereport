@@ -1,0 +1,2003 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WorkBook xmlVersion="20211223" releaseVersion="11.0.0">
+<TableDataMap>
+<TableData name="BOMREVISION" class="com.fr.data.impl.DBTableData">
+<Parameters>
+<Parameter>
+<Attributes name="P_ORGANIZATION_ID"/>
+<O>
+<![CDATA[]]></O>
+</Parameter>
+<Parameter>
+<Attributes name="P_INVENTORY_ITEM_ID"/>
+<O>
+<![CDATA[]]></O>
+</Parameter>
+</Parameters>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[ORACLE TEST]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[SELECT REVISION
+   FROM MTL_ITEM_REVISIONS_B
+         WHERE  INVENTORY_ITEM_ID = '${P_INVENTORY_ITEM_ID}'
+           and ORGANIZATION_ID= '${P_ORGANIZATION_ID}']]></Query>
+<PageQuery>
+<![CDATA[]]></PageQuery>
+</TableData>
+<TableData name="ITEMID" class="com.fr.data.impl.DBTableData">
+<Parameters>
+<Parameter>
+<Attributes name="P_ORGANIZATION_ID"/>
+<O>
+<![CDATA[83]]></O>
+</Parameter>
+<Parameter>
+<Attributes name="P_INVENTORY_ITEM_ID"/>
+<O>
+<![CDATA[0ANK1600KP]]></O>
+</Parameter>
+</Parameters>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[ORACLE TEST]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[select INVENTORY_ITEM_ID,SEGMENT1  from MTL_SYSTEM_ITEMS_B where segment1 = '${P_INVENTORY_ITEM_ID}' AND ORGANIZATION_ID = '${P_ORGANIZATION_ID}' GROUP BY INVENTORY_ITEM_ID, SEGMENT1]]></Query>
+<PageQuery>
+<![CDATA[]]></PageQuery>
+</TableData>
+<TableData name="SEGMENT1" class="com.fr.data.impl.DBTableData">
+<Parameters>
+<Parameter>
+<Attributes name="P_INVENTORY_ITEM_ID"/>
+<O>
+<![CDATA[61879]]></O>
+</Parameter>
+</Parameters>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[ORACLE TEST]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[SELECT SEGMENT1 FROM MTL_SYSTEM_ITEMS_B WHERE INVENTORY_ITEM_ID = '${P_INVENTORY_ITEM_ID}' GROUP BY SEGMENT1]]></Query>
+<PageQuery>
+<![CDATA[]]></PageQuery>
+</TableData>
+<TableData name="prev_data" class="com.fr.data.impl.DBTableData">
+<Parameters/>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[ORACLE TEST]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[select * from bom_aruba_temp]]></Query>
+<PageQuery>
+<![CDATA[]]></PageQuery>
+</TableData>
+<TableData name="get_quarter" class="com.fr.data.impl.DBTableData">
+<Parameters/>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[ORACLE TEST]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[--select distinct version from bom_aruba_temp
+select max(version) from bom_aruba_temp]]></Query>
+<PageQuery>
+<![CDATA[]]></PageQuery>
+</TableData>
+<TableData name="quote_param" class="com.fr.data.impl.ExcelTableData">
+<ExcelTableDataAttr needColumnName="true" isFromEnv="true" filePath="reportlets/quote_param.xlsx"/>
+<Parameters/>
+</TableData>
+<TableData name="SBMX5031FPKG" class="com.fr.data.impl.storeproc.StoreProcedure">
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[ORACLE TEST]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[APPS.SBMX5031_F_PKG1.BOM_EXPLOSION]]></Query>
+<ParamterList>
+<para>
+<Parameter>
+<Attributes name="P_CURSOR" type="-10" schema="2147483645"/>
+<O>
+<![CDATA[com.fr.base.CursorValue@61b2858a]]></O>
+</Parameter>
+</para>
+<para>
+<Parameter>
+<Attributes name="P_ORGANIZATION_ID" type="3" schema="2147483646"/>
+<O t="D">
+<![CDATA[83.0]]></O>
+</Parameter>
+</para>
+<para>
+<Parameter>
+<Attributes name="P_LOGINID" type="12" schema="2147483646"/>
+<O>
+<![CDATA[111]]></O>
+</Parameter>
+</para>
+<para>
+<Parameter>
+<Attributes name="P_INVENTORY_ITEM_ID" type="3" schema="2147483646"/>
+<O t="D">
+<![CDATA[259643.0]]></O>
+</Parameter>
+</para>
+<para>
+<Parameter>
+<Attributes name="P_BOM_OR_ENG" type="3" schema="2147483646"/>
+<O t="D">
+<![CDATA[1.0]]></O>
+</Parameter>
+</para>
+<para>
+<Parameter>
+<Attributes name="P_REVISION" type="12" schema="2147483646"/>
+<O>
+<![CDATA[7.2]]></O>
+</Parameter>
+</para>
+<para>
+<Parameter>
+<Attributes name="P_EXPLODE_OPTION" type="3" schema="2147483646"/>
+<O t="D">
+<![CDATA[2.0]]></O>
+</Parameter>
+</para>
+<para>
+<Parameter>
+<Attributes name="P_LEVELS_TO_EXPLODE" type="3" schema="2147483646"/>
+<O t="D">
+<![CDATA[30.0]]></O>
+</Parameter>
+</para>
+<para>
+<Parameter>
+<Attributes name="P_STD_COMP_FLAG" type="3" schema="2147483646"/>
+<O t="D">
+<![CDATA[2.0]]></O>
+</Parameter>
+</para>
+<para>
+<Parameter>
+<Attributes name="P_COMPONENT" type="12" schema="2147483646"/>
+<O>
+<![CDATA[N]]></O>
+</Parameter>
+</para>
+<para>
+<Parameter>
+<Attributes name="P_SUBSTITUTE" type="12" schema="2147483646"/>
+<O>
+<![CDATA[N]]></O>
+</Parameter>
+</para>
+<para>
+<Parameter>
+<Attributes name="P_PO_INFO" type="12" schema="2147483646"/>
+<O>
+<![CDATA[1]]></O>
+</Parameter>
+</para>
+<para>
+<Parameter>
+<Attributes name="P_RD_QTY" type="12" schema="2147483646"/>
+<O>
+<![CDATA[N]]></O>
+</Parameter>
+</para>
+<para>
+<Parameter>
+<Attributes name="P_SUPPLE_NO" type="12" schema="2147483646"/>
+<O>
+<![CDATA[N]]></O>
+</Parameter>
+</para>
+<para>
+<Parameter>
+<Attributes name="P_CST" type="12" schema="2147483646"/>
+<O>
+<![CDATA[N]]></O>
+</Parameter>
+</para>
+<para>
+<Parameter>
+<Attributes name="P_CST_TYPE" type="12" schema="2147483646"/>
+<O>
+<![CDATA[]]></O>
+</Parameter>
+</para>
+<para>
+<Parameter>
+<Attributes name="P_COST_ESTIMATES" type="12" schema="2147483646"/>
+<O>
+<![CDATA[N]]></O>
+</Parameter>
+</para>
+<para>
+<Parameter>
+<Attributes name="P_CONCURRENT_PROGRAM_NAME" type="12" schema="2147483646"/>
+<O>
+<![CDATA[SBMX5031]]></O>
+</Parameter>
+</para>
+</ParamterList>
+<ResultNames>
+<Name>
+<![CDATA[P_CURSOR]]></Name>
+</ResultNames>
+</TableData>
+<TableData name="get_product_aruba" class="com.fr.data.impl.DBTableData">
+<Parameters/>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[ORACLE TEST]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[select * from product_info_aruba]]></Query>
+<PageQuery>
+<![CDATA[]]></PageQuery>
+</TableData>
+<TableData name="get_data_aruba" class="com.fr.data.impl.DBTableData">
+<Parameters>
+<Parameter>
+<Attributes name="P_INVENTORY_ITEM_ID"/>
+<O>
+<![CDATA[0ANK1600KP]]></O>
+</Parameter>
+</Parameters>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[ORACLE TEST]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[select s.*,
+
+
+(select max(case
+                         when COO1 is not null then
+                          COO1 || case
+                            when COO2 is not null then
+                             '/' || COO2 || case
+                               when COO3 is not null then
+                                '/' || COO3 || case
+                                  when COO4 is not null then
+                                   '/' || COO4 || case
+                                     when COO5 is not null then
+                                      '/' || COO5
+                                     else
+                                      null
+                                   end
+                                  else
+                                   null
+                                end
+                               else
+                                null
+                             end
+                            else
+                             null
+                          end
+                         else
+                          null
+                       end) COO
+              from YSC.siv_items_resume
+             where sercomm_item = s.sub_item_code
+               and site =
+                   (select organization_code
+                      from mtl_parameters
+                     where organization_id = 83)) COO,
+
+--manufacturer          
+           (select MAKER
+              from (SELECT ROW_NUMBER() OVER(PARTITION BY B.SEGMENT1 ORDER BY A.MANUFACTURER_NAME) AS SEQ,
+                           B.SEGMENT1,
+                           A.MANUFACTURER_NAME || '-' || C.DESCRIPTION as MAKER
+                      FROM MTL_MFG_PART_NUMBERS_ALL_V A,
+                           MTL_SYSTEM_ITEMS_B         B,
+                           MTL_MANUFACTURERS          C
+                     WHERE (A.INVENTORY_ITEM_ID = B.INVENTORY_ITEM_ID AND
+                           B.ORGANIZATION_ID = 83)
+                       AND A.MANUFACTURER_NAME = C.MANUFACTURER_NAME) aa
+             where aa.SEQ = '1'
+               and aa.segment1 = s.sub_item_code) MANUFACTURER,
+               
+--MPN COLUMN
+           (select MPN
+              from (SELECT ROW_NUMBER() OVER(PARTITION BY B.SEGMENT1 ORDER BY A.MANUFACTURER_NAME) AS SEQ,
+                           B.SEGMENT1,
+                           A.MFG_PART_NUM as MPN
+                      FROM MTL_MFG_PART_NUMBERS_ALL_V A,
+                           MTL_SYSTEM_ITEMS_B         B,
+                           MTL_MANUFACTURERS          C
+                     WHERE (A.INVENTORY_ITEM_ID = B.INVENTORY_ITEM_ID AND
+                           B.ORGANIZATION_ID = 83)
+                       AND A.MANUFACTURER_NAME = C.MANUFACTURER_NAME) aa
+             where aa.SEQ = '1'
+               and aa.segment1 = s.sub_item_code) MPN
+     
+                      
+from 
+(SELECT msi.segment1 as Parent_material_coding,
+msi.inventory_item_id,
+msi.description as Parent_item_description,
+msi1.segment1 as Sub_item_code,
+msi1.inventory_item_id as sub_item_id,
+msi1.description as Sub_item_description,
+bic.disable_date
+FROM mtl_system_items_b msi,
+bom_bill_of_materials bom,
+bom_inventory_components bic,
+mtl_system_items_b msi1
+WHERE 1 = 1
+AND msi.organization_id = 83
+AND msi.inventory_item_id = bom.assembly_item_id
+AND msi.organization_id = bom.organization_id
+AND bom.organization_id = 83
+AND bom.alternate_bom_designator IS NULL
+AND bom.bill_sequence_id = bic.bill_sequence_id
+AND bic.disable_date IS NULL
+AND bic.component_item_id = msi1.inventory_item_id
+AND msi1.organization_id = 83
+AND msi.segment1 in ('${P_INVENTORY_ITEM_ID}')) s
+order by s.parent_material_coding]]></Query>
+<PageQuery>
+<![CDATA[]]></PageQuery>
+</TableData>
+<TableData name="get_trade_term" class="com.fr.data.impl.DBTableData">
+<Parameters>
+<Parameter>
+<Attributes name="P_INVENTORY_ITEM_ID"/>
+<O>
+<![CDATA[0ANK1600KP]]></O>
+</Parameter>
+</Parameters>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[ORACLE TEST]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[select s.*,
+               --trade_term
+               (select 
+                   x.fob_lookup_code
+              from (select msi.segment1,
+                           assa.fob_lookup_code,
+                           row_number() over(partition by msi.segment1, asl.segment1, assa.vendor_site_code order by pha.approved_date desc, pha.creation_date desc) as seq_no
+                      FROM mtl_system_items      msi,
+                           po_headers_all        pha,
+                           po_lines_all          pla,
+                           po_line_locations_all plla,
+                           ap_suppliers          asl,
+                           ap_supplier_sites_all assa,
+                           ap_terms              at,
+                           apps.po_buyers_v      pb,
+                           apps.po_buyers_v      pb2
+                     where pha.po_header_id = pla.po_header_id
+                       and pha.po_header_id = plla.po_header_id
+                       and pla.po_line_id = plla.po_line_id
+                       and pha.type_lookup_code = 'BLANKET'
+                       and plla.ship_to_organization_id = msi.organization_id
+                       and pla.item_id = msi.inventory_item_id
+                       and pha.vendor_id = asl.vendor_id
+                       and pha.vendor_site_id = assa.vendor_site_id
+                       and at.term_id = assa.terms_id(+)
+                       and pha.agent_id = pb.employee_id(+)
+                       and msi.buyer_id = pb2.employee_id(+)
+                       AND PLLA.SHIPMENT_TYPE = 'PRICE BREAK'
+                       AND plla.SHIPMENT_NUM = 1
+                       and (msi.PLANNING_MAKE_BUY_CODE = 2 or
+                           msi.segment1 like '584%')
+                       and (pha.start_date =
+                           (select distinct max(pha1.start_date)
+                               from po_headers_all        pha1,
+                                    po_lines_all          pla1,
+                                    po_line_locations_all plla1
+                              where pha1.po_header_id = pla1.po_header_id
+                                and pha1.po_header_id = plla1.po_header_id
+                                and pla1.po_line_id = plla1.po_line_id
+                                AND PLLA1.SHIPMENT_TYPE = 'PRICE BREAK'
+                                AND plla.SHIPMENT_NUM = 1
+                                and plla1.ship_to_organization_id =
+                                    plla.ship_to_organization_id
+                                and pla1.item_id = pla.item_id
+                                and pha1.vendor_id = pha.vendor_id
+                                and pha1.vendor_site_id = pha.vendor_site_id
+                                and (PLA1.CANCEL_FLAG = 'N' or
+                                    PLA1.CANCEL_FLAG is null)
+                                and (PLA1.closed_code = 'OPEN' or
+                                    PLA1.closed_code is null)
+                                and nvl(PHA1.END_DATE, sysdate) >= sysdate
+                                and (PLA.CANCEL_FLAG = 'N' or
+                                    PLA.CANCEL_FLAG is null)
+                                and (PLA.closed_code = 'OPEN' or
+                                    PLA.closed_code is null)
+                                and nvl(PHA.END_DATE, sysdate) >= sysdate
+                                   
+                                and trunc(nvl(pla.closed_date, (sysdate + 1))) >=
+                                    trunc(sysdate)
+                                   
+                                and trunc(nvl(plla.end_date, (sysdate + 1))) >=
+                                    trunc(sysdate)
+                                   
+                                and trunc(nvl(pla1.closed_date, (sysdate + 1))) >=
+                                    trunc(sysdate)
+                                   
+                                and trunc(nvl(plla1.end_date, (sysdate + 1))) >=
+                                    trunc(sysdate)))
+                          --AND MSI.SEGMENT1 = SB.SEGMENT1 
+                       and plla.ship_to_organization_id = 83
+                     order by pha.start_date desc) x
+             where x.seq_no = 1
+               and x.segment1 = s.sub_item_code
+               and rownum = 1) TRADE_TERM,
+
+                 --trade_term_flag -- Y or N
+              (select 
+                   (case
+                     when x.fob_lookup_code in
+                          ('EXW',
+                           'FCA',
+                           'FCA SINGAPORE',
+                           'FCA-HK',
+                           'FCA-SH',
+                           'FCA-TW',
+                           'FCA-蘇州物流園',
+                           'FOB-HK',
+                           'FOB-JP',
+                           'FOB-KOREA',
+                           'FOB-SG',
+                           'FOB-SH',
+                           'FOB-SP',
+                           'FOB-TW',
+                           'FOB-其他') then
+                      'Y'
+                     else
+                      'N'
+                   end) 
+              from (select msi.segment1,
+                           assa.fob_lookup_code,
+                           row_number() over(partition by msi.segment1, asl.segment1, assa.vendor_site_code order by pha.approved_date desc, pha.creation_date desc) as seq_no
+                      FROM mtl_system_items      msi,
+                           po_headers_all        pha,
+                           po_lines_all          pla,
+                           po_line_locations_all plla,
+                           ap_suppliers          asl,
+                           ap_supplier_sites_all assa,
+                           ap_terms              at,
+                           apps.po_buyers_v      pb,
+                           apps.po_buyers_v      pb2
+                     where pha.po_header_id = pla.po_header_id
+                       and pha.po_header_id = plla.po_header_id
+                       and pla.po_line_id = plla.po_line_id
+                       and pha.type_lookup_code = 'BLANKET'
+                       and plla.ship_to_organization_id = msi.organization_id
+                       and pla.item_id = msi.inventory_item_id
+                       and pha.vendor_id = asl.vendor_id
+                       and pha.vendor_site_id = assa.vendor_site_id
+                       and at.term_id = assa.terms_id(+)
+                       and pha.agent_id = pb.employee_id(+)
+                       and msi.buyer_id = pb2.employee_id(+)
+                       AND PLLA.SHIPMENT_TYPE = 'PRICE BREAK'
+                       AND plla.SHIPMENT_NUM = 1
+                       and (msi.PLANNING_MAKE_BUY_CODE = 2 or
+                           msi.segment1 like '584%')
+                       and (pha.start_date =
+                           (select distinct max(pha1.start_date)
+                               from po_headers_all        pha1,
+                                    po_lines_all          pla1,
+                                    po_line_locations_all plla1
+                              where pha1.po_header_id = pla1.po_header_id
+                                and pha1.po_header_id = plla1.po_header_id
+                                and pla1.po_line_id = plla1.po_line_id
+                                AND PLLA1.SHIPMENT_TYPE = 'PRICE BREAK'
+                                AND plla.SHIPMENT_NUM = 1
+                                and plla1.ship_to_organization_id =
+                                    plla.ship_to_organization_id
+                                and pla1.item_id = pla.item_id
+                                and pha1.vendor_id = pha.vendor_id
+                                and pha1.vendor_site_id = pha.vendor_site_id
+                                and (PLA1.CANCEL_FLAG = 'N' or
+                                    PLA1.CANCEL_FLAG is null)
+                                and (PLA1.closed_code = 'OPEN' or
+                                    PLA1.closed_code is null)
+                                and nvl(PHA1.END_DATE, sysdate) >= sysdate
+                                and (PLA.CANCEL_FLAG = 'N' or
+                                    PLA.CANCEL_FLAG is null)
+                                and (PLA.closed_code = 'OPEN' or
+                                    PLA.closed_code is null)
+                                and nvl(PHA.END_DATE, sysdate) >= sysdate
+                                   
+                                and trunc(nvl(pla.closed_date, (sysdate + 1))) >=
+                                    trunc(sysdate)
+                                   
+                                and trunc(nvl(plla.end_date, (sysdate + 1))) >=
+                                    trunc(sysdate)
+                                   
+                                and trunc(nvl(pla1.closed_date, (sysdate + 1))) >=
+                                    trunc(sysdate)
+                                   
+                                and trunc(nvl(plla1.end_date, (sysdate + 1))) >=
+                                    trunc(sysdate)))
+                          --AND MSI.SEGMENT1 = SB.SEGMENT1 
+                       and plla.ship_to_organization_id = 83
+                     order by pha.start_date desc) x
+             where x.seq_no = 1
+               and x.segment1 = s.sub_item_code
+               and rownum = 1) TRADE_TERM_FLAG 
+
+                  
+                   
+                      
+from 
+(SELECT msi.segment1 as Parent_material_coding,
+msi.inventory_item_id,
+msi.description as Parent_item_description,
+msi1.segment1 as Sub_item_code,
+msi1.inventory_item_id as sub_item_id,
+msi1.description as Sub_item_description,
+bic.disable_date
+FROM mtl_system_items_b msi,
+bom_bill_of_materials bom,
+bom_inventory_components bic,
+mtl_system_items_b msi1
+WHERE 1 = 1
+AND msi.organization_id = 83
+AND msi.inventory_item_id = bom.assembly_item_id
+AND msi.organization_id = bom.organization_id
+AND bom.organization_id = 83
+AND bom.alternate_bom_designator IS NULL
+AND bom.bill_sequence_id = bic.bill_sequence_id
+AND bic.disable_date IS NULL
+AND bic.component_item_id = msi1.inventory_item_id
+AND msi1.organization_id = 83
+AND msi.segment1 in ('${P_INVENTORY_ITEM_ID}')) s
+order by s.parent_material_coding]]></Query>
+<PageQuery>
+<![CDATA[]]></PageQuery>
+</TableData>
+</TableDataMap>
+<ReportWebAttr>
+<ServerPrinter/>
+<WebPageContent>
+<ToolBars>
+<ToolBarManager>
+<Location>
+<Embed position="1"/>
+</Location>
+<ToolBar>
+<Widget class="com.fr.report.web.button.NewPrint">
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="0.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<Text>
+<![CDATA[${i18n('Fine-Engine_Print')}]]></Text>
+<Hotkeys>
+<![CDATA[]]></Hotkeys>
+<IconName>
+<![CDATA[print]]></IconName>
+</Widget>
+<Widget class="com.fr.report.web.button.Export">
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="0.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<Text>
+<![CDATA[${i18n('Export')}]]></Text>
+<Hotkeys>
+<![CDATA[]]></Hotkeys>
+<IconName>
+<![CDATA[export]]></IconName>
+<Buttons pdf="true" excelP="true" excelO="true" excelS="true" word="true" image="true" html="true"/>
+</Widget>
+<Widget class="com.fr.report.web.button.page.First">
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<Text>
+<![CDATA[${i18n('Fine-Engine_Report_ReportServerP_First')}]]></Text>
+<Hotkeys>
+<![CDATA[]]></Hotkeys>
+<IconName>
+<![CDATA[first]]></IconName>
+</Widget>
+<Widget class="com.fr.report.web.button.page.Previous">
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<Text>
+<![CDATA[${i18n('Fine-Engine_Report_ReportServerP_Previous')}]]></Text>
+<Hotkeys>
+<![CDATA[]]></Hotkeys>
+<IconName>
+<![CDATA[previous]]></IconName>
+</Widget>
+<Widget class="com.fr.report.web.button.page.PageNavi">
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+</Widget>
+<Widget class="com.fr.report.web.button.page.Next">
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<Text>
+<![CDATA[${i18n('Fine-Engine_ReportServerP_Next')}]]></Text>
+<Hotkeys>
+<![CDATA[]]></Hotkeys>
+<IconName>
+<![CDATA[next]]></IconName>
+</Widget>
+<Widget class="com.fr.report.web.button.page.Last">
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<Text>
+<![CDATA[${i18n('Fine-Engine_Report_ReportServerP_Last')}]]></Text>
+<Hotkeys>
+<![CDATA[]]></Hotkeys>
+<IconName>
+<![CDATA[last]]></IconName>
+</Widget>
+</ToolBar>
+</ToolBarManager>
+</ToolBars>
+<WebPage isPage="true" showAsImage="false" autoScale="false" tdHeavy="false" pageFixedRow="false" pageFixedRowCount="30"/>
+</WebPageContent>
+<WebWriteContent>
+<ToolBars>
+<ToolBarManager>
+<Location>
+<Embed position="1"/>
+</Location>
+<ToolBar>
+<Widget class="com.fr.report.web.button.Export">
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<Text>
+<![CDATA[${i18n('Export')}]]></Text>
+<Hotkeys>
+<![CDATA[]]></Hotkeys>
+<IconName>
+<![CDATA[export]]></IconName>
+<Buttons pdf="true" excelP="true" excelO="true" excelS="true" word="true" image="true" html="true"/>
+</Widget>
+<Widget class="com.fr.report.web.button.write.ShowCellValue">
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<widgetValue/>
+<LabelAttr verticalcenter="true" textalign="0" autoline="false"/>
+<FRFont name="SimSun" style="0" size="72"/>
+<border style="0">
+<color>
+<FineColor color="-723724" hor="-1" ver="-1"/>
+</color>
+</border>
+</Widget>
+</ToolBar>
+</ToolBarManager>
+</ToolBars>
+<EditRowColor setColor="false"/>
+<WebWrite SheetPosition="3"/>
+<RptLocation isShowAtLeft="true"/>
+<UnloadCheck/>
+<ShowWidgets/>
+<OtherAttr autoStash="false"/>
+</WebWriteContent>
+</ReportWebAttr>
+<ElementCaseMobileAttr>
+<ElementCaseMobileAttrProvider horizontal="1" vertical="1" zoom="true" refresh="false" isUseHTML="false" isMobileCanvasSize="false" appearRefresh="false" allowFullScreen="false" allowDoubleClickOrZoom="true" functionalWhenUnactivated="false"/>
+</ElementCaseMobileAttr>
+<Report class="com.fr.report.worksheet.WorkSheet" name="sheet1">
+<ReportPageAttr>
+<HR/>
+<FR/>
+<HC/>
+<FC/>
+</ReportPageAttr>
+<ColumnPrivilegeControl/>
+<RowPrivilegeControl/>
+<RowHeight defaultValue="723900">
+<![CDATA[5143500,2069804,723900,723900,723900,723900,723900,723900,723900,723900,723900]]></RowHeight>
+<ColumnWidth defaultValue="2743200">
+<![CDATA[16154400,2743200,8940800,6146800,10617200,2743200,6248400,2743200,2743200,4206240,2743200,10337800,23749000,10337800,16891000,11684000,4800600,2743200,2743200,3911600,3911600,2743200,3911600,3911600,2743200,2999232,2999232,5266944,2743200,3911600,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,3911600,2743200]]></ColumnWidth>
+<CellElementList>
+<C c="0" r="0" s="0">
+<O>
+<![CDATA[說明 Index: Version (2022Q3) B col. / Assemply Item C col. / Component E col.]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="1" r="0" s="0">
+<O>
+<![CDATA[Version]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="2" r="0" s="0">
+<O>
+<![CDATA[成品料號Assembly Item]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="3" r="0" s="0">
+<O>
+<![CDATA[實際Model Name]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="4" r="0" s="0">
+<O>
+<![CDATA[EPR零件PN]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="5" r="0" s="0">
+<O>
+<![CDATA[ERP 用量]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="6" r="0" s="0">
+<O>
+<![CDATA[Agile 零件PN (去掉A)]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="7" r="0" s="0">
+<O>
+<![CDATA[真實與 To Aruba P/N 不同 (N)]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="8" r="0" s="0">
+<O>
+<![CDATA[Product Family]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand/>
+</C>
+<C c="9" r="0" s="0">
+<O>
+<![CDATA[Product]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="10" r="0" s="0">
+<O>
+<![CDATA[Customer Part Number]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="11" r="0" s="0">
+<O>
+<![CDATA[CM/ODM Part Number]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="12" r="0" s="0">
+<O>
+<![CDATA[MPN Description]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="13" r="0" s="0">
+<O>
+<![CDATA[CM Control (Y/N)]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand/>
+</C>
+<C c="14" r="0" s="0">
+<O>
+<![CDATA[Manufacturer Part Number (MPN)]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="15" r="0" s="0">
+<O>
+<![CDATA[Manufacturer]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="16" r="0" s="0">
+<O>
+<![CDATA[Sourcing status (Multi, Single, Sole)]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="17" r="0" s="0">
+<O>
+<![CDATA[COO]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="18" r="0" s="0">
+<O>
+<![CDATA[Commodity]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="19" r="0" s="0">
+<O>
+<![CDATA[Sub-Commodity]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="20" r="0" s="0">
+<O>
+<![CDATA[Quantity]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="21" r="0" s="0">
+<O>
+<![CDATA[Previous Quarter MPN Allocation %]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand/>
+</C>
+<C c="22" r="0" s="0">
+<O>
+<![CDATA[Q2 Previous Quarter MPN Cost(Q2FY22)]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="23" r="0" s="0">
+<O>
+<![CDATA[Q3 Current Quarter MPN Cost(Q3FY22)]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="24" r="0" s="0">
+<O>
+<![CDATA[Current Quarter MPN Allocation %]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="25" r="0" s="0">
+<O>
+<![CDATA[Q3 AMT]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="26" r="0" s="0">
+<O>
+<![CDATA[delta]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="27" r="0" s="0">
+<O>
+<![CDATA[Lead Time]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand/>
+</C>
+<C c="28" r="0" s="0">
+<O>
+<![CDATA[Remarks]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand/>
+</C>
+<C c="29" r="0" s="0">
+<O>
+<![CDATA[Q3 Aruba contract price]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand/>
+</C>
+<C c="30" r="0" s="0">
+<O>
+<![CDATA[Apply Q3 Aruba CP (Y/N) (是否採用Aruba CP, if column V= AB)]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand/>
+</C>
+<C c="31" r="0" s="0">
+<O>
+<![CDATA[本季零件增加 (Y)]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand/>
+</C>
+<C c="32" r="0" s="0">
+<O>
+<![CDATA[Q2FY22 GP%]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand/>
+</C>
+<C c="33" r="0" s="0">
+<O>
+<![CDATA[Q3FY22 GP%]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="34" r="0" s="0">
+<O>
+<![CDATA[QoQ 成本漲價]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand/>
+</C>
+<C c="35" r="0" s="0">
+<O>
+<![CDATA[03.22 C AMT]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand/>
+</C>
+<C c="36" r="0" s="0">
+<O>
+<![CDATA[02.22 C AMT]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand/>
+</C>
+<C c="37" r="0" s="0">
+<O>
+<![CDATA[最近購買單價 AMT]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand/>
+</C>
+<C c="38" r="0" s="0">
+<O>
+<![CDATA[03.22 U/C (USD)]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="39" r="0" s="0">
+<O>
+<![CDATA[02.22 U/C (USD)]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="40" r="0" s="0">
+<O>
+<![CDATA[最近購買單價 (USD)]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand/>
+</C>
+<C c="41" r="0" s="0">
+<O>
+<![CDATA[trading term (交易條件)]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="42" r="0" s="0">
+<O>
+<![CDATA[flag 交易條件為exwork, FCA ….]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand/>
+</C>
+<C c="43" r="0" s="0">
+<O>
+<![CDATA[Flag 真實零件qty vs To A qty有差異的]]></O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<Expand/>
+</C>
+<C c="0" r="1" s="1">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=if(B2 = "","",CONCATENATE(B2,"/",c2,"/",e2))]]></Attributes>
+</O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0" leftParentDefault="false" left="E2">
+<cellSortAttr>
+<sortExpressions/>
+<sortHeader sortArea="A2"/>
+</cellSortAttr>
+</Expand>
+</C>
+<C c="1" r="1" s="1">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=$P_QUARTER]]></Attributes>
+</O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0" leftParentDefault="false" left="E2">
+<cellSortAttr>
+<sortExpressions/>
+<sortHeader sortArea="B2"/>
+</cellSortAttr>
+</Expand>
+</C>
+<C c="2" r="1" s="1">
+<O t="DSColumn">
+<Attributes dsName="get_data_aruba" columnName="PARENT_MATERIAL_CODING"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Result>
+<![CDATA[=$$$]]></Result>
+<Parameters/>
+<cellSortAttr>
+<sortExpressions>
+<cellSortExpression sortRule="Unsort" sortArea="PARENT_MATERIAL_CODING"/>
+</sortExpressions>
+</cellSortAttr>
+</O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0" leftParentDefault="false" left="E2">
+<cellSortAttr>
+<sortExpressions>
+<cellSortExpression sortRule="Ascending Order" sortArea="C2"/>
+</sortExpressions>
+<sortHeader sortArea="C2"/>
+</cellSortAttr>
+</Expand>
+</C>
+<C c="3" r="1" s="1">
+<O t="DSColumn">
+<Attributes dsName="get_product_aruba" columnName="AR_MODEL"/>
+<Condition class="com.fr.data.condition.CommonCondition">
+<CNUMBER>
+<![CDATA[0]]></CNUMBER>
+<CNAME>
+<![CDATA[AR_ITEM]]></CNAME>
+<Compare op="0">
+<ColumnRow column="2" row="1"/>
+</Compare>
+</Condition>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper">
+<Attr divideMode="1"/>
+</RG>
+<Result>
+<![CDATA[$$$]]></Result>
+<Parameters/>
+<cellSortAttr>
+<sortExpressions/>
+</cellSortAttr>
+</O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0">
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="4" r="1" s="1">
+<O t="DSColumn">
+<Attributes dsName="get_data_aruba" columnName="SUB_ITEM_CODE"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper">
+<Attr divideMode="1"/>
+</RG>
+<Parameters/>
+<cellSortAttr/>
+</O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0" leftParentDefault="false">
+<cellSortAttr>
+<sortExpressions>
+<cellSortExpression sortRule="Unsort" sortArea="E2"/>
+</sortExpressions>
+<sortHeader sortArea="E2"/>
+</cellSortAttr>
+</Expand>
+</C>
+<C c="5" r="1" s="1">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0">
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="6" r="1" s="1">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0" leftParentDefault="false" left="E2">
+<cellSortAttr>
+<sortExpressions/>
+<sortHeader sortArea="G2"/>
+</cellSortAttr>
+</Expand>
+</C>
+<C c="7" r="1" s="1">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0">
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="8" r="1" s="1">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0">
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="9" r="1" s="2">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0" leftParentDefault="false" left="E2">
+<cellSortAttr>
+<sortExpressions/>
+<sortHeader sortArea="J2"/>
+</cellSortAttr>
+</Expand>
+</C>
+<C c="10" r="1" s="1">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0">
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="11" r="1" s="2">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0" leftParentDefault="false" left="E2">
+<cellSortAttr>
+<sortExpressions/>
+<sortHeader sortArea="L2"/>
+</cellSortAttr>
+</Expand>
+</C>
+<C c="12" r="1" s="1">
+<O t="DSColumn">
+<Attributes dsName="get_data_aruba" columnName="SUB_ITEM_DESCRIPTION"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+<cellSortAttr/>
+</O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0">
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="13" r="1" s="2">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0">
+<cellSortAttr>
+<sortExpressions/>
+<sortHeader sortArea="J2"/>
+</cellSortAttr>
+</Expand>
+</C>
+<C c="14" r="1" s="1">
+<O t="DSColumn">
+<Attributes dsName="get_data_aruba" columnName="MPN"/>
+<Condition class="com.fr.data.condition.ListCondition"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper">
+<Attr divideMode="1"/>
+</RG>
+<Result>
+<![CDATA[$$$]]></Result>
+<Parameters/>
+<cellSortAttr>
+<sortExpressions/>
+</cellSortAttr>
+</O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0">
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="15" r="1" s="1">
+<O t="DSColumn">
+<Attributes dsName="get_data_aruba" columnName="MANUFACTURER"/>
+<Condition class="com.fr.data.condition.ListCondition"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Result>
+<![CDATA[$$$]]></Result>
+<Parameters/>
+<cellSortAttr>
+<sortExpressions/>
+</cellSortAttr>
+</O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0">
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="16" r="1" s="3">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0">
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="17" r="1" s="1">
+<O t="DSColumn">
+<Attributes dsName="get_data_aruba" columnName="COO"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+<cellSortAttr/>
+</O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0">
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="18" r="1" s="1">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0">
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="19" r="1" s="2">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0">
+<cellSortAttr>
+<sortExpressions/>
+<sortHeader sortArea="J2"/>
+</cellSortAttr>
+</Expand>
+</C>
+<C c="20" r="1" s="4">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0">
+<cellSortAttr>
+<sortExpressions/>
+<sortHeader sortArea="J2"/>
+</cellSortAttr>
+</Expand>
+</C>
+<C c="21" r="1" s="1">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0">
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="22" r="1" s="2">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0">
+<cellSortAttr>
+<sortExpressions/>
+<sortHeader sortArea="J2"/>
+</cellSortAttr>
+</Expand>
+</C>
+<C c="23" r="1" s="5">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0">
+<cellSortAttr>
+<sortExpressions/>
+<sortHeader sortArea="J2"/>
+</cellSortAttr>
+</Expand>
+</C>
+<C c="24" r="1" s="1">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0">
+<cellSortAttr>
+<sortExpressions/>
+<sortHeader sortArea="Y2"/>
+</cellSortAttr>
+</Expand>
+</C>
+<C c="25" r="1" s="6">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=u2 * x2]]></Attributes>
+</O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="26" r="1" s="1">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="27" r="1" s="1">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0">
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="28" r="1" s="1">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="29" r="1" s="2">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0">
+<cellSortAttr>
+<sortExpressions/>
+<sortHeader sortArea="J2"/>
+</cellSortAttr>
+</Expand>
+</C>
+<C c="30" r="1" s="1">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="31" r="1" s="1">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="32" r="1" s="1">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="33" r="1" s="1">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="34" r="1" s="1">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="35" r="1" s="1">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="36" r="1" s="1">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="37" r="1" s="1">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="38" r="1" s="1">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="39" r="1" s="2">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0">
+<cellSortAttr>
+<sortExpressions/>
+<sortHeader sortArea="J2"/>
+</cellSortAttr>
+</Expand>
+</C>
+<C c="40" r="1" s="1">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="41" r="1" s="1">
+<O t="DSColumn">
+<Attributes dsName="get_trade_term" columnName="TRADE_TERM"/>
+<Condition class="com.fr.data.condition.ListCondition">
+<JoinCondition join="0">
+<Condition class="com.fr.data.condition.CommonCondition">
+<CNAME>
+<![CDATA[PARENT_MATERIAL_CODING]]></CNAME>
+<Compare op="0">
+<ColumnRow column="2" row="1"/>
+</Compare>
+</Condition>
+</JoinCondition>
+<JoinCondition join="0">
+<Condition class="com.fr.data.condition.CommonCondition">
+<CNAME>
+<![CDATA[SUB_ITEM_CODE]]></CNAME>
+<Compare op="0">
+<ColumnRow column="4" row="1"/>
+</Compare>
+</Condition>
+</JoinCondition>
+</Condition>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper">
+<Attr divideMode="1"/>
+</RG>
+<Result>
+<![CDATA[$$$]]></Result>
+<Parameters/>
+<cellSortAttr>
+<sortExpressions/>
+</cellSortAttr>
+</O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0">
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="42" r="1" s="1">
+<O t="DSColumn">
+<Attributes dsName="get_trade_term" columnName="TRADE_TERM_FLAG"/>
+<Condition class="com.fr.data.condition.ListCondition">
+<JoinCondition join="0">
+<Condition class="com.fr.data.condition.CommonCondition">
+<CNAME>
+<![CDATA[PARENT_MATERIAL_CODING]]></CNAME>
+<Compare op="0">
+<ColumnRow column="2" row="1"/>
+</Compare>
+</Condition>
+</JoinCondition>
+<JoinCondition join="0">
+<Condition class="com.fr.data.condition.CommonCondition">
+<CNAME>
+<![CDATA[SUB_ITEM_CODE]]></CNAME>
+<Compare op="0">
+<ColumnRow column="4" row="1"/>
+</Compare>
+</Condition>
+</JoinCondition>
+</Condition>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper">
+<Attr divideMode="1"/>
+</RG>
+<Result>
+<![CDATA[$$$]]></Result>
+<Parameters/>
+<cellSortAttr>
+<sortExpressions/>
+</cellSortAttr>
+</O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand dir="0">
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="43" r="1" s="1">
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="1" r="10" s="7">
+<PrivilegeControl/>
+<Expand>
+<cellSortAttr>
+<sortExpressions/>
+<sortHeader sortArea="B11"/>
+</cellSortAttr>
+</Expand>
+</C>
+</CellElementList>
+<ReportAttrSet>
+<ReportSettings headerHeight="0" footerHeight="0">
+<PaperSetting orientation="1">
+<Margin top="986400" left="2743200" bottom="986400" right="2743200"/>
+</PaperSetting>
+<FollowingTheme background="false"/>
+<Background name="ColorBackground">
+<color>
+<FineColor color="-1" hor="-1" ver="-1"/>
+</color>
+</Background>
+</ReportSettings>
+<Header reportPageType="0">
+<Background name="NullBackground"/>
+<LeftList/>
+<CenterList/>
+<RightList/>
+</Header>
+<Footer reportPageType="0">
+<Background name="NullBackground"/>
+<LeftList/>
+<CenterList/>
+<RightList/>
+</Footer>
+</ReportAttrSet>
+<ReportWriteAttr/>
+<PrivilegeControl/>
+</Report>
+<ReportParameterAttr>
+<Attributes showWindow="true" delayPlaying="true" windowPosition="1" align="0" useParamsTemplate="true" currentIndex="16"/>
+<PWTitle>
+<![CDATA[参数]]></PWTitle>
+<ParameterUI class="com.fr.form.main.parameter.FormParameterUI">
+<Parameters/>
+<Layout class="com.fr.form.ui.container.WParameterLayout">
+<WidgetName name="para"/>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="0.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<FollowingTheme borderStyle="false"/>
+<Margin top="1" left="1" bottom="1" right="1"/>
+<Border>
+<border style="0" borderRadius="0" type="0" borderStyle="0">
+<color>
+<FineColor color="-723724" hor="-1" ver="-1"/>
+</color>
+</border>
+<WidgetTitle>
+<O>
+<![CDATA[新建标题]]></O>
+<FRFont name="SimSun" style="0" size="72"/>
+<Position pos="0"/>
+</WidgetTitle>
+<Alpha alpha="1.0"/>
+</Border>
+<Background name="ColorBackground">
+<color>
+<FineColor color="-526086" hor="-1" ver="-1"/>
+</color>
+</Background>
+<LCAttr vgap="0" hgap="0" compInterval="0"/>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.ComboCheckBox">
+<WidgetName name="P_INVENTORY_ITEM_ID"/>
+<LabelName name="P_INVENTORY_ITEM_ID"/>
+<WidgetID widgetID="f5b978c0-2c20-45f4-b94f-9585f1db13fb"/>
+<WidgetAttr invisible="true" aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<allowBlank>
+<![CDATA[false]]></allowBlank>
+<noRepeat>
+<![CDATA[false]]></noRepeat>
+<Dictionary class="com.fr.data.impl.CustomDictionary">
+<CustomDictAttr/>
+</Dictionary>
+<widgetValue>
+<databinding>
+<![CDATA[{Name:get_product_aruba,Key:AR_ITEM}]]></databinding>
+</widgetValue>
+<RAAttr delimiter="&apos;,&apos;" isArray="false"/>
+</InnerWidget>
+<BoundsAttr x="283" y="16" width="161" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.Label">
+<WidgetName name="LBL_QUARTER"/>
+<LabelName name="ITEM"/>
+<WidgetAttr invisible="true" aspectRatioLocked="false" aspectRatioBackup="0.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<widgetValue>
+<O>
+<![CDATA[QUARTER]]></O>
+</widgetValue>
+<LabelAttr verticalcenter="true" textalign="4" autoline="true"/>
+<FRFont name="SimSun" style="1" size="52"/>
+<border style="0">
+<color>
+<FineColor color="-723724" hor="-1" ver="-1"/>
+</color>
+</border>
+</InnerWidget>
+<BoundsAttr x="464" y="16" width="137" height="23"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.ComboBox">
+<WidgetName name="P_QUARTER"/>
+<LabelName name="BOM REVISION"/>
+<WidgetID widgetID="2ab66e15-8aac-483a-bb32-2ec0adcd840d"/>
+<WidgetAttr invisible="true" aspectRatioLocked="false" aspectRatioBackup="0.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<Dictionary class="com.fr.data.impl.TableDataDictionary">
+<FormulaDictAttr kiName="MAX(VERSION)" viName="MAX(VERSION)"/>
+<TableDataDictAttr>
+<TableData class="com.fr.data.impl.NameTableData">
+<Name>
+<![CDATA[get_quarter]]></Name>
+</TableData>
+</TableDataDictAttr>
+</Dictionary>
+<widgetValue>
+<O>
+<![CDATA[]]></O>
+</widgetValue>
+</InnerWidget>
+<BoundsAttr x="618" y="14" width="89" height="23"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.Label">
+<WidgetName name="LBL_P_INVENTORY_ITEM_ID"/>
+<WidgetAttr invisible="true" aspectRatioLocked="false" aspectRatioBackup="0.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<widgetValue>
+<O>
+<![CDATA[ITEM]]></O>
+</widgetValue>
+<LabelAttr verticalcenter="true" textalign="4" autoline="true"/>
+<FRFont name="SimSun" style="1" size="52"/>
+<border style="0">
+<color>
+<FineColor color="-723724" hor="-1" ver="-1"/>
+</color>
+</border>
+</InnerWidget>
+<BoundsAttr x="135" y="14" width="137" height="23"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.parameter.FormSubmitButton">
+<WidgetName name="btn_submit"/>
+<LabelName name="Implemented[1:standard components;2:all components]"/>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="0.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<Text>
+<![CDATA[Query]]></Text>
+<Hotkeys>
+<![CDATA[enter]]></Hotkeys>
+</InnerWidget>
+<BoundsAttr x="26" y="16" width="77" height="54"/>
+</Widget>
+<ShowBookmarks showBookmarks="false"/>
+<Sorted sorted="false"/>
+<MobileWidgetList>
+<Widget widgetName="P_QUARTER"/>
+<Widget widgetName="btn_submit"/>
+<Widget widgetName="P_INVENTORY_ITEM_ID"/>
+</MobileWidgetList>
+<FrozenWidgets/>
+<MobileBookMarkStyle class="com.fr.form.ui.mobile.impl.DefaultMobileBookMarkStyle"/>
+<Display display="true"/>
+<DelayDisplayContent delay="true"/>
+<UseParamsTemplate use="true"/>
+<Position position="0"/>
+<Design_Width design_width="1240"/>
+<NameTagModified>
+<TagModified tag="btn_submit" modified="true"/>
+<TagModified tag="P_QUARTER" modified="true"/>
+</NameTagModified>
+<WidgetNameTagMap>
+<NameTag name="btn_submit" tag="Implemented[1:standard components;2:all components]"/>
+<NameTag name="P_QUARTER" tag="BOM REVISION"/>
+</WidgetNameTagMap>
+<ParamAttr class="com.fr.report.mobile.DefaultMobileParamStyle"/>
+<ParamStyle class="com.fr.report.mobile.EmptyMobileParamStyle"/>
+</Layout>
+<DesignAttr width="1240" height="83"/>
+</ParameterUI>
+<Parameter>
+<Attributes name="area"/>
+<O>
+<![CDATA[]]></O>
+</Parameter>
+<Parameter>
+<Attributes name="province"/>
+<O>
+<![CDATA[]]></O>
+</Parameter>
+<Parameter>
+<Attributes name="city"/>
+<O>
+<![CDATA[]]></O>
+</Parameter>
+</ReportParameterAttr>
+<StyleList>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="SimSun" style="0" size="72"/>
+<Background name="ColorBackground">
+<color>
+<FineColor color="-1577999" hor="-1" ver="-1"/>
+</color>
+</Background>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="Arial" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="Arial" style="0" size="72"/>
+<Background name="ColorBackground">
+<color>
+<FineColor color="-10243346" hor="0" ver="0"/>
+</color>
+</Background>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="Arial" style="0" size="72"/>
+<Background name="ColorBackground">
+<color>
+<FineColor color="-8988015" hor="1" ver="0"/>
+</color>
+</Background>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style horizontal_alignment="0" imageLayout="1">
+<Format class="com.fr.base.CoreDecimalFormat" roundingMode="6">
+<![CDATA[#.#####]]></Format>
+<FRFont name="Arial" style="0" size="72"/>
+<Background name="ColorBackground">
+<color>
+<FineColor color="-10243346" hor="0" ver="0"/>
+</color>
+</Background>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style horizontal_alignment="0" imageLayout="1">
+<Format class="com.fr.base.CoreDecimalFormat" roundingMode="6">
+<![CDATA[#.########]]></Format>
+<FRFont name="Arial" style="0" size="72"/>
+<Background name="ColorBackground">
+<color>
+<FineColor color="-10243346" hor="0" ver="0"/>
+</color>
+</Background>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style horizontal_alignment="0" imageLayout="1">
+<Format class="com.fr.base.CoreDecimalFormat" roundingMode="6">
+<![CDATA[#.#######]]></Format>
+<FRFont name="Arial" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style style_name="Default" full="true" border_source="-1" imageLayout="1">
+<FRFont name="simhei" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border/>
+</Style>
+</StyleList>
+<DesignerVersion DesignerVersion="LAA"/>
+<PreviewType PreviewType="1"/>
+<TemplateThemeAttrMark class="com.fr.base.iofile.attr.TemplateThemeAttrMark">
+<TemplateThemeAttrMark name="Compatible Theme" dark="false"/>
+</TemplateThemeAttrMark>
+<StrategyConfigsAttr class="com.fr.esd.core.strategy.persistence.StrategyConfigsAttr">
+<StrategyConfigs>
+<StrategyConfig dsName="get_quarter" enabled="true" useGlobal="false" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
+<StrategyConfig dsName="get_data_aruba" enabled="true" useGlobal="false" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
+<StrategyConfig dsName="prev_data" enabled="true" useGlobal="false" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
+<StrategyConfig dsName="get_product_aruba" enabled="true" useGlobal="false" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
+<StrategyConfig dsName="get_trade_term" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
+<StrategyConfig dsName="BOMREVISION" enabled="true" useGlobal="false" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
+<StrategyConfig dsName="SEGMENT1" enabled="true" useGlobal="false" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
+<StrategyConfig dsName="ITEMID" enabled="true" useGlobal="false" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
+</StrategyConfigs>
+</StrategyConfigsAttr>
+<TemplateCloudInfoAttrMark class="com.fr.plugin.cloud.analytics.attr.TemplateInfoAttrMark" pluginID="com.fr.plugin.cloud.analytics.v11" plugin-version="3.7.0.20220804">
+<TemplateCloudInfoAttrMark createTime="1659418275961"/>
+</TemplateCloudInfoAttrMark>
+<TemplateIdAttMark class="com.fr.base.iofile.attr.TemplateIdAttrMark">
+<TemplateIdAttMark TemplateId="e948bdaa-29d9-4b7f-ad32-aaf32c049fc5"/>
+</TemplateIdAttMark>
+</WorkBook>
