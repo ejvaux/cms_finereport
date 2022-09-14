@@ -1,1 +1,1 @@
-# cms_finereport
+# Consumables Management System - FineReport reportlets
