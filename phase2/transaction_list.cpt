@@ -18,13 +18,20 @@
 </Connection>
 <Query>
 <![CDATA[SELECT 
-	t.id,
-	t.transaction_number,
-	t.requested_by,
-	t.transaction_type_id,
-	t.created_at,
-	wst.type_key,
-	th2.wf_state_type_state_id
+	t.id
+	,t.transaction_number
+	,(
+		SELECT type_key FROM workflow_state_type WHERE id = t.transaction_type_id
+	) as type
+	,t.transaction_type_id
+	,wst.type_key
+	,(
+		SELECT name FROM requestors where id = t.requested_by
+	) as requestor
+	,t.requested_by
+	,t.created_at
+	,t.updated_at
+	,th2.wf_state_type_state_id
 	
 FROM [dbo]A.[transactions]A t
 
@@ -32,6 +39,7 @@ CROSS APPLY
 (
 	select Top 1 * from dbo.transaction_history th
 	where th.transaction_id = t.id
+	and th.wf_state_type_outcome_id is null
 	order by th.id desc
 ) th2
 
@@ -40,7 +48,7 @@ on wst.id = th2.wf_state_type_state_id
 
 where 1=1
 and th2.wf_state_type_state_id IN (''+${states}+'')
-and th2.wf_state_type_outcome_id is null
+
 order by t.transaction_type_id,th2.wf_state_type_state_id,t.id desc]]></Query>
 <PageQuery>
 <![CDATA[]]></PageQuery>
@@ -258,7 +266,9 @@ where workflow_level_type_id = 1]]></Query>
 </Connection>
 </Dictionary>
 </Present>
-<Expand dir="0"/>
+<Expand dir="0">
+<cellSortAttr/>
+</Expand>
 </C>
 <C c="3" r="2" s="4">
 <O t="DSColumn">
@@ -311,7 +321,9 @@ where workflow_level_type_id = 1]]></Query>
 </Connection>
 </Dictionary>
 </Present>
-<Expand dir="0"/>
+<Expand dir="0">
+<cellSortAttr/>
+</Expand>
 </C>
 <C c="5" r="2" s="4">
 <O t="DSColumn">
@@ -543,7 +555,7 @@ this.setValue(arr2);]]></Content>
 <DesignerVersion DesignerVersion="LAA"/>
 <PreviewType PreviewType="0"/>
 <TemplateThemeAttrMark class="com.fr.base.iofile.attr.TemplateThemeAttrMark">
-<TemplateThemeAttrMark name="Classic Light Gray" dark="false"/>
+<TemplateThemeAttrMark name="经典浅灰" dark="false"/>
 </TemplateThemeAttrMark>
 <StrategyConfigsAttr class="com.fr.esd.core.strategy.persistence.StrategyConfigsAttr">
 <StrategyConfigs>
@@ -553,7 +565,7 @@ this.setValue(arr2);]]></Content>
 <StrategyConfig dsName="states" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
 </StrategyConfigs>
 </StrategyConfigsAttr>
-<TemplateCloudInfoAttrMark class="com.fr.plugin.cloud.analytics.attr.TemplateInfoAttrMark" pluginID="com.fr.plugin.cloud.analytics.v11" plugin-version="3.7.0.20220804">
+<TemplateCloudInfoAttrMark class="com.fr.plugin.cloud.analytics.attr.TemplateInfoAttrMark" pluginID="com.fr.plugin.cloud.analytics.v11" plugin-version="3.8.0.20220907">
 <TemplateCloudInfoAttrMark createTime="1658454246062"/>
 </TemplateCloudInfoAttrMark>
 <TemplateIdAttMark class="com.fr.base.iofile.attr.TemplateIdAttrMark">
