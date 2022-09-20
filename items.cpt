@@ -54,7 +54,7 @@ where part_number like CONCAT('%','${part_number}','%')]]></Query>
 <RowHeight defaultValue="723900">
 <![CDATA[838200,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,838200,723900]]></RowHeight>
 <ColumnWidth defaultValue="2743200">
-<![CDATA[2209800,1866900,1981200,3200400,3390900,5715000,7620000,2743200,2743200,2743200,2743200,1524000,1828800,1790700,1790700,2743200]]></ColumnWidth>
+<![CDATA[2209800,1866900,1981200,3200400,3390900,7658100,7620000,2743200,2743200,2743200,2743200,1524000,1828800,1790700,1790700,2743200]]></ColumnWidth>
 <CellElementList>
 <C c="0" r="0" cs="3" s="0">
 <O>
@@ -509,7 +509,13 @@ where part_number like CONCAT('%','${part_number}','%')]]></Query>
 <Present class="com.fr.base.present.DictPresent">
 <Dictionary class="com.fr.data.impl.DatabaseDictionary">
 <FormulaDictAttr ki="1" vi="-1"/>
-<DBDictAttr tableName="" schemaName="" ki="1" vi="-1" viName=""/>
+<DBDictAttr tableName="" schemaName="" ki="1" vi="-1" kiName="" viName=""/>
+<Connection class="com.fr.data.impl.JDBCDatabaseConnection">
+<DatabaseAttr creator="designer"/>
+<JDBCDatabaseAttr url="" driver="sun.jdbc.odbc.JdbcOdbcDriver" auth="com.fr.data.auth.normal.NormalAuthentication" user="" password="___" encryptPassword="true">
+<DBCPAttr/>
+</JDBCDatabaseAttr>
+</Connection>
 </Dictionary>
 </Present>
 <Expand dir="0">

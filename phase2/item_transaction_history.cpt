@@ -16,27 +16,27 @@
 </Connection>
 <Query>
 <![CDATA[SELECT
-
-	t.transaction_number,
-	wst.type_key as transaction_type,
-	ti.quantity,
-	SUM(
-		CASE 
-			WHEN wst.id = 1 THEN ti.quantity * -1
-			WHEN wst.id = 2 THEN ti.quantity * -1
-			WHEN wst.id = 4 AND th3.wf_state_type_state_id = 14 THEN 0
-			ELSE ti.quantity
-		END
-	) OVER(ORDER BY ti.id) AS running_total,
-	r.name as requestor,	
-	th2.state as status
+	t.transaction_number
+	,wst.type_key as transaction_type
+	,ti.quantity
+	,SUM(ti.quantity*th2.operation) OVER(ORDER BY ti.id) AS running_total
+	,(
+		SELECT TOP 1 
+		wst_s.type_key
+		FROM transaction_history th
+		LEFT OUTER JOIN workflow_state_type wst_s
+		ON wst_s.id = th.wf_state_type_state_id
+		WHERE th.transaction_id = t.id
+		ORDER by th.id DESC
+	) as 'state'
+	,r.name as requestor
 	,(CASE
 		WHEN wst.id = 4 AND th3.wf_state_type_state_id = 14 AND ti.remarks IS NOT NULL THEN CONCAT(th3.state,'. ',ti.remarks)
 		WHEN wst.id = 4 AND th3.wf_state_type_state_id = 14 AND ti.remarks IS NULL THEN th3.state
 		ELSE ti.remarks
 	END) as remarks
 
-FROM [dbo]A.[transaction_items]A ti
+FROM transaction_items ti
 
 INNER JOIN dbo.transactions t
 ON ti.transaction_id = t.id
@@ -49,16 +49,30 @@ ON t.requested_by = r.id
 
 CROSS APPLY
 (
-	SELECT TOP 1
-		th.wf_state_type_state_id,
-		wst_s.type_key as state
+	SELECT		
+		SUM(convert(int, CONCAT(sus.operation,'1'))) as 'operation'
 		
 	FROM [dbo]A.[transaction_history]A th
 	
 	LEFT OUTER JOIN workflow_state_type wst_s
 	ON wst_s.id = th.wf_state_type_state_id
+
+	LEFT OUTER JOIN workflow_state_hierarchy wsh
+	ON wsh.state_type_parent_id = th.wf_state_type_state_id
+	AND wsh.state_type_child_id = th.wf_state_type_outcome_id
+
+	LEFT OUTER JOIN workflow_state_context wsc
+	ON wsc.state_type_id = t.transaction_type_id
+	AND wsc.state_hierarchy_id = wsh.id
+
+	INNER JOIN stock_update_settings  sus
+	ON sus.state_context_id = wsc.id
+
 	WHERE th.transaction_id = t.id
-	ORDER BY th.id DESC
+
+	GROUP BY 
+		th.transaction_id
+
 ) th2
 
 OUTER APPLY
@@ -82,9 +96,7 @@ OUTER APPLY
 	FETCH NEXT 1 ROWS ONLY
 ) th3
 
-WHERE ti.item_id = '${item_id}'
-and th2.wf_state_type_state_id NOT IN ('5','9','10')
---AND th2.wf_state_type_state_id = 15]]></Query>
+WHERE ti.item_id = '${item_id}']]></Query>
 <PageQuery>
 <![CDATA[]]></PageQuery>
 </TableData>
@@ -398,18 +410,11 @@ and th2.wf_state_type_state_id NOT IN ('5','9','10')
 </C>
 <C c="5" r="2" s="6">
 <O t="DSColumn">
-<Attributes dsName="transaction_items" columnName="status"/>
-<Condition class="com.fr.data.condition.ListCondition"/>
+<Attributes dsName="transaction_items" columnName="state"/>
 <Complex/>
-<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper">
-<Attr divideMode="1"/>
-</RG>
-<Result>
-<![CDATA[$$$]]></Result>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
 <Parameters/>
-<cellSortAttr>
-<sortExpressions/>
-</cellSortAttr>
+<cellSortAttr/>
 </O>
 <PrivilegeControl/>
 <CellPageAttr/>
@@ -553,7 +558,7 @@ and th2.wf_state_type_state_id NOT IN ('5','9','10')
 <DesignerVersion DesignerVersion="LAA"/>
 <PreviewType PreviewType="0"/>
 <TemplateThemeAttrMark class="com.fr.base.iofile.attr.TemplateThemeAttrMark">
-<TemplateThemeAttrMark name="经典浅灰" dark="false"/>
+<TemplateThemeAttrMark name="Classic Light Gray" dark="false"/>
 </TemplateThemeAttrMark>
 <StrategyConfigsAttr class="com.fr.esd.core.strategy.persistence.StrategyConfigsAttr">
 <StrategyConfigs>
