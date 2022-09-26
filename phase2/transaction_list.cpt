@@ -201,73 +201,43 @@ where name IN(''+${user_departments}+'')]]></Query>
 <PrivilegeControl/>
 <Expand/>
 </C>
-<C c="6" r="0" s="1">
-<O t="XMLable" class="com.fr.base.Formula">
-<Attributes>
-<![CDATA[=VALUE("site","id")]]></Attributes>
-</O>
-<PrivilegeControl/>
-<Expand>
-<cellSortAttr/>
-</Expand>
-</C>
-<C c="7" r="0" s="1">
-<O t="XMLable" class="com.fr.base.Formula">
-<Attributes>
-<![CDATA[=MAPARRAY(UNIQUEARRAY(SPLIT(GETUSERDEPARTMENTS(),",")),"'"+item+"'")]]></Attributes>
-</O>
-<PrivilegeControl/>
-<Expand>
-<cellSortAttr/>
-</Expand>
-</C>
-<C c="8" r="0" s="1">
-<O t="XMLable" class="com.fr.base.Formula">
-<Attributes>
-<![CDATA[=UNIQUEARRAY(SPLIT(GETUSERDEPARTMENTS(),","))]]></Attributes>
-</O>
-<PrivilegeControl/>
-<Expand>
-<cellSortAttr/>
-</Expand>
-</C>
-<C c="0" r="1" s="2">
+<C c="0" r="1" s="1">
 <O>
 <![CDATA[Details]]></O>
 <PrivilegeControl/>
 <Expand/>
 </C>
-<C c="1" r="1" s="3">
+<C c="1" r="1" s="2">
 <O>
 <![CDATA[Transaction no.]]></O>
 <PrivilegeControl/>
 <Expand/>
 </C>
-<C c="2" r="1" s="3">
+<C c="2" r="1" s="2">
 <O>
 <![CDATA[Type]]></O>
 <PrivilegeControl/>
 <Expand/>
 </C>
-<C c="3" r="1" s="3">
+<C c="3" r="1" s="2">
 <O>
 <![CDATA[Status]]></O>
 <PrivilegeControl/>
 <Expand/>
 </C>
-<C c="4" r="1" s="3">
+<C c="4" r="1" s="2">
 <O>
 <![CDATA[Requested by]]></O>
 <PrivilegeControl/>
 <Expand/>
 </C>
-<C c="5" r="1" s="3">
+<C c="5" r="1" s="2">
 <O>
 <![CDATA[Created at]]></O>
 <PrivilegeControl/>
 <Expand/>
 </C>
-<C c="0" r="2" s="4">
+<C c="0" r="2" s="3">
 <O t="DSColumn">
 <Attributes dsName="transaction" columnName="id"/>
 <Condition class="com.fr.data.condition.ListCondition"/>
@@ -315,7 +285,7 @@ where name IN(''+${user_departments}+'')]]></Query>
 <cellSortAttr/>
 </Expand>
 </C>
-<C c="1" r="2" s="5">
+<C c="1" r="2" s="4">
 <O t="DSColumn">
 <Attributes dsName="transaction" columnName="transaction_number"/>
 <Complex/>
@@ -328,7 +298,7 @@ where name IN(''+${user_departments}+'')]]></Query>
 <CellPageAttr/>
 <Expand dir="0"/>
 </C>
-<C c="2" r="2" s="5">
+<C c="2" r="2" s="4">
 <O t="DSColumn">
 <Attributes dsName="transaction" columnName="transaction_type_id"/>
 <Complex/>
@@ -351,7 +321,7 @@ where name IN(''+${user_departments}+'')]]></Query>
 </Present>
 <Expand dir="0"/>
 </C>
-<C c="3" r="2" s="5">
+<C c="3" r="2" s="4">
 <O t="DSColumn">
 <Attributes dsName="transaction" columnName="wf_state_type_state_id"/>
 <Condition class="com.fr.data.condition.ListCondition"/>
@@ -381,7 +351,7 @@ where name IN(''+${user_departments}+'')]]></Query>
 </Present>
 <Expand dir="0"/>
 </C>
-<C c="4" r="2" s="5">
+<C c="4" r="2" s="4">
 <O t="DSColumn">
 <Attributes dsName="transaction" columnName="requested_by"/>
 <Complex/>
@@ -404,7 +374,7 @@ where name IN(''+${user_departments}+'')]]></Query>
 </Present>
 <Expand dir="0"/>
 </C>
-<C c="5" r="2" s="5">
+<C c="5" r="2" s="4">
 <O t="DSColumn">
 <Attributes dsName="transaction" columnName="created_at"/>
 <Complex/>
@@ -576,11 +546,6 @@ this.setValue(arr2);]]></Content>
 </ReportParameterAttr>
 <StyleList>
 <Style imageLayout="1">
-<FRFont name="simhei" style="0" size="72"/>
-<Background name="NullBackground"/>
-<Border/>
-</Style>
-<Style style_name="默认" full="true" border_source="-1" imageLayout="1">
 <FRFont name="simhei" style="0" size="72"/>
 <Background name="NullBackground"/>
 <Border/>
