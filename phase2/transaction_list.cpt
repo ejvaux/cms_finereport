@@ -10,6 +10,20 @@
 <![CDATA[=$states_cb]]></Attributes>
 </O>
 </Parameter>
+<Parameter>
+<Attributes name="sites"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=VALUE("site","id")]]></Attributes>
+</O>
+</Parameter>
+<Parameter>
+<Attributes name="departments"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=VALUE("department","id")]]></Attributes>
+</O>
+</Parameter>
 </Parameters>
 <Attributes maxMemRowCount="-1"/>
 <Connection class="com.fr.data.impl.NameDatabaseConnection">
@@ -24,7 +38,9 @@
 	t.transaction_type_id,
 	t.created_at,
 	wst.type_key,
-	th2.wf_state_type_state_id
+	th2.wf_state_type_state_id,
+	t.site_id,
+	t.department_id
 	
 FROM [dbo]A.[transactions]A t
 
@@ -41,6 +57,9 @@ on wst.id = th2.wf_state_type_state_id
 where 1=1
 and th2.wf_state_type_state_id IN (''+${states}+'')
 and th2.wf_state_type_outcome_id is null
+and t.site_id IN(''+${sites}+'')
+and t.department_id IN(''+${departments}+'')
+
 order by t.transaction_type_id,th2.wf_state_type_state_id,t.id desc]]></Query>
 <PageQuery>
 <![CDATA[]]></PageQuery>
@@ -92,6 +111,48 @@ where workflow_level_type_id = 1]]></Query>
 <PageQuery>
 <![CDATA[]]></PageQuery>
 </TableData>
+<TableData name="site" class="com.fr.data.impl.DBTableData">
+<Parameters>
+<Parameter>
+<Attributes name="user_departments"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=MAPARRAY(UNIQUEARRAY(SPLIT(GETUSERDEPARTMENTS(),",")),"'"+item+"'")]]></Attributes>
+</O>
+</Parameter>
+</Parameters>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[cms_dev]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[SELECT * FROM [dbo]A.[sites]A
+where initial IN(''+${user_departments}+'')]]></Query>
+<PageQuery>
+<![CDATA[]]></PageQuery>
+</TableData>
+<TableData name="department" class="com.fr.data.impl.DBTableData">
+<Parameters>
+<Parameter>
+<Attributes name="user_departments"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=MAPARRAY(UNIQUEARRAY(SPLIT(GETUSERDEPARTMENTS(),",")),"'"+item+"'")]]></Attributes>
+</O>
+</Parameter>
+</Parameters>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[cms_dev]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[SELECT * FROM [dbo]A.[departments]A
+where name IN(''+${user_departments}+'')]]></Query>
+<PageQuery>
+<![CDATA[]]></PageQuery>
+</TableData>
 </TableDataMap>
 <ReportWebAttr>
 <Title>
@@ -140,43 +201,73 @@ where workflow_level_type_id = 1]]></Query>
 <PrivilegeControl/>
 <Expand/>
 </C>
-<C c="0" r="1" s="1">
+<C c="6" r="0" s="1">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=VALUE("site","id")]]></Attributes>
+</O>
+<PrivilegeControl/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="7" r="0" s="1">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=MAPARRAY(UNIQUEARRAY(SPLIT(GETUSERDEPARTMENTS(),",")),"'"+item+"'")]]></Attributes>
+</O>
+<PrivilegeControl/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="8" r="0" s="1">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=UNIQUEARRAY(SPLIT(GETUSERDEPARTMENTS(),","))]]></Attributes>
+</O>
+<PrivilegeControl/>
+<Expand>
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="0" r="1" s="2">
 <O>
 <![CDATA[Details]]></O>
 <PrivilegeControl/>
 <Expand/>
 </C>
-<C c="1" r="1" s="2">
+<C c="1" r="1" s="3">
 <O>
 <![CDATA[Transaction no.]]></O>
 <PrivilegeControl/>
 <Expand/>
 </C>
-<C c="2" r="1" s="2">
+<C c="2" r="1" s="3">
 <O>
 <![CDATA[Type]]></O>
 <PrivilegeControl/>
 <Expand/>
 </C>
-<C c="3" r="1" s="2">
+<C c="3" r="1" s="3">
 <O>
 <![CDATA[Status]]></O>
 <PrivilegeControl/>
 <Expand/>
 </C>
-<C c="4" r="1" s="2">
+<C c="4" r="1" s="3">
 <O>
 <![CDATA[Requested by]]></O>
 <PrivilegeControl/>
 <Expand/>
 </C>
-<C c="5" r="1" s="2">
+<C c="5" r="1" s="3">
 <O>
 <![CDATA[Created at]]></O>
 <PrivilegeControl/>
 <Expand/>
 </C>
-<C c="0" r="2" s="3">
+<C c="0" r="2" s="4">
 <O t="DSColumn">
 <Attributes dsName="transaction" columnName="id"/>
 <Condition class="com.fr.data.condition.ListCondition"/>
@@ -224,7 +315,7 @@ where workflow_level_type_id = 1]]></Query>
 <cellSortAttr/>
 </Expand>
 </C>
-<C c="1" r="2" s="4">
+<C c="1" r="2" s="5">
 <O t="DSColumn">
 <Attributes dsName="transaction" columnName="transaction_number"/>
 <Complex/>
@@ -237,7 +328,7 @@ where workflow_level_type_id = 1]]></Query>
 <CellPageAttr/>
 <Expand dir="0"/>
 </C>
-<C c="2" r="2" s="4">
+<C c="2" r="2" s="5">
 <O t="DSColumn">
 <Attributes dsName="transaction" columnName="transaction_type_id"/>
 <Complex/>
@@ -260,7 +351,7 @@ where workflow_level_type_id = 1]]></Query>
 </Present>
 <Expand dir="0"/>
 </C>
-<C c="3" r="2" s="4">
+<C c="3" r="2" s="5">
 <O t="DSColumn">
 <Attributes dsName="transaction" columnName="wf_state_type_state_id"/>
 <Condition class="com.fr.data.condition.ListCondition"/>
@@ -290,7 +381,7 @@ where workflow_level_type_id = 1]]></Query>
 </Present>
 <Expand dir="0"/>
 </C>
-<C c="4" r="2" s="4">
+<C c="4" r="2" s="5">
 <O t="DSColumn">
 <Attributes dsName="transaction" columnName="requested_by"/>
 <Complex/>
@@ -313,7 +404,7 @@ where workflow_level_type_id = 1]]></Query>
 </Present>
 <Expand dir="0"/>
 </C>
-<C c="5" r="2" s="4">
+<C c="5" r="2" s="5">
 <O t="DSColumn">
 <Attributes dsName="transaction" columnName="created_at"/>
 <Complex/>
@@ -324,7 +415,9 @@ where workflow_level_type_id = 1]]></Query>
 <PrivilegeControl/>
 <CellGUIAttr adjustmode="2"/>
 <CellPageAttr/>
-<Expand dir="0"/>
+<Expand dir="0">
+<cellSortAttr/>
+</Expand>
 </C>
 </CellElementList>
 <ReportAttrSet>
@@ -487,6 +580,11 @@ this.setValue(arr2);]]></Content>
 <Background name="NullBackground"/>
 <Border/>
 </Style>
+<Style style_name="默认" full="true" border_source="-1" imageLayout="1">
+<FRFont name="simhei" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border/>
+</Style>
 <Style horizontal_alignment="0" imageLayout="1" lineSpacing="2">
 <FRFont name="simhei" style="0" size="96"/>
 <Background name="ColorBackground">
@@ -543,17 +641,19 @@ this.setValue(arr2);]]></Content>
 <DesignerVersion DesignerVersion="LAA"/>
 <PreviewType PreviewType="0"/>
 <TemplateThemeAttrMark class="com.fr.base.iofile.attr.TemplateThemeAttrMark">
-<TemplateThemeAttrMark name="Classic Light Gray" dark="false"/>
+<TemplateThemeAttrMark name="经典浅灰" dark="false"/>
 </TemplateThemeAttrMark>
 <StrategyConfigsAttr class="com.fr.esd.core.strategy.persistence.StrategyConfigsAttr">
 <StrategyConfigs>
 <StrategyConfig dsName="process" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
+<StrategyConfig dsName="site" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
 <StrategyConfig dsName="role" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
+<StrategyConfig dsName="department" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
 <StrategyConfig dsName="transaction" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
 <StrategyConfig dsName="states" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
 </StrategyConfigs>
 </StrategyConfigsAttr>
-<TemplateCloudInfoAttrMark class="com.fr.plugin.cloud.analytics.attr.TemplateInfoAttrMark" pluginID="com.fr.plugin.cloud.analytics.v11" plugin-version="3.7.0.20220804">
+<TemplateCloudInfoAttrMark class="com.fr.plugin.cloud.analytics.attr.TemplateInfoAttrMark" pluginID="com.fr.plugin.cloud.analytics.v11" plugin-version="3.8.0.20220907">
 <TemplateCloudInfoAttrMark createTime="1658454246062"/>
 </TemplateCloudInfoAttrMark>
 <TemplateIdAttMark class="com.fr.base.iofile.attr.TemplateIdAttrMark">

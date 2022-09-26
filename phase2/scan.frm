@@ -1735,7 +1735,7 @@ n@]A;kHruV~
 <DesignerVersion DesignerVersion="LAA"/>
 <PreviewType PreviewType="4"/>
 <TemplateThemeAttrMark class="com.fr.base.iofile.attr.TemplateThemeAttrMark">
-<TemplateThemeAttrMark name="Classic Sedate" dark="false"/>
+<TemplateThemeAttrMark name="经典稳重" dark="false"/>
 </TemplateThemeAttrMark>
 <WatermarkAttr class="com.fr.base.iofile.attr.WatermarkAttr">
 <WatermarkAttr fontSize="20" horizontalGap="200" verticalGap="100" valid="false">
@@ -1746,6 +1746,41 @@ n@]A;kHruV~
 <![CDATA[]]></Text>
 </WatermarkAttr>
 </WatermarkAttr>
+<OpenVideoSettings class="com.fr.plugin.chart.openvideo.OpenVideoSettings" pluginID="com.fr.plugin.bigScreen.v11" plugin-version="4.6.1" textContent="TEST" autoExit="false" exitTime="10.0" usable="false" type="style1">
+<FRFont name="Arial" style="0" size="256">
+<foreground>
+<FineColor color="-1" hor="-1" ver="-1"/>
+</foreground>
+</FRFont>
+<GI>
+<AttrBackground>
+<Background name="ColorBackground">
+<color>
+<FineColor color="-15329992" hor="-1" ver="-1"/>
+</color>
+</Background>
+<Attr gradientType="normal" shadow="false" autoBackground="false" themed="false">
+<gradientStartColor>
+<FineColor color="-12146441" hor="-1" ver="-1"/>
+</gradientStartColor>
+<gradientEndColor>
+<FineColor color="-9378161" hor="-1" ver="-1"/>
+</gradientEndColor>
+</Attr>
+</AttrBackground>
+<AttrBorder>
+<Attr lineStyle="0" isRoundBorder="false" roundRadius="0"/>
+<newColor autoColor="false" themed="false">
+<borderColor>
+<FineColor color="-16777216" hor="-1" ver="-1"/>
+</borderColor>
+</newColor>
+</AttrBorder>
+<AttrAlpha>
+<Attr alpha="1.0"/>
+</AttrAlpha>
+</GI>
+</OpenVideoSettings>
 <TemplateLayoutIdAttrMark class="com.fr.base.iofile.attr.TemplateLayoutIdAttrMark">
 <TemplateLayoutIdAttrMark LayoutId="9ebf6aff-ad53-45a9-a175-9633f4162a3a"/>
 </TemplateLayoutIdAttrMark>
@@ -1762,7 +1797,7 @@ n@]A;kHruV~
 <NewFormMarkAttr class="com.fr.form.fit.NewFormMarkAttr">
 <NewFormMarkAttr type="1" tabPreload="true" fontScaleFrontAdjust="true" supportColRowAutoAdjust="true"/>
 </NewFormMarkAttr>
-<TemplateCloudInfoAttrMark class="com.fr.plugin.cloud.analytics.attr.TemplateInfoAttrMark" pluginID="com.fr.plugin.cloud.analytics.v11" plugin-version="3.7.0.20220804">
+<TemplateCloudInfoAttrMark class="com.fr.plugin.cloud.analytics.attr.TemplateInfoAttrMark" pluginID="com.fr.plugin.cloud.analytics.v11" plugin-version="3.8.0.20220907">
 <TemplateCloudInfoAttrMark createTime="1659596113126"/>
 </TemplateCloudInfoAttrMark>
 <TemplateIdAttMark class="com.fr.base.iofile.attr.TemplateIdAttrMark">

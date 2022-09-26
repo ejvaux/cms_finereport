@@ -2,7 +2,22 @@
 <WorkBook xmlVersion="20211223" releaseVersion="11.0.0">
 <TableDataMap>
 <TableData name="transaction" class="com.fr.data.impl.DBTableData">
-<Parameters/>
+<Parameters>
+<Parameter>
+<Attributes name="sites"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=VALUE("site","id")]]></Attributes>
+</O>
+</Parameter>
+<Parameter>
+<Attributes name="departments"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=VALUE("department","id")]]></Attributes>
+</O>
+</Parameter>
+</Parameters>
 <Attributes maxMemRowCount="-1"/>
 <Connection class="com.fr.data.impl.NameDatabaseConnection">
 <DatabaseName>
@@ -33,7 +48,51 @@ left outer join workflow_state_type wst
 on wst.id = th2.wf_state_type_state_id
 
 where th2.wf_state_type_state_id IN ('6','11','14')
-and th2.wf_state_type_outcome_id is null]]></Query>
+and th2.wf_state_type_outcome_id is null
+and t.site_id IN(''+${sites}+'')
+and t.department_id IN(''+${departments}+'')]]></Query>
+<PageQuery>
+<![CDATA[]]></PageQuery>
+</TableData>
+<TableData name="site" class="com.fr.data.impl.DBTableData">
+<Parameters>
+<Parameter>
+<Attributes name="user_departments"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=MAPARRAY(UNIQUEARRAY(SPLIT(GETUSERDEPARTMENTS(),",")),"'"+item+"'")]]></Attributes>
+</O>
+</Parameter>
+</Parameters>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[cms_dev]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[SELECT * FROM [dbo]A.[sites]A
+where initial IN(''+${user_departments}+'')]]></Query>
+<PageQuery>
+<![CDATA[]]></PageQuery>
+</TableData>
+<TableData name="department" class="com.fr.data.impl.DBTableData">
+<Parameters>
+<Parameter>
+<Attributes name="user_departments"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=MAPARRAY(UNIQUEARRAY(SPLIT(GETUSERDEPARTMENTS(),",")),"'"+item+"'")]]></Attributes>
+</O>
+</Parameter>
+</Parameters>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[cms_dev]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[SELECT * FROM [dbo]A.[departments]A
+where name IN(''+${user_departments}+'')]]></Query>
 <PageQuery>
 <![CDATA[]]></PageQuery>
 </TableData>
@@ -343,15 +402,17 @@ FR.doHyperlinkByGet({
 <DesignerVersion DesignerVersion="LAA"/>
 <PreviewType PreviewType="0"/>
 <TemplateThemeAttrMark class="com.fr.base.iofile.attr.TemplateThemeAttrMark">
-<TemplateThemeAttrMark name="Classic Light Gray" dark="false"/>
+<TemplateThemeAttrMark name="经典浅灰" dark="false"/>
 </TemplateThemeAttrMark>
 <StrategyConfigsAttr class="com.fr.esd.core.strategy.persistence.StrategyConfigsAttr">
 <StrategyConfigs>
+<StrategyConfig dsName="site" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
+<StrategyConfig dsName="department" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
 <StrategyConfig dsName="transaction" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
 </StrategyConfigs>
 </StrategyConfigsAttr>
 <MobileOnlyTemplateAttrMark class="com.fr.base.iofile.attr.MobileOnlyTemplateAttrMark"/>
-<TemplateCloudInfoAttrMark class="com.fr.plugin.cloud.analytics.attr.TemplateInfoAttrMark" pluginID="com.fr.plugin.cloud.analytics.v11" plugin-version="3.7.0.20220804">
+<TemplateCloudInfoAttrMark class="com.fr.plugin.cloud.analytics.attr.TemplateInfoAttrMark" pluginID="com.fr.plugin.cloud.analytics.v11" plugin-version="3.8.0.20220907">
 <TemplateCloudInfoAttrMark createTime="1658454246062"/>
 </TemplateCloudInfoAttrMark>
 <TemplateIdAttMark class="com.fr.base.iofile.attr.TemplateIdAttrMark">

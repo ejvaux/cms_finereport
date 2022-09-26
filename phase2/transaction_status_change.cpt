@@ -1029,7 +1029,7 @@ if (hierarchy == "" || hierarchy == "") {
 <Attributes dsName="cms_dev"/>
 <DMLConfig class="com.fr.write.config.UpdateConfig">
 <Table schema="" name="transactions"/>
-<ColumnConfig name="id" isKey="false" skipUnmodified="false">
+<ColumnConfig name="id" isKey="true" skipUnmodified="false">
 <O t="XMLable" class="com.fr.base.Formula">
 <Attributes>
 <![CDATA[=VALUE("transaction_details","id")]]></Attributes>
@@ -1817,7 +1817,7 @@ FR.showDialog(o.title, o.width, o.height, $iframe,o); ]]></Content>
 </ParameterUI>
 </ReportParameterAttr>
 <StyleList>
-<Style style_name="Default" full="true" border_source="-1" imageLayout="1">
+<Style imageLayout="1">
 <FRFont name="simhei" style="0" size="72"/>
 <Background name="NullBackground"/>
 <Border/>
@@ -1875,7 +1875,7 @@ FR.showDialog(o.title, o.width, o.height, $iframe,o); ]]></Content>
 <DesignerVersion DesignerVersion="LAA"/>
 <PreviewType PreviewType="0"/>
 <TemplateThemeAttrMark class="com.fr.base.iofile.attr.TemplateThemeAttrMark">
-<TemplateThemeAttrMark name="Classic Light Gray" dark="false"/>
+<TemplateThemeAttrMark name="经典浅灰" dark="false"/>
 </TemplateThemeAttrMark>
 <StrategyConfigsAttr class="com.fr.esd.core.strategy.persistence.StrategyConfigsAttr">
 <StrategyConfigs>
@@ -1890,7 +1890,7 @@ FR.showDialog(o.title, o.width, o.height, $iframe,o); ]]></Content>
 <StrategyConfig dsName="transaction_details" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
 </StrategyConfigs>
 </StrategyConfigsAttr>
-<TemplateCloudInfoAttrMark class="com.fr.plugin.cloud.analytics.attr.TemplateInfoAttrMark" pluginID="com.fr.plugin.cloud.analytics.v11" plugin-version="3.7.0.20220804">
+<TemplateCloudInfoAttrMark class="com.fr.plugin.cloud.analytics.attr.TemplateInfoAttrMark" pluginID="com.fr.plugin.cloud.analytics.v11" plugin-version="3.8.0.20220907">
 <TemplateCloudInfoAttrMark createTime="1657851758920"/>
 </TemplateCloudInfoAttrMark>
 <TemplateIdAttMark class="com.fr.base.iofile.attr.TemplateIdAttrMark">

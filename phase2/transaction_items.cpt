@@ -140,7 +140,7 @@ and department_id = '${department_id}']]></Query>
 <![CDATA[cms_dev]]></DatabaseName>
 </Connection>
 <Query>
-<![CDATA[SELECT * FROM [dbo]A.[workflow_state_hierarchy]A
+<![CDATA[SELECT TOP 1 * FROM [dbo]A.[workflow_state_hierarchy]A
 where state_type_parent_id = '${state_type_parent_id}'
 --and state_type_child_id = '${state_type_child_id}']]></Query>
 <PageQuery>
@@ -2027,7 +2027,7 @@ else{
 <DesignerVersion DesignerVersion="LAA"/>
 <PreviewType PreviewType="0"/>
 <TemplateThemeAttrMark class="com.fr.base.iofile.attr.TemplateThemeAttrMark">
-<TemplateThemeAttrMark name="Classic Light Gray" dark="false"/>
+<TemplateThemeAttrMark name="经典浅灰" dark="false"/>
 </TemplateThemeAttrMark>
 <StrategyConfigsAttr class="com.fr.esd.core.strategy.persistence.StrategyConfigsAttr">
 <StrategyConfigs>
@@ -2039,7 +2039,7 @@ else{
 <StrategyConfig dsName="option" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
 </StrategyConfigs>
 </StrategyConfigsAttr>
-<TemplateCloudInfoAttrMark class="com.fr.plugin.cloud.analytics.attr.TemplateInfoAttrMark" pluginID="com.fr.plugin.cloud.analytics.v11" plugin-version="3.7.0.20220804">
+<TemplateCloudInfoAttrMark class="com.fr.plugin.cloud.analytics.attr.TemplateInfoAttrMark" pluginID="com.fr.plugin.cloud.analytics.v11" plugin-version="3.8.0.20220907">
 <TemplateCloudInfoAttrMark createTime="1657851758920"/>
 </TemplateCloudInfoAttrMark>
 <TemplateIdAttMark class="com.fr.base.iofile.attr.TemplateIdAttrMark">

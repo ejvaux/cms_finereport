@@ -19,14 +19,20 @@ FROM [dbo]A.[transactions]A t
 CROSS APPLY
 (
 SELECT top 1
-	th.*,
+	--th.*
 	wst_s.type_key as state
+	,th.id
+	,th.wf_state_type_state_id
+	,th.wf_state_type_outcome_id
+	,th.updated_at
 	
 FROM [dbo]A.[transaction_history]A th
 
 left outer join workflow_state_type wst_s
 on wst_s.id = th.wf_state_type_state_id
+
 where th.transaction_id = t.id
+
 order by th.id desc
 ) th2
 
@@ -49,15 +55,17 @@ and th2.wf_state_type_outcome_id is null]]></Query>
 <ColumnPrivilegeControl/>
 <RowPrivilegeControl/>
 <RowHeight defaultValue="723900">
-<![CDATA[723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900]]></RowHeight>
+<![CDATA[723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900]]></RowHeight>
 <ColumnWidth defaultValue="2743200">
-<![CDATA[4114800,6210300,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200]]></ColumnWidth>
+<![CDATA[4114800,6210300,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200]]></ColumnWidth>
 <CellElementList>
 <C c="0" r="0" s="0">
 <O t="DSColumn">
 <Attributes dsName="transactions" columnName="id"/>
 <Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
 <Parameters/>
+<cellSortAttr/>
 </O>
 <PrivilegeControl/>
 <Expand dir="0">
