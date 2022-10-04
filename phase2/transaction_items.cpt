@@ -388,6 +388,8 @@ $('.ui-state-disabled[widgetname=FINISH_BTN]A').css({'opacity':'.5'});]]></Conte
 </C>
 <C c="3" r="1" s="2">
 <PrivilegeControl/>
+<CellGUIAttr showAsDefault="true"/>
+<CellPageAttr/>
 <Widget class="com.fr.form.ui.ComboBox">
 <WidgetName name="item_part_number"/>
 <WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
@@ -399,7 +401,7 @@ $('.ui-state-disabled[widgetname=FINISH_BTN]A').css({'opacity':'.5'});]]></Conte
 <CustomData>
 <![CDATA[false]]></CustomData>
 <Dictionary class="com.fr.data.impl.TableDataDictionary">
-<FormulaDictAttr kiName="id" viName="part_number"/>
+<FormulaDictAttr kiName="id" formula="=VALUE(&quot;items&quot;,&quot;part_number&quot;,&quot;id&quot;,$$$) + &quot; - &quot; + VALUE(&quot;items&quot;,&quot;description&quot;,&quot;id&quot;,$$$)"/>
 <TableDataDictAttr>
 <TableData class="com.fr.data.impl.NameTableData">
 <Name>

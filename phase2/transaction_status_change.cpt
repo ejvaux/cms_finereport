@@ -95,41 +95,17 @@ where t.id = '${transaction_id}']]></Query>
 <![CDATA[SELECT 
 		ti.*,
 		i.description,
-		i.unit_id 
+		i.unit_id,
+		u.name
 FROM [dbo]A.[transaction_items]A ti
 
 left outer join items i
 on i.id = ti.item_id
+
+left join units u
+on u.id = i.unit_id
+
 where transaction_id = '${t_id}']]></Query>
-<PageQuery>
-<![CDATA[]]></PageQuery>
-</TableData>
-<TableData name="items" class="com.fr.data.impl.DBTableData">
-<Parameters>
-<Parameter>
-<Attributes name="department_id"/>
-<O t="XMLable" class="com.fr.base.Formula">
-<Attributes>
-<![CDATA[=value("transaction_details","department_id")]]></Attributes>
-</O>
-</Parameter>
-<Parameter>
-<Attributes name="site_id"/>
-<O t="XMLable" class="com.fr.base.Formula">
-<Attributes>
-<![CDATA[=value("transaction_details","site_id")]]></Attributes>
-</O>
-</Parameter>
-</Parameters>
-<Attributes maxMemRowCount="-1"/>
-<Connection class="com.fr.data.impl.NameDatabaseConnection">
-<DatabaseName>
-<![CDATA[cms_dev]]></DatabaseName>
-</Connection>
-<Query>
-<![CDATA[SELECT * FROM [dbo]A.[items]A
-where site_id = '${site_id}'
-and department_id = '${department_id}']]></Query>
 <PageQuery>
 <![CDATA[]]></PageQuery>
 </TableData>
@@ -480,7 +456,7 @@ $('.fst-edt').css('color','black');]]></Content>
 </C>
 <C c="5" r="3" s="3">
 <O t="DSColumn">
-<Attributes dsName="transaction_items" columnName="unit_id"/>
+<Attributes dsName="transaction_items" columnName="name"/>
 <Complex/>
 <RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
 <Parameters/>

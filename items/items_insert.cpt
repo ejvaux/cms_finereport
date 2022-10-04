@@ -157,22 +157,9 @@ setTimeout(
 <widgetValue/>
 <MobileScanCodeAttr scanCode="false" textInputMode="1" isSupportManual="true" isSupportScan="false" isSupportNFC="false"/>
 </Widget>
-<Expand/>
-</C>
-<C c="3" r="1" cs="4" rs="17" s="2">
-<PrivilegeControl/>
-<CellGUIAttr showAsImage="true"/>
-<CellPageAttr/>
-<Widget class="com.fr.form.ui.MultiFileEditor">
-<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
-<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
-<PrivilegeControl/>
-</WidgetAttr>
-<FileAttr maxlength="1" accept="jpg|png|gif" maxSize="0.0">
-<MultiFileUploaderMobileAttr uploadMode="0"/>
-</FileAttr>
-</Widget>
-<Expand/>
+<Expand>
+<cellSortAttr/>
+</Expand>
 </C>
 <C c="0" r="2" s="0">
 <O>
@@ -180,7 +167,7 @@ setTimeout(
 <PrivilegeControl/>
 <Expand/>
 </C>
-<C c="1" r="2" s="1">
+<C c="1" r="2" s="2">
 <PrivilegeControl/>
 <Widget class="com.fr.form.ui.TextEditor">
 <WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
@@ -200,7 +187,7 @@ setTimeout(
 <PrivilegeControl/>
 <Expand/>
 </C>
-<C c="1" r="3" s="1">
+<C c="1" r="3" s="2">
 <PrivilegeControl/>
 <Widget class="com.fr.form.ui.TextEditor">
 <WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
@@ -247,7 +234,7 @@ setTimeout(
 <PrivilegeControl/>
 <Expand/>
 </C>
-<C c="1" r="5" s="1">
+<C c="1" r="5" s="2">
 <PrivilegeControl/>
 <Widget class="com.fr.form.ui.ComboBox">
 <WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
@@ -282,7 +269,7 @@ setTimeout(
 <PrivilegeControl/>
 <Expand/>
 </C>
-<C c="1" r="6" s="1">
+<C c="1" r="6" s="2">
 <PrivilegeControl/>
 <Widget class="com.fr.form.ui.ComboBox">
 <WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
@@ -317,7 +304,7 @@ setTimeout(
 <PrivilegeControl/>
 <Expand/>
 </C>
-<C c="1" r="7" s="1">
+<C c="1" r="7" s="2">
 <PrivilegeControl/>
 <Widget class="com.fr.form.ui.ComboBox">
 <WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
@@ -352,7 +339,7 @@ setTimeout(
 <PrivilegeControl/>
 <Expand/>
 </C>
-<C c="1" r="8" s="1">
+<C c="1" r="8" s="2">
 <PrivilegeControl/>
 <Widget class="com.fr.form.ui.ComboBox">
 <WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
@@ -413,7 +400,7 @@ setTimeout(
 <PrivilegeControl/>
 <Expand/>
 </C>
-<C c="1" r="10" s="1">
+<C c="1" r="10" s="2">
 <PrivilegeControl/>
 <Widget class="com.fr.form.ui.ComboBox">
 <WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
@@ -448,7 +435,7 @@ setTimeout(
 <PrivilegeControl/>
 <Expand/>
 </C>
-<C c="1" r="11" s="1">
+<C c="1" r="11" s="2">
 <PrivilegeControl/>
 <Widget class="com.fr.form.ui.ComboBox">
 <WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
@@ -483,7 +470,7 @@ setTimeout(
 <PrivilegeControl/>
 <Expand/>
 </C>
-<C c="1" r="12" s="1">
+<C c="1" r="12" s="2">
 <PrivilegeControl/>
 <Widget class="com.fr.form.ui.ComboBox">
 <WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
@@ -518,7 +505,7 @@ setTimeout(
 <PrivilegeControl/>
 <Expand/>
 </C>
-<C c="1" r="13" s="1">
+<C c="1" r="13" s="2">
 <PrivilegeControl/>
 <Widget class="com.fr.form.ui.NumberEditor">
 <WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
@@ -539,7 +526,7 @@ setTimeout(
 <cellSortAttr/>
 </Expand>
 </C>
-<C c="1" r="14" s="1">
+<C c="1" r="14" s="2">
 <PrivilegeControl/>
 <Widget class="com.fr.form.ui.NumberEditor">
 <WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
@@ -577,7 +564,7 @@ setTimeout(
 </C>
 <C c="0" r="16" s="0">
 <O>
-<![CDATA[Lead Time]]></O>
+<![CDATA[Lead Time(days)]]></O>
 <PrivilegeControl/>
 <Expand>
 <cellSortAttr/>
@@ -585,17 +572,18 @@ setTimeout(
 </C>
 <C c="1" r="16" s="1">
 <PrivilegeControl/>
-<Widget class="com.fr.form.ui.TextEditor">
+<Widget class="com.fr.form.ui.NumberEditor">
 <WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
 <MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
 <PrivilegeControl/>
 </WidgetAttr>
-<TextAttr/>
-<Reg class="com.fr.form.ui.reg.NoneReg"/>
+<NumberAttr allowDecimals="false" allowNegative="false">
 <widgetValue/>
-<MobileScanCodeAttr scanCode="true" textInputMode="0" isSupportManual="true" isSupportScan="true" isSupportNFC="false"/>
+</NumberAttr>
 </Widget>
-<Expand/>
+<Expand>
+<cellSortAttr/>
+</Expand>
 </C>
 <C c="0" r="17" s="0">
 <O>
@@ -607,17 +595,34 @@ setTimeout(
 </C>
 <C c="1" r="17" s="1">
 <PrivilegeControl/>
-<Widget class="com.fr.form.ui.TextEditor">
-<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<Widget class="com.fr.form.ui.ComboBox">
+<WidgetAttr disabled="true" aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
 <MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
 <PrivilegeControl/>
 </WidgetAttr>
-<TextAttr/>
-<Reg class="com.fr.form.ui.reg.NoneReg"/>
+<Dictionary class="com.fr.data.impl.DatabaseDictionary">
+<FormulaDictAttr kiName="id" viName="name"/>
+<DBDictAttr tableName="item_statuses" schemaName="" ki="-1" vi="-1" kiName="id" viName="name"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[cms_dev]]></DatabaseName>
+</Connection>
+</Dictionary>
 <widgetValue/>
-<MobileScanCodeAttr scanCode="true" textInputMode="0" isSupportManual="true" isSupportScan="true" isSupportNFC="false"/>
 </Widget>
-<Expand/>
+<Present class="com.fr.base.present.DictPresent">
+<Dictionary class="com.fr.data.impl.DatabaseDictionary">
+<FormulaDictAttr kiName="id" viName="name"/>
+<DBDictAttr tableName="item_statuses" schemaName="" ki="-1" vi="-1" kiName="id" viName="name"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[cms_dev]]></DatabaseName>
+</Connection>
+</Dictionary>
+</Present>
+<Expand>
+<cellSortAttr/>
+</Expand>
 </C>
 </CellElementList>
 <ReportAttrSet>
@@ -745,7 +750,7 @@ setTimeout(
 <Right style="1"/>
 </Border>
 </Style>
-<Style imageLayout="1">
+<Style horizontal_alignment="4" imageLayout="1">
 <FRFont name="Arial" style="0" size="96"/>
 <Background name="NullBackground"/>
 <Border>
@@ -756,7 +761,7 @@ setTimeout(
 </Border>
 </Style>
 <Style imageLayout="1">
-<FRFont name="Arial" style="0" size="72"/>
+<FRFont name="Arial" style="0" size="96"/>
 <Background name="NullBackground"/>
 <Border>
 <Top style="1"/>
@@ -779,7 +784,7 @@ setTimeout(
 <DesignerVersion DesignerVersion="LAA"/>
 <PreviewType PreviewType="1"/>
 <TemplateThemeAttrMark class="com.fr.base.iofile.attr.TemplateThemeAttrMark">
-<TemplateThemeAttrMark name="Classic Light Gray" dark="false"/>
+<TemplateThemeAttrMark name="经典浅灰" dark="false"/>
 </TemplateThemeAttrMark>
 <StrategyConfigsAttr class="com.fr.esd.core.strategy.persistence.StrategyConfigsAttr">
 <StrategyConfigs/>

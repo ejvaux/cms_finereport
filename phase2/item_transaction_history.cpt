@@ -404,6 +404,8 @@ WHERE ti.item_id = '${item_id}']]></Query>
 </cellSortAttr>
 </O>
 <PrivilegeControl/>
+<CellGUIAttr adjustmode="2"/>
+<CellPageAttr/>
 <Expand dir="0">
 <cellSortAttr/>
 </Expand>
@@ -558,7 +560,7 @@ WHERE ti.item_id = '${item_id}']]></Query>
 <DesignerVersion DesignerVersion="LAA"/>
 <PreviewType PreviewType="0"/>
 <TemplateThemeAttrMark class="com.fr.base.iofile.attr.TemplateThemeAttrMark">
-<TemplateThemeAttrMark name="Classic Light Gray" dark="false"/>
+<TemplateThemeAttrMark name="经典浅灰" dark="false"/>
 </TemplateThemeAttrMark>
 <StrategyConfigsAttr class="com.fr.esd.core.strategy.persistence.StrategyConfigsAttr">
 <StrategyConfigs>

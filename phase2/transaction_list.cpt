@@ -35,10 +35,14 @@
 	t.id,
 	t.transaction_number,
 	t.requested_by,
+	r.name as requestor,
 	t.transaction_type_id,
+	wst2.type_key as process,
 	t.created_at,
+	t.updated_at,
 	wst.type_key,
 	th2.wf_state_type_state_id,
+	wst3.type_key as status,
 	t.site_id,
 	t.department_id
 	
@@ -53,6 +57,15 @@ CROSS APPLY
 
 left outer join workflow_state_type wst
 on wst.id = th2.wf_state_type_state_id
+
+left outer join workflow_state_type wst2
+on wst2.id = t.transaction_type_id
+
+left outer join workflow_state_type wst3
+on wst3.id = th2.wf_state_type_state_id
+
+left outer join requestors r
+on r.id = t.requested_by
 
 where 1=1
 and th2.wf_state_type_state_id IN (''+${states}+'')
@@ -187,7 +200,7 @@ where name IN(''+${user_departments}+'')]]></Query>
 <ColumnPrivilegeControl/>
 <RowPrivilegeControl/>
 <RowHeight defaultValue="723900">
-<![CDATA[723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900]]></RowHeight>
+<![CDATA[723900,800100,723900,723900,723900,723900,723900,723900,723900,723900,723900]]></RowHeight>
 <ColumnWidth defaultValue="2743200">
 <![CDATA[2400300,4991100,2743200,3276600,4800600,4343400,2743200,2743200,2743200,2743200,2743200]]></ColumnWidth>
 <CellElementList>
@@ -233,16 +246,20 @@ where name IN(''+${user_departments}+'')]]></Query>
 </C>
 <C c="5" r="1" s="2">
 <O>
-<![CDATA[Created at]]></O>
+<![CDATA[Updated at]]></O>
 <PrivilegeControl/>
-<Expand/>
+<Expand>
+<cellSortAttr/>
+</Expand>
 </C>
 <C c="0" r="2" s="3">
 <O t="DSColumn">
 <Attributes dsName="transaction" columnName="id"/>
 <Condition class="com.fr.data.condition.ListCondition"/>
 <Complex/>
-<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper">
+<Attr divideMode="1"/>
+</RG>
 <Result>
 <![CDATA[$$$]]></Result>
 <Parameters/>
@@ -288,47 +305,9 @@ where name IN(''+${user_departments}+'')]]></Query>
 <C c="1" r="2" s="4">
 <O t="DSColumn">
 <Attributes dsName="transaction" columnName="transaction_number"/>
-<Complex/>
-<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
-<Parameters/>
-<cellSortAttr/>
-</O>
-<PrivilegeControl/>
-<CellGUIAttr adjustmode="2"/>
-<CellPageAttr/>
-<Expand dir="0"/>
-</C>
-<C c="2" r="2" s="4">
-<O t="DSColumn">
-<Attributes dsName="transaction" columnName="transaction_type_id"/>
-<Complex/>
-<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
-<Parameters/>
-<cellSortAttr/>
-</O>
-<PrivilegeControl/>
-<CellGUIAttr adjustmode="2"/>
-<CellPageAttr/>
-<Present class="com.fr.base.present.DictPresent">
-<Dictionary class="com.fr.data.impl.DatabaseDictionary">
-<FormulaDictAttr kiName="id" viName="type_key"/>
-<DBDictAttr tableName="workflow_state_type" schemaName="" ki="-1" vi="-1" kiName="id" viName="type_key"/>
-<Connection class="com.fr.data.impl.NameDatabaseConnection">
-<DatabaseName>
-<![CDATA[cms_dev]]></DatabaseName>
-</Connection>
-</Dictionary>
-</Present>
-<Expand dir="0"/>
-</C>
-<C c="3" r="2" s="4">
-<O t="DSColumn">
-<Attributes dsName="transaction" columnName="wf_state_type_state_id"/>
 <Condition class="com.fr.data.condition.ListCondition"/>
 <Complex/>
-<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper">
-<Attr divideMode="1"/>
-</RG>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
 <Result>
 <![CDATA[$$$]]></Result>
 <Parameters/>
@@ -339,21 +318,13 @@ where name IN(''+${user_departments}+'')]]></Query>
 <PrivilegeControl/>
 <CellGUIAttr adjustmode="2"/>
 <CellPageAttr/>
-<Present class="com.fr.base.present.DictPresent">
-<Dictionary class="com.fr.data.impl.DatabaseDictionary">
-<FormulaDictAttr kiName="id" viName="type_key"/>
-<DBDictAttr tableName="workflow_state_type" schemaName="" ki="-1" vi="-1" kiName="id" viName="type_key"/>
-<Connection class="com.fr.data.impl.NameDatabaseConnection">
-<DatabaseName>
-<![CDATA[cms_dev]]></DatabaseName>
-</Connection>
-</Dictionary>
-</Present>
-<Expand dir="0"/>
+<Expand dir="0">
+<cellSortAttr/>
+</Expand>
 </C>
-<C c="4" r="2" s="4">
+<C c="2" r="2" s="4">
 <O t="DSColumn">
-<Attributes dsName="transaction" columnName="requested_by"/>
+<Attributes dsName="transaction" columnName="process"/>
 <Complex/>
 <RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
 <Parameters/>
@@ -362,25 +333,46 @@ where name IN(''+${user_departments}+'')]]></Query>
 <PrivilegeControl/>
 <CellGUIAttr adjustmode="2"/>
 <CellPageAttr/>
-<Present class="com.fr.base.present.DictPresent">
-<Dictionary class="com.fr.data.impl.DatabaseDictionary">
-<FormulaDictAttr kiName="id" viName="name"/>
-<DBDictAttr tableName="requestors" schemaName="" ki="-1" vi="-1" kiName="id" viName="name"/>
-<Connection class="com.fr.data.impl.NameDatabaseConnection">
-<DatabaseName>
-<![CDATA[cms_dev]]></DatabaseName>
-</Connection>
-</Dictionary>
-</Present>
 <Expand dir="0"/>
 </C>
-<C c="5" r="2" s="4">
+<C c="3" r="2" s="4">
 <O t="DSColumn">
-<Attributes dsName="transaction" columnName="created_at"/>
+<Attributes dsName="transaction" columnName="status"/>
 <Complex/>
 <RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
 <Parameters/>
 <cellSortAttr/>
+</O>
+<PrivilegeControl/>
+<CellGUIAttr adjustmode="2"/>
+<CellPageAttr/>
+<Expand dir="0"/>
+</C>
+<C c="4" r="2" s="4">
+<O t="DSColumn">
+<Attributes dsName="transaction" columnName="requestor"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+<cellSortAttr/>
+</O>
+<PrivilegeControl/>
+<CellGUIAttr adjustmode="2"/>
+<CellPageAttr/>
+<Expand dir="0"/>
+</C>
+<C c="5" r="2" s="4">
+<O t="DSColumn">
+<Attributes dsName="transaction" columnName="updated_at"/>
+<Condition class="com.fr.data.condition.ListCondition"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Result>
+<![CDATA[$$$]]></Result>
+<Parameters/>
+<cellSortAttr>
+<sortExpressions/>
+</cellSortAttr>
 </O>
 <PrivilegeControl/>
 <CellGUIAttr adjustmode="2"/>

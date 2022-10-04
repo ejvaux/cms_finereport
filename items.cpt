@@ -52,9 +52,9 @@ where part_number like CONCAT('%','${part_number}','%')]]></Query>
 <ColumnPrivilegeControl/>
 <RowPrivilegeControl/>
 <RowHeight defaultValue="723900">
-<![CDATA[838200,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,838200,723900]]></RowHeight>
+<![CDATA[838200,1104900,1447800,723900,723900,723900,723900,723900,723900,723900,723900]]></RowHeight>
 <ColumnWidth defaultValue="2743200">
-<![CDATA[2209800,1866900,1981200,3200400,3390900,7658100,7620000,2743200,2743200,2743200,2743200,1524000,1828800,1790700,1790700,2743200]]></ColumnWidth>
+<![CDATA[2209800,2057400,1981200,3200400,3390900,7658100,7620000,2743200,2743200,2743200,2743200,1524000,1828800,1790700,1790700,2743200,3390900,2743200]]></ColumnWidth>
 <CellElementList>
 <C c="0" r="0" cs="3" s="0">
 <O>
@@ -263,6 +263,8 @@ where part_number like CONCAT('%','${part_number}','%')]]></Query>
 <cellSortAttr/>
 </O>
 <PrivilegeControl/>
+<CellGUIAttr adjustmode="2"/>
+<CellPageAttr/>
 <Present class="com.fr.base.present.DictPresent">
 <Dictionary class="com.fr.data.impl.DatabaseDictionary">
 <FormulaDictAttr kiName="id" viName="name"/>
@@ -528,6 +530,7 @@ where part_number like CONCAT('%','${part_number}','%')]]></Query>
 <Complex/>
 <RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
 <Parameters/>
+<cellSortAttr/>
 </O>
 <PrivilegeControl/>
 <Present class="com.fr.base.present.DictPresent">
@@ -548,9 +551,16 @@ where part_number like CONCAT('%','${part_number}','%')]]></Query>
 <Complex/>
 <RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
 <Parameters/>
+<cellSortAttr/>
 </O>
 <PrivilegeControl/>
-<Expand dir="0"/>
+<Present class="com.fr.base.present.FormulaPresent">
+<Content>
+<![CDATA[=if(!ISNULL($$$),$$$ + " days","")]]></Content>
+</Present>
+<Expand dir="0">
+<cellSortAttr/>
+</Expand>
 </C>
 <C c="17" r="2" s="8">
 <O t="DSColumn">
@@ -561,21 +571,19 @@ where part_number like CONCAT('%','${part_number}','%')]]></Query>
 <cellSortAttr/>
 </O>
 <PrivilegeControl/>
-<Expand dir="0"/>
-</C>
-<C c="9" r="3">
-<PrivilegeControl/>
 <Present class="com.fr.base.present.DictPresent">
 <Dictionary class="com.fr.data.impl.DatabaseDictionary">
 <FormulaDictAttr kiName="id" viName="name"/>
-<DBDictAttr tableName="allocations" schemaName="" ki="-1" vi="-1" kiName="id" viName="name"/>
+<DBDictAttr tableName="item_statuses" schemaName="dbo" ki="-1" vi="-1" kiName="id" viName="name"/>
 <Connection class="com.fr.data.impl.NameDatabaseConnection">
 <DatabaseName>
 <![CDATA[cms_dev]]></DatabaseName>
 </Connection>
 </Dictionary>
 </Present>
-<Expand/>
+<Expand dir="0">
+<cellSortAttr/>
+</Expand>
 </C>
 </CellElementList>
 <ReportAttrSet>
@@ -782,7 +790,7 @@ where part_number like CONCAT('%','${part_number}','%')]]></Query>
 <Border/>
 </Style>
 <Style horizontal_alignment="0" imageLayout="1">
-<FRFont name="Arial" style="0" size="72"/>
+<FRFont name="Arial" style="0" size="96"/>
 <Background name="ColorBackground">
 <color>
 <FineColor color="-6697729" hor="-1" ver="-1"/>
@@ -810,7 +818,7 @@ where part_number like CONCAT('%','${part_number}','%')]]></Query>
 </Border>
 </Style>
 <Style horizontal_alignment="2" imageLayout="1">
-<FRFont name="Arial" style="0" size="72"/>
+<FRFont name="Arial" style="0" size="96"/>
 <Background name="NullBackground"/>
 <Border>
 <Top style="1"/>
@@ -820,7 +828,7 @@ where part_number like CONCAT('%','${part_number}','%')]]></Query>
 </Border>
 </Style>
 <Style horizontal_alignment="2" imageLayout="1">
-<FRFont name="simhei" style="0" size="72"/>
+<FRFont name="simhei" style="0" size="96"/>
 <Background name="NullBackground"/>
 <Border>
 <Top style="1"/>
@@ -830,7 +838,7 @@ where part_number like CONCAT('%','${part_number}','%')]]></Query>
 </Border>
 </Style>
 <Style textStyle="1" imageLayout="1" paddingRight="5">
-<FRFont name="Arial" style="0" size="72"/>
+<FRFont name="Arial" style="0" size="96"/>
 <Background name="NullBackground"/>
 <Border>
 <Top style="1"/>
@@ -840,7 +848,7 @@ where part_number like CONCAT('%','${part_number}','%')]]></Query>
 </Border>
 </Style>
 <Style horizontal_alignment="2" imageLayout="1" paddingRight="5">
-<FRFont name="Arial" style="0" size="72"/>
+<FRFont name="Arial" style="0" size="96"/>
 <Background name="NullBackground"/>
 <Border>
 <Top style="1"/>
@@ -850,7 +858,7 @@ where part_number like CONCAT('%','${part_number}','%')]]></Query>
 </Border>
 </Style>
 <Style imageLayout="1" paddingRight="5">
-<FRFont name="Arial" style="0" size="72"/>
+<FRFont name="Arial" style="0" size="96"/>
 <Background name="NullBackground"/>
 <Border>
 <Top style="1"/>
@@ -860,7 +868,7 @@ where part_number like CONCAT('%','${part_number}','%')]]></Query>
 </Border>
 </Style>
 <Style imageLayout="1">
-<FRFont name="simhei" style="0" size="72"/>
+<FRFont name="simhei" style="0" size="96"/>
 <Background name="NullBackground"/>
 <Border>
 <Top style="1"/>
@@ -873,7 +881,7 @@ where part_number like CONCAT('%','${part_number}','%')]]></Query>
 <DesignerVersion DesignerVersion="LAA"/>
 <PreviewType PreviewType="0"/>
 <TemplateThemeAttrMark class="com.fr.base.iofile.attr.TemplateThemeAttrMark">
-<TemplateThemeAttrMark name="Classic Light Gray" dark="false"/>
+<TemplateThemeAttrMark name="经典浅灰" dark="false"/>
 </TemplateThemeAttrMark>
 <StrategyConfigsAttr class="com.fr.esd.core.strategy.persistence.StrategyConfigsAttr">
 <StrategyConfigs/>
