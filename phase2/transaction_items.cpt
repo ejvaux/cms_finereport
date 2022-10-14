@@ -98,13 +98,6 @@ where transaction_id = '${t_id}']]></Query>
 <TableData name="items" class="com.fr.data.impl.DBTableData">
 <Parameters>
 <Parameter>
-<Attributes name="department_id"/>
-<O t="XMLable" class="com.fr.base.Formula">
-<Attributes>
-<![CDATA[=VALUE("transaction_details","department_id")]]></Attributes>
-</O>
-</Parameter>
-<Parameter>
 <Attributes name="site_id"/>
 <O t="XMLable" class="com.fr.base.Formula">
 <Attributes>
@@ -120,7 +113,7 @@ where transaction_id = '${t_id}']]></Query>
 <Query>
 <![CDATA[SELECT * FROM [dbo]A.[items]A
 where site_id = '${site_id}'
-and department_id = '${department_id}']]></Query>
+--and department_id = '${department_id}']]></Query>
 <PageQuery>
 <![CDATA[]]></PageQuery>
 </TableData>
@@ -263,7 +256,7 @@ $('.ui-state-disabled[widgetname=FINISH_BTN]A').css({'opacity':'.5'});]]></Conte
 <cellSortAttr/>
 </Expand>
 </C>
-<C c="3" r="0" cs="4" s="1">
+<C c="2" r="0" cs="5" s="1">
 <O>
 <![CDATA[ADD ITEM]]></O>
 <PrivilegeControl/>
@@ -386,7 +379,7 @@ $('.ui-state-disabled[widgetname=FINISH_BTN]A').css({'opacity':'.5'});]]></Conte
 <cellSortAttr/>
 </Expand>
 </C>
-<C c="3" r="1" s="2">
+<C c="2" r="1" cs="2" s="2">
 <PrivilegeControl/>
 <CellGUIAttr showAsDefault="true"/>
 <CellPageAttr/>
@@ -401,7 +394,7 @@ $('.ui-state-disabled[widgetname=FINISH_BTN]A').css({'opacity':'.5'});]]></Conte
 <CustomData>
 <![CDATA[false]]></CustomData>
 <Dictionary class="com.fr.data.impl.TableDataDictionary">
-<FormulaDictAttr kiName="id" formula="=VALUE(&quot;items&quot;,&quot;part_number&quot;,&quot;id&quot;,$$$) + &quot; - &quot; + VALUE(&quot;items&quot;,&quot;description&quot;,&quot;id&quot;,$$$)"/>
+<FormulaDictAttr kiName="id" formula="=VALUE(&quot;items&quot;,&quot;part_number&quot;,&quot;id&quot;,$$$) + &quot; - &quot; + UPPER(VALUE(&quot;items&quot;,&quot;description&quot;,&quot;id&quot;,$$$))"/>
 <TableDataDictAttr>
 <TableData class="com.fr.data.impl.NameTableData">
 <Name>
@@ -413,8 +406,8 @@ $('.ui-state-disabled[widgetname=FINISH_BTN]A').css({'opacity':'.5'});]]></Conte
 </Widget>
 <Present class="com.fr.base.present.DictPresent">
 <Dictionary class="com.fr.data.impl.DatabaseDictionary">
-<FormulaDictAttr kiName="id" viName="part_number"/>
-<DBDictAttr tableName="items" schemaName="" ki="-1" vi="-1" kiName="id" viName="part_number"/>
+<FormulaDictAttr kiName="id" formula="=VALUE(&quot;items&quot;,&quot;part_number&quot;,&quot;id&quot;,$$$) + &quot; - &quot; + VALUE(&quot;items&quot;,&quot;description&quot;,&quot;id&quot;,$$$)"/>
+<DBDictAttr tableName="items" schemaName="" ki="-1" vi="2" kiName="id" viName=""/>
 <Connection class="com.fr.data.impl.NameDatabaseConnection">
 <DatabaseName>
 <![CDATA[cms_dev]]></DatabaseName>

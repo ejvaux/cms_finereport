@@ -195,7 +195,7 @@ where i.id = '${id}']]></Query>
 <JavaScript class="com.fr.js.JavaScriptImpl">
 <Parameters/>
 <Content>
-<![CDATA[]]></Content>
+<![CDATA[null]]></Content>
 </JavaScript>
 </Listener>
 <WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
@@ -909,12 +909,7 @@ where i.id = '${id}']]></Query>
 <ColumnConfig name="image" isKey="false" skipUnmodified="false">
 <ColumnRow column="3" row="1"/>
 </ColumnConfig>
-<ColumnConfig name="updated_at" isKey="false" skipUnmodified="false">
-<O t="XMLable" class="com.fr.base.Formula">
-<Attributes>
-<![CDATA[=NOW()]]></Attributes>
-</O>
-</ColumnConfig>
+<Condition class="com.fr.data.condition.ListCondition"/>
 </DMLConfig>
 </SubmitVisitor>
 </ReportWriteAttr>

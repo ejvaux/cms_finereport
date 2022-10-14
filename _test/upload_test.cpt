@@ -2,14 +2,21 @@
 <WorkBook xmlVersion="20211223" releaseVersion="11.0.0">
 <TableDataMap>
 <TableData name="ds1" class="com.fr.data.impl.DBTableData">
-<Parameters/>
+<Parameters>
+<Parameter>
+<Attributes name="id"/>
+<O>
+<![CDATA[1]]></O>
+</Parameter>
+</Parameters>
 <Attributes maxMemRowCount="-1"/>
 <Connection class="com.fr.data.impl.NameDatabaseConnection">
 <DatabaseName>
 <![CDATA[cms_dev]]></DatabaseName>
 </Connection>
 <Query>
-<![CDATA[SELECT * FROM [dbo]A.[items]A]]></Query>
+<![CDATA[SELECT * FROM [dbo]A.[items]A
+where id = '${id}']]></Query>
 <PageQuery>
 <![CDATA[]]></PageQuery>
 </TableData>
@@ -149,9 +156,9 @@
 <ColumnPrivilegeControl/>
 <RowPrivilegeControl/>
 <RowHeight defaultValue="723900">
-<![CDATA[723900,723900,7353300,723900,723900,723900,723900,723900,723900,723900,723900]]></RowHeight>
+<![CDATA[723900,723900,11430000,723900,723900,723900,723900,723900,723900,723900,723900]]></RowHeight>
 <ColumnWidth defaultValue="2743200">
-<![CDATA[2743200,3200400,9448800,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200]]></ColumnWidth>
+<![CDATA[2743200,3200400,11430000,2743200,2743200,2743200,2743200,2743200,2743200]]></ColumnWidth>
 <CellElementList>
 <C c="0" r="0" s="0">
 <PrivilegeControl/>
@@ -209,25 +216,26 @@
 <cellSortAttr/>
 </O>
 <PrivilegeControl/>
+<CellGUIAttr>
+<ToolTipText>
+<![CDATA[<div style="border:0;background:url(/webroot/decision/view/report?id=__ImageCache__44E07511F1642197E7084A3ECB6745AB&amp;cache=true&amp;op=fr_attach&amp;cmd=ah_image) no-repeat;width:246px;background-position:center;height:192px;background-size:contain"> </div>]]></ToolTipText>
+</CellGUIAttr>
+<CellPageAttr/>
 <Expand dir="0">
 <cellSortAttr/>
 </Expand>
 </C>
-<C c="2" r="2" s="1">
+<C c="2" r="2" s="2">
 <O t="XMLable" class="com.fr.base.Formula">
 <Attributes>
-<![CDATA[=WEBIMAGE(CONCATENATE("D:/CMS/Image/",B3,".png"))]]></Attributes>
+<![CDATA[=TOIMAGE((CONCATENATE("C:/xampp old/htdocs/cms_backend/storage/app/images/",B3,".png")),true,300,300)]]></Attributes>
 </O>
 <PrivilegeControl/>
-<CellGUIAttr showAsImage="true"/>
+<CellGUIAttr adjustmode="1" showAsImage="true"/>
 <CellPageAttr/>
 <Expand>
 <cellSortAttr/>
 </Expand>
-</C>
-<C c="4" r="2" s="0">
-<PrivilegeControl/>
-<Expand/>
 </C>
 </CellElementList>
 <ReportAttrSet>
@@ -240,6 +248,18 @@
 </color>
 </Background>
 </ReportSettings>
+<Header reportPageType="0">
+<Background name="NullBackground"/>
+<LeftList/>
+<CenterList/>
+<RightList/>
+</Header>
+<Footer reportPageType="0">
+<Background name="NullBackground"/>
+<LeftList/>
+<CenterList/>
+<RightList/>
+</Footer>
 </ReportAttrSet>
 <ReportWriteAttr/>
 <PrivilegeControl/>
@@ -254,9 +274,9 @@
 <ColumnPrivilegeControl/>
 <RowPrivilegeControl/>
 <RowHeight defaultValue="723900">
-<![CDATA[723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900]]></RowHeight>
+<![CDATA[723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900]]></RowHeight>
 <ColumnWidth defaultValue="2743200">
-<![CDATA[2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200]]></ColumnWidth>
+<![CDATA[2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200]]></ColumnWidth>
 <CellElementList>
 <C c="0" r="0" s="0">
 <PrivilegeControl/>
@@ -314,6 +334,16 @@
 <Border/>
 </Style>
 <Style imageLayout="1">
+<FRFont name="simhei" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style imageLayout="4">
 <FRFont name="simhei" style="0" size="72"/>
 <Background name="NullBackground"/>
 <Border>

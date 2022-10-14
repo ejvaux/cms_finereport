@@ -73,6 +73,30 @@ and level_type_id = 1]]></Query>
 <PageQuery>
 <![CDATA[]]></PageQuery>
 </TableData>
+<TableData name="location" class="com.fr.data.impl.DBTableData">
+<Parameters/>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[cms_dev]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[SELECT * FROM [dbo]A.[locations]A]]></Query>
+<PageQuery>
+<![CDATA[]]></PageQuery>
+</TableData>
+<TableData name="station" class="com.fr.data.impl.DBTableData">
+<Parameters/>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[cms_dev]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[SELECT * FROM [dbo]A.[stations]A]]></Query>
+<PageQuery>
+<![CDATA[]]></PageQuery>
+</TableData>
 </TableDataMap>
 <ReportWebAttr>
 <Title>
@@ -192,7 +216,7 @@ else {
 <CustomData>
 <![CDATA[false]]></CustomData>
 <Dictionary class="com.fr.data.impl.TableDataDictionary">
-<FormulaDictAttr kiName="id" viName="name"/>
+<FormulaDictAttr kiName="id" formula="=UPPER(VALUE(&quot;requestor&quot;,&quot;name&quot;,&quot;id&quot;,$$$))"/>
 <TableDataDictAttr>
 <TableData class="com.fr.data.impl.NameTableData">
 <Name>
@@ -204,8 +228,8 @@ else {
 </Widget>
 <Present class="com.fr.base.present.DictPresent">
 <Dictionary class="com.fr.data.impl.DatabaseDictionary">
-<FormulaDictAttr kiName="id" viName="name"/>
-<DBDictAttr tableName="requestors" schemaName="" ki="-1" vi="-1" kiName="id" viName="name"/>
+<FormulaDictAttr kiName="id" formula="=UPPER(VALUE(&quot;requestor&quot;,&quot;name&quot;,&quot;id&quot;,$$$))"/>
+<DBDictAttr tableName="requestors" schemaName="" ki="-1" vi="2" kiName="id"/>
 <Connection class="com.fr.data.impl.NameDatabaseConnection">
 <DatabaseName>
 <![CDATA[cms_dev]]></DatabaseName>
@@ -310,8 +334,8 @@ else {
 <CustomData>
 <![CDATA[false]]></CustomData>
 <Dictionary class="com.fr.data.impl.DatabaseDictionary">
-<FormulaDictAttr kiName="id" viName="name"/>
-<DBDictAttr tableName="locations" schemaName="" ki="-1" vi="-1" kiName="id" viName="name"/>
+<FormulaDictAttr kiName="id" formula="=UPPER(VALUE(&quot;location&quot;,&quot;name&quot;,&quot;id&quot;,$$$))"/>
+<DBDictAttr tableName="locations" schemaName="" ki="-1" vi="2" kiName="id"/>
 <Connection class="com.fr.data.impl.NameDatabaseConnection">
 <DatabaseName>
 <![CDATA[cms_dev]]></DatabaseName>
@@ -321,8 +345,8 @@ else {
 </Widget>
 <Present class="com.fr.base.present.DictPresent">
 <Dictionary class="com.fr.data.impl.DatabaseDictionary">
-<FormulaDictAttr kiName="id" viName="name"/>
-<DBDictAttr tableName="locations" schemaName="" ki="-1" vi="-1" kiName="id" viName="name"/>
+<FormulaDictAttr kiName="id" formula="=UPPER(VALUE(&quot;location&quot;,&quot;name&quot;,&quot;id&quot;,$$$))"/>
+<DBDictAttr tableName="locations" schemaName="" ki="-1" vi="2" kiName="id"/>
 <Connection class="com.fr.data.impl.NameDatabaseConnection">
 <DatabaseName>
 <![CDATA[cms_dev]]></DatabaseName>
@@ -349,8 +373,8 @@ else {
 <CustomData>
 <![CDATA[false]]></CustomData>
 <Dictionary class="com.fr.data.impl.DatabaseDictionary">
-<FormulaDictAttr kiName="id" viName="name"/>
-<DBDictAttr tableName="stations" schemaName="" ki="-1" vi="-1" kiName="id" viName="name"/>
+<FormulaDictAttr kiName="id" formula="=UPPER(VALUE(&quot;station&quot;,&quot;name&quot;,&quot;id&quot;,$$$))"/>
+<DBDictAttr tableName="stations" schemaName="" ki="-1" vi="2" kiName="id"/>
 <Connection class="com.fr.data.impl.NameDatabaseConnection">
 <DatabaseName>
 <![CDATA[cms_dev]]></DatabaseName>
@@ -360,8 +384,8 @@ else {
 </Widget>
 <Present class="com.fr.base.present.DictPresent">
 <Dictionary class="com.fr.data.impl.DatabaseDictionary">
-<FormulaDictAttr kiName="id" viName="name"/>
-<DBDictAttr tableName="stations" schemaName="" ki="-1" vi="-1" kiName="id" viName="name"/>
+<FormulaDictAttr kiName="id" formula="=UPPER(VALUE(&quot;station&quot;,&quot;name&quot;,&quot;id&quot;,$$$))"/>
+<DBDictAttr tableName="stations" schemaName="" ki="-1" vi="2" kiName="id"/>
 <Connection class="com.fr.data.impl.NameDatabaseConnection">
 <DatabaseName>
 <![CDATA[cms_dev]]></DatabaseName>
@@ -597,12 +621,14 @@ if (fr_submitinfo.success) {
 <DesignerVersion DesignerVersion="LAA"/>
 <PreviewType PreviewType="0"/>
 <TemplateThemeAttrMark class="com.fr.base.iofile.attr.TemplateThemeAttrMark">
-<TemplateThemeAttrMark name="Classic Light Gray" dark="false"/>
+<TemplateThemeAttrMark name="经典浅灰" dark="false"/>
 </TemplateThemeAttrMark>
 <StrategyConfigsAttr class="com.fr.esd.core.strategy.persistence.StrategyConfigsAttr">
 <StrategyConfigs>
 <StrategyConfig dsName="process" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
 <StrategyConfig dsName="role" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
+<StrategyConfig dsName="station" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
+<StrategyConfig dsName="location" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
 <StrategyConfig dsName="transaction" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
 <StrategyConfig dsName="requestor" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
 </StrategyConfigs>
@@ -610,7 +636,7 @@ if (fr_submitinfo.success) {
 <TemplateIdAttMark class="com.fr.base.iofile.attr.TemplateIdAttrMark">
 <TemplateIdAttMark TemplateId="3cb33018-8649-45dc-94b6-40ba54011ccd"/>
 </TemplateIdAttMark>
-<TemplateCloudInfoAttrMark class="com.fr.plugin.cloud.analytics.attr.TemplateInfoAttrMark" pluginID="com.fr.plugin.cloud.analytics.v11" plugin-version="3.7.0.20220804">
+<TemplateCloudInfoAttrMark class="com.fr.plugin.cloud.analytics.attr.TemplateInfoAttrMark" pluginID="com.fr.plugin.cloud.analytics.v11" plugin-version="3.8.0.20220907">
 <TemplateCloudInfoAttrMark createTime="1657588481700"/>
 </TemplateCloudInfoAttrMark>
 </WorkBook>

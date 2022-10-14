@@ -132,7 +132,7 @@ order by id desc]]></Query>
 <Content>
 <![CDATA[console.log("Start Countdown....");
 
-var count = 3;
+var count = 1;
 
 var msg = "Redirecting. Please wait....";
 
@@ -182,6 +182,87 @@ var countdown = setInterval(redirect,1000);
 <cellSortAttr/>
 </O>
 <PrivilegeControl/>
+<Widget class="com.fr.form.ui.TextEditor">
+<Listener event="afterinit" name="After Initialization1">
+<JavaScript class="com.fr.js.Commit2DBJavaScript">
+<Parameters/>
+<Attributes dsName="cms_dev" name="Submit1"/>
+<DMLConfig class="com.fr.write.config.IntelliDMLConfig">
+<Table schema="" name="transaction_history"/>
+<ColumnConfig name="transaction_id" isKey="false" skipUnmodified="false">
+<ColumnRow column="1" row="0"/>
+</ColumnConfig>
+<ColumnConfig name="wf_state_type_state_id" isKey="false" skipUnmodified="false">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=value("hierarchy","state_type_child_id","state_type_parent_id",C1)]]></Attributes>
+</O>
+</ColumnConfig>
+<ColumnConfig name="updated_at" isKey="false" skipUnmodified="false">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=NOW()]]></Attributes>
+</O>
+</ColumnConfig>
+<Condition class="com.fr.data.condition.ListCondition"/>
+</DMLConfig>
+<JavaScript class="com.fr.js.JavaScriptImpl">
+<Parameters>
+<Parameter>
+<Attributes name="transaction_id"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=B1]]></Attributes>
+</O>
+</Parameter>
+<Parameter>
+<Attributes name="path"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=$cmspath]]></Attributes>
+</O>
+</Parameter>
+</Parameters>
+<Content>
+<![CDATA[console.log("Start Countdown....");
+
+var count = 1;
+
+var msg = "Redirecting. Please wait....";
+
+var insert = function(msg2){
+	_g().setCellValue("A8",msg+msg2+"...");
+};
+
+var redirect = function(){
+	if(count>0){
+		insert(count);
+	}
+	else{
+		clearInterval(countdown);
+		insert("Done");
+		window.open("${servletURL}?viewlet="+path+"/transaction_items.cpt&transaction_id="+ transaction_id+"&op=write");
+	}
+	count--;
+}
+var countdown = setInterval(redirect,1000);
+//setTimeout(open,5000);]]></Content>
+</JavaScript>
+<JavaScriptResourceInfo>
+<PathNode type="widget" value=""/>
+<PathNode type="event" value="After Initialization1"/>
+</JavaScriptResourceInfo>
+</JavaScript>
+</Listener>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<TextAttr/>
+<Reg class="com.fr.form.ui.reg.NoneReg"/>
+<widgetValue/>
+<MobileScanCodeAttr scanCode="true" textInputMode="0" isSupportManual="true" isSupportScan="true" isSupportNFC="false"/>
+</Widget>
 <Expand dir="0"/>
 </C>
 <C c="2" r="0" s="0">
@@ -193,18 +274,267 @@ var countdown = setInterval(redirect,1000);
 <cellSortAttr/>
 </O>
 <PrivilegeControl/>
+<Widget class="com.fr.form.ui.TextEditor">
+<Listener event="afterinit" name="After Initialization1">
+<JavaScript class="com.fr.js.Commit2DBJavaScript">
+<Parameters/>
+<Attributes dsName="cms_dev" name="Submit1"/>
+<DMLConfig class="com.fr.write.config.IntelliDMLConfig">
+<Table schema="" name="transaction_history"/>
+<ColumnConfig name="transaction_id" isKey="false" skipUnmodified="false">
+<ColumnRow column="1" row="0"/>
+</ColumnConfig>
+<ColumnConfig name="wf_state_type_state_id" isKey="false" skipUnmodified="false">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=value("hierarchy","state_type_child_id","state_type_parent_id",C1)]]></Attributes>
+</O>
+</ColumnConfig>
+<ColumnConfig name="updated_at" isKey="false" skipUnmodified="false">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=NOW()]]></Attributes>
+</O>
+</ColumnConfig>
+<Condition class="com.fr.data.condition.ListCondition"/>
+</DMLConfig>
+<JavaScript class="com.fr.js.JavaScriptImpl">
+<Parameters>
+<Parameter>
+<Attributes name="transaction_id"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=B1]]></Attributes>
+</O>
+</Parameter>
+<Parameter>
+<Attributes name="path"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=$cmspath]]></Attributes>
+</O>
+</Parameter>
+</Parameters>
+<Content>
+<![CDATA[console.log("Start Countdown....");
+
+var count = 1;
+
+var msg = "Redirecting. Please wait....";
+
+var insert = function(msg2){
+	_g().setCellValue("A8",msg+msg2+"...");
+};
+
+var redirect = function(){
+	if(count>0){
+		insert(count);
+	}
+	else{
+		clearInterval(countdown);
+		insert("Done");
+		window.open("${servletURL}?viewlet="+path+"/transaction_items.cpt&transaction_id="+ transaction_id+"&op=write");
+	}
+	count--;
+}
+var countdown = setInterval(redirect,1000);
+//setTimeout(open,5000);]]></Content>
+</JavaScript>
+<JavaScriptResourceInfo>
+<PathNode type="widget" value=""/>
+<PathNode type="event" value="After Initialization1"/>
+</JavaScriptResourceInfo>
+</JavaScript>
+</Listener>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<TextAttr/>
+<Reg class="com.fr.form.ui.reg.NoneReg"/>
+<widgetValue/>
+<MobileScanCodeAttr scanCode="true" textInputMode="0" isSupportManual="true" isSupportScan="true" isSupportNFC="false"/>
+</Widget>
 <Expand dir="0"/>
 </C>
-<C c="0" r="1" cs="5" rs="6" s="1">
+<C c="3" r="0" s="1">
+<PrivilegeControl/>
+<Widget class="com.fr.form.ui.TextEditor">
+<Listener event="afterinit" name="After Initialization1">
+<JavaScript class="com.fr.js.Commit2DBJavaScript">
+<Parameters/>
+<Attributes dsName="cms_dev" name="Submit1"/>
+<DMLConfig class="com.fr.write.config.IntelliDMLConfig">
+<Table schema="" name="transaction_history"/>
+<ColumnConfig name="transaction_id" isKey="false" skipUnmodified="false">
+<ColumnRow column="1" row="0"/>
+</ColumnConfig>
+<ColumnConfig name="wf_state_type_state_id" isKey="false" skipUnmodified="false">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=value("hierarchy","state_type_child_id","state_type_parent_id",C1)]]></Attributes>
+</O>
+</ColumnConfig>
+<ColumnConfig name="updated_at" isKey="false" skipUnmodified="false">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=NOW()]]></Attributes>
+</O>
+</ColumnConfig>
+<Condition class="com.fr.data.condition.ListCondition"/>
+</DMLConfig>
+<JavaScript class="com.fr.js.JavaScriptImpl">
+<Parameters>
+<Parameter>
+<Attributes name="transaction_id"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=B1]]></Attributes>
+</O>
+</Parameter>
+<Parameter>
+<Attributes name="path"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=$cmspath]]></Attributes>
+</O>
+</Parameter>
+</Parameters>
+<Content>
+<![CDATA[console.log("Start Countdown....");
+
+var count = 1;
+
+var msg = "Redirecting. Please wait....";
+
+var insert = function(msg2){
+	_g().setCellValue("A8",msg+msg2+"...");
+};
+
+var redirect = function(){
+	if(count>0){
+		insert(count);
+	}
+	else{
+		clearInterval(countdown);
+		insert("Done");
+		window.open("${servletURL}?viewlet="+path+"/transaction_items.cpt&transaction_id="+ transaction_id+"&op=write");
+	}
+	count--;
+}
+var countdown = setInterval(redirect,1000);
+//setTimeout(open,5000);]]></Content>
+</JavaScript>
+<JavaScriptResourceInfo>
+<PathNode type="widget" value=""/>
+<PathNode type="event" value="After Initialization1"/>
+</JavaScriptResourceInfo>
+</JavaScript>
+</Listener>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<TextAttr/>
+<Reg class="com.fr.form.ui.reg.NoneReg"/>
+<widgetValue/>
+<MobileScanCodeAttr scanCode="true" textInputMode="0" isSupportManual="true" isSupportScan="true" isSupportNFC="false"/>
+</Widget>
+</C>
+<C c="4" r="0" s="1">
+<PrivilegeControl/>
+<Widget class="com.fr.form.ui.TextEditor">
+<Listener event="afterinit" name="After Initialization1">
+<JavaScript class="com.fr.js.Commit2DBJavaScript">
+<Parameters/>
+<Attributes dsName="cms_dev" name="Submit1"/>
+<DMLConfig class="com.fr.write.config.IntelliDMLConfig">
+<Table schema="" name="transaction_history"/>
+<ColumnConfig name="transaction_id" isKey="false" skipUnmodified="false">
+<ColumnRow column="1" row="0"/>
+</ColumnConfig>
+<ColumnConfig name="wf_state_type_state_id" isKey="false" skipUnmodified="false">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=value("hierarchy","state_type_child_id","state_type_parent_id",C1)]]></Attributes>
+</O>
+</ColumnConfig>
+<ColumnConfig name="updated_at" isKey="false" skipUnmodified="false">
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=NOW()]]></Attributes>
+</O>
+</ColumnConfig>
+<Condition class="com.fr.data.condition.ListCondition"/>
+</DMLConfig>
+<JavaScript class="com.fr.js.JavaScriptImpl">
+<Parameters>
+<Parameter>
+<Attributes name="transaction_id"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=B1]]></Attributes>
+</O>
+</Parameter>
+<Parameter>
+<Attributes name="path"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=$cmspath]]></Attributes>
+</O>
+</Parameter>
+</Parameters>
+<Content>
+<![CDATA[console.log("Start Countdown....");
+
+var count = 1;
+
+var msg = "Redirecting. Please wait....";
+
+var insert = function(msg2){
+	_g().setCellValue("A8",msg+msg2+"...");
+};
+
+var redirect = function(){
+	if(count>0){
+		insert(count);
+	}
+	else{
+		clearInterval(countdown);
+		insert("Done");
+		window.open("${servletURL}?viewlet="+path+"/transaction_items.cpt&transaction_id="+ transaction_id+"&op=write");
+	}
+	count--;
+}
+var countdown = setInterval(redirect,1000);
+//setTimeout(open,5000);]]></Content>
+</JavaScript>
+<JavaScriptResourceInfo>
+<PathNode type="widget" value=""/>
+<PathNode type="event" value="After Initialization1"/>
+</JavaScriptResourceInfo>
+</JavaScript>
+</Listener>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<TextAttr/>
+<Reg class="com.fr.form.ui.reg.NoneReg"/>
+<widgetValue/>
+<MobileScanCodeAttr scanCode="true" textInputMode="0" isSupportManual="true" isSupportScan="true" isSupportNFC="false"/>
+</Widget>
+</C>
+<C c="0" r="1" cs="5" rs="6" s="2">
 <O t="RichText">
 <RichText>
-<RichChar styleIndex="2">
+<RichChar styleIndex="3">
 <text>
 <![CDATA[Transaction created successfully.
 
 ]]></text>
 </RichChar>
-<RichChar styleIndex="3">
+<RichChar styleIndex="4">
 <text>
 <![CDATA[${=RIGHT(A1,4)}]]></text>
 </RichChar>
@@ -216,7 +546,7 @@ var countdown = setInterval(redirect,1000);
 <cellSortAttr/>
 </Expand>
 </C>
-<C c="0" r="7" cs="5" s="4">
+<C c="0" r="7" cs="5" s="5">
 <O>
 <![CDATA[Preparing Transaction....]]></O>
 <PrivilegeControl/>
@@ -261,6 +591,11 @@ var countdown = setInterval(redirect,1000);
 <Background name="NullBackground"/>
 <Border/>
 </Style>
+<Style style_name="默认" full="true" border_source="-1" imageLayout="1">
+<FRFont name="simhei" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border/>
+</Style>
 <Style horizontal_alignment="0" textStyle="1" imageLayout="1">
 <FRFont name="simhei" style="0" size="96"/>
 <Background name="NullBackground"/>
@@ -285,7 +620,7 @@ var countdown = setInterval(redirect,1000);
 <DesignerVersion DesignerVersion="LAA"/>
 <PreviewType PreviewType="0"/>
 <TemplateThemeAttrMark class="com.fr.base.iofile.attr.TemplateThemeAttrMark">
-<TemplateThemeAttrMark name="Classic Light Gray" dark="false"/>
+<TemplateThemeAttrMark name="经典浅灰" dark="false"/>
 </TemplateThemeAttrMark>
 <StrategyConfigsAttr class="com.fr.esd.core.strategy.persistence.StrategyConfigsAttr">
 <StrategyConfigs>
@@ -293,7 +628,7 @@ var countdown = setInterval(redirect,1000);
 <StrategyConfig dsName="hierarchy" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
 </StrategyConfigs>
 </StrategyConfigsAttr>
-<TemplateCloudInfoAttrMark class="com.fr.plugin.cloud.analytics.attr.TemplateInfoAttrMark" pluginID="com.fr.plugin.cloud.analytics.v11" plugin-version="3.7.0.20220804">
+<TemplateCloudInfoAttrMark class="com.fr.plugin.cloud.analytics.attr.TemplateInfoAttrMark" pluginID="com.fr.plugin.cloud.analytics.v11" plugin-version="3.8.0.20220907">
 <TemplateCloudInfoAttrMark createTime="1657871715076"/>
 </TemplateCloudInfoAttrMark>
 <TemplateIdAttMark class="com.fr.base.iofile.attr.TemplateIdAttrMark">

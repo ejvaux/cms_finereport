@@ -202,7 +202,7 @@ where name IN(''+${user_departments}+'')]]></Query>
 <RowHeight defaultValue="723900">
 <![CDATA[723900,800100,723900,723900,723900,723900,723900,723900,723900,723900,723900]]></RowHeight>
 <ColumnWidth defaultValue="2743200">
-<![CDATA[2400300,4991100,2743200,3276600,4800600,4343400,2743200,2743200,2743200,2743200,2743200]]></ColumnWidth>
+<![CDATA[2400300,4991100,2743200,3276600,4800600,4343400,5829300,2743200,2743200,2743200,2743200]]></ColumnWidth>
 <CellElementList>
 <C c="0" r="0" s="0">
 <PrivilegeControl/>
@@ -378,6 +378,72 @@ where name IN(''+${user_departments}+'')]]></Query>
 <CellGUIAttr adjustmode="2"/>
 <CellPageAttr/>
 <Expand dir="0">
+<cellSortAttr/>
+</Expand>
+</C>
+<C c="6" r="2" s="5">
+<PrivilegeControl/>
+<Widget class="com.fr.form.ui.FreeButton">
+<Listener event="afterinit" name="After Initialization1">
+<JavaScript class="com.fr.js.JavaScriptImpl">
+<Parameters>
+<Parameter>
+<Attributes name="id"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=A3]]></Attributes>
+</O>
+</Parameter>
+</Parameters>
+<Content>
+<![CDATA[if(id == 'null' || id == null){
+	this.setVisible(false);
+}
+]]></Content>
+</JavaScript>
+</Listener>
+<Listener event="click" name="Click1">
+<JavaScript class="com.fr.js.JavaScriptImpl">
+<Parameters>
+<Parameter>
+<Attributes name="transaction_id"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=A3]]></Attributes>
+</O>
+</Parameter>
+<Parameter>
+<Attributes name="path"/>
+<O t="XMLable" class="com.fr.base.Formula">
+<Attributes>
+<![CDATA[=$cmspath]]></Attributes>
+</O>
+</Parameter>
+</Parameters>
+<Content>
+<![CDATA[//alert(transaction_id);
+
+window.form = this.options.form;
+var $iframe = $("<iframe id='inp' name='inp' width='100%' height='100%' scrolling='no' frameborder='0'>");
+$iframe.attr("src", "${servletURL}?viewlet="+path+"/transaction_history.cpt&transaction_id="+ transaction_id+"&op=view"); 
+var o = {
+title : "CMS - Transaction History",
+width : 950,
+height: 500
+}; 
+FR.showDialog(o.title, o.width, o.height, $iframe,o); ]]></Content>
+</JavaScript>
+</Listener>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<Text>
+<![CDATA[Transaction History]]></Text>
+<Hotkeys>
+<![CDATA[]]></Hotkeys>
+</Widget>
+<Expand>
 <cellSortAttr/>
 </Expand>
 </C>
@@ -593,6 +659,11 @@ this.setValue(arr2);]]></Content>
 <Left style="1"/>
 <Right style="1"/>
 </Border>
+</Style>
+<Style style_name="默认" full="true" border_source="-1" imageLayout="1">
+<FRFont name="simhei" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border/>
 </Style>
 </StyleList>
 <DesignerVersion DesignerVersion="LAA"/>
