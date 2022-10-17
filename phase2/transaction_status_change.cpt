@@ -804,7 +804,7 @@ if (states.indexOf(c_process_id) !== -1) {
 <Parameter>
 <Attributes name="scan_process"/>
 <O>
-<![CDATA[8]]></O>
+<![CDATA[0]]></O>
 </Parameter>
 </Parameters>
 <Content>
