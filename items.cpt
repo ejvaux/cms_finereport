@@ -16,7 +16,25 @@
 </Connection>
 <Query>
 <![CDATA[SELECT * FROM [dbo]A.[items]A
-where part_number like CONCAT('%','${part_number}','%')]]></Query>
+--where part_number like CONCAT('%','${part_number}','%')
+where id = 
+	CASE
+		WHEN '${part_number}' = null THEN id
+		WHEN '${part_number}' = '' THEN id
+		ELSE '${part_number}'
+	END;]]></Query>
+<PageQuery>
+<![CDATA[]]></PageQuery>
+</TableData>
+<TableData name="items" class="com.fr.data.impl.DBTableData">
+<Parameters/>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[cms_dev]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[SELECT * FROM [dbo]A.[items]A]]></Query>
 <PageQuery>
 <![CDATA[]]></PageQuery>
 </TableData>
@@ -668,7 +686,7 @@ where part_number like CONCAT('%','${part_number}','%')]]></Query>
 <PrivilegeControl/>
 </Report>
 <ReportParameterAttr>
-<Attributes showWindow="true" delayPlaying="false" windowPosition="1" align="0" useParamsTemplate="true" currentIndex="4"/>
+<Attributes showWindow="true" delayPlaying="false" windowPosition="1" align="0" useParamsTemplate="true" currentIndex="1"/>
 <PWTitle>
 <![CDATA[Parameter]]></PWTitle>
 <ParameterUI class="com.fr.form.main.parameter.FormParameterUI">
@@ -702,6 +720,29 @@ where part_number like CONCAT('%','${part_number}','%')]]></Query>
 </Background>
 <LCAttr vgap="0" hgap="0" compInterval="0"/>
 <Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
+<InnerWidget class="com.fr.form.ui.ComboBox">
+<WidgetName name="part_number"/>
+<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
+<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
+<PrivilegeControl/>
+</WidgetAttr>
+<Dictionary class="com.fr.data.impl.TableDataDictionary">
+<FormulaDictAttr kiName="id" formula="=VALUE(&quot;items&quot;,&quot;part_number&quot;,&quot;id&quot;,$$$) + &quot; - &quot; + UPPER(VALUE(&quot;items&quot;,&quot;description&quot;,&quot;id&quot;,$$$))"/>
+<TableDataDictAttr>
+<TableData class="com.fr.data.impl.NameTableData">
+<Name>
+<![CDATA[items]]></Name>
+</TableData>
+</TableDataDictAttr>
+</Dictionary>
+<widgetValue>
+<O>
+<![CDATA[]]></O>
+</widgetValue>
+</InnerWidget>
+<BoundsAttr x="89" y="10" width="361" height="21"/>
+</Widget>
+<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
 <InnerWidget class="com.fr.form.parameter.FormSubmitButton">
 <WidgetName name="Search"/>
 <WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
@@ -713,24 +754,7 @@ where part_number like CONCAT('%','${part_number}','%')]]></Query>
 <Hotkeys>
 <![CDATA[enter]]></Hotkeys>
 </InnerWidget>
-<BoundsAttr x="189" y="10" width="80" height="21"/>
-</Widget>
-<Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
-<InnerWidget class="com.fr.form.ui.TextEditor">
-<WidgetName name="part_number"/>
-<WidgetAttr aspectRatioLocked="false" aspectRatioBackup="-1.0" description="">
-<MobileBookMark useBookMark="false" bookMarkName="" frozen="false"/>
-<PrivilegeControl/>
-</WidgetAttr>
-<TextAttr/>
-<Reg class="com.fr.form.ui.reg.NoneReg"/>
-<widgetValue>
-<O>
-<![CDATA[]]></O>
-</widgetValue>
-<MobileScanCodeAttr scanCode="true" textInputMode="0" isSupportManual="true" isSupportScan="true" isSupportNFC="false"/>
-</InnerWidget>
-<BoundsAttr x="89" y="10" width="100" height="21"/>
+<BoundsAttr x="450" y="10" width="80" height="21"/>
 </Widget>
 <Widget class="com.fr.form.ui.container.WAbsoluteLayout$BoundsWidget">
 <InnerWidget class="com.fr.form.ui.Label">
@@ -767,16 +791,12 @@ where part_number like CONCAT('%','${part_number}','%')]]></Query>
 <paramFireStopEdit fireEvent="false"/>
 <Position position="0"/>
 <Design_Width design_width="960"/>
-<NameTagModified>
-<TagModified tag="search" modified="true"/>
-</NameTagModified>
-<WidgetNameTagMap>
-<NameTag name="search" tag="search:"/>
-</WidgetNameTagMap>
+<NameTagModified/>
+<WidgetNameTagMap/>
 <ParamAttr class="com.fr.report.mobile.DefaultMobileParamStyle"/>
 <ParamStyle class="com.fr.form.ui.mobile.impl.DefaultMobileParameterStyle"/>
 </Layout>
-<DesignAttr width="960" height="39"/>
+<DesignAttr width="960" height="38"/>
 </ParameterUI>
 </ReportParameterAttr>
 <StyleList>
@@ -884,7 +904,10 @@ where part_number like CONCAT('%','${part_number}','%')]]></Query>
 <TemplateThemeAttrMark name="经典浅灰" dark="false"/>
 </TemplateThemeAttrMark>
 <StrategyConfigsAttr class="com.fr.esd.core.strategy.persistence.StrategyConfigsAttr">
-<StrategyConfigs/>
+<StrategyConfigs>
+<StrategyConfig dsName="ds1" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
+<StrategyConfig dsName="items" enabled="false" useGlobal="true" shouldMonitor="true" shouldEvolve="false" scheduleBySchema="false" timeToLive="1500000" timeToIdle="86400000" updateInterval="1500000" terminalTime="" updateSchema="0 0 8 * * ? *" activeInitiation="false"/>
+</StrategyConfigs>
 </StrategyConfigsAttr>
 <TemplateCloudInfoAttrMark class="com.fr.plugin.cloud.analytics.attr.TemplateInfoAttrMark" pluginID="com.fr.plugin.cloud.analytics.v11" plugin-version="3.8.0.20220907">
 <TemplateCloudInfoAttrMark createTime="1654233060175"/>
